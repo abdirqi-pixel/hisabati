@@ -50,8 +50,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     }
     if (widget.initialAttachmentPath != null &&
         widget.initialAttachmentPath!.isNotEmpty) {
-      pendingAttachments
-          .add({'type': 'image', 'path': widget.initialAttachmentPath!});
+      pendingAttachments.add(_PendingAttachment(
+          type: 'image', path: widget.initialAttachmentPath!));
     }
   }
 

@@ -1,0 +1,39 @@
+[✓] Flutter (Channel stable, 3.44.4, on Ubuntu 24.04.4 LTS 6.8.0-1052-azure, locale C.UTF-8) [56ms]
+    • Flutter version 3.44.4 on channel stable at /home/codespace/flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision ad70ec4617 (10 days ago), 2026-06-24 11:07:06 -0700
+    • Engine revision a10d8ac38d
+    • Dart version 3.12.2
+    • DevTools version 2.57.0
+    • Feature flags: enable-web, enable-linux-desktop, enable-macos-desktop, enable-windows-desktop, enable-android, enable-ios, cli-animations, enable-native-assets, enable-swift-package-manager, omit-legacy-version-file, enable-lldb-debugging, enable-uiscene-migration
+
+[✗] Android toolchain - develop for Android devices [27ms]
+    ✗ Unable to locate Android SDK.
+      Install Android Studio from: https://developer.android.com/studio/index.html
+      On first launch it will assist you in installing the Android SDK components.
+      (or visit https://flutter.dev/to/linux-android-setup for detailed instructions).
+      If the Android SDK has been installed to a custom location, please use
+      `flutter config --android-sdk` to update to that location.
+
+
+[✗] Chrome - develop for the web (Cannot find Chrome executable at google-chrome) [14ms]
+    ! Cannot find Chrome. Try setting CHROME_EXECUTABLE to a Chrome executable.
+
+[✗] Linux toolchain - develop for Linux desktop [139ms]
+    • Ubuntu clang version 18.1.3 (1ubuntu1)
+    • cmake version 3.28.3
+    ✗ ninja is required for Linux development.
+      It is likely available from your distribution (e.g.: apt install ninja-build), or can be downloaded from https://github.com/ninja-build/ninja/releases
+    • pkg-config version 1.8.1
+    ✗ GTK 3.0 development libraries are required for Linux development.
+      They are likely available from your distribution (e.g.: apt install libgtk-3-dev)
+    ! Unable to access driver information using 'eglinfo'.
+      It is likely available from your distribution (e.g.: apt install mesa-utils)
+
+[✓] Connected device (1 available) [25ms]
+    • Linux (desktop) • linux • linux-x64 • Ubuntu 24.04.4 LTS 6.8.0-1052-azure
+
+[✓] Network resources [885ms]
+    • All expected network resources are available.
+
+! Doctor found issues in 3 categories.
