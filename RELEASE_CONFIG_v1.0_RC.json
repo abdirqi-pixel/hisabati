@@ -1,0 +1,11 @@
+{
+  "app_name": "حساباتي",
+  "version": "1.0.0-rc",
+  "build_number": 47,
+  "android_outputs": {
+    "apk": "build/app/outputs/flutter-apk/app-release.apk",
+    "aab": "build/app/outputs/bundle/release/app-release.aab"
+  },
+  "release_stage": "Release Candidate",
+  "notes": "هذه النسخة مخصصة للاختبار النهائي قبل النشر."
+}

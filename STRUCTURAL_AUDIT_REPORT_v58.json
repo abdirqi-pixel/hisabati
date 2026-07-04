@@ -1,0 +1,18 @@
+{
+  "project": "حساباتي",
+  "stage": "v58 structural audit",
+  "total_checks": 10,
+  "passed": 10,
+  "checks": {
+    "pubspec.yaml": true,
+    "lib/main.dart": true,
+    "lib/core/router/app_router.dart": true,
+    "lib/core/database/app_database.dart": true,
+    "assets": true,
+    "README.md": true,
+    "ANDROID_RELEASE_GUIDE.md": true,
+    "IOS_RELEASE_GUIDE.md": true,
+    "PRIVACY_POLICY_AR.md": true,
+    "scripts": true
+  }
+}

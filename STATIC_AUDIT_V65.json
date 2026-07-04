@@ -1,0 +1,19 @@
+{
+  "version": "v65",
+  "base_file": "hisabati_starter_fix3_code_cleanup.zip",
+  "checks": {
+    "relative_imports": "passed",
+    "pubspec_duplicate_dependencies": "fixed_printing_duplicate",
+    "sqlite_create_table_statements": "passed_static_sqlite_execution",
+    "flutter_sdk_execution": "not_available_in_current_environment"
+  },
+  "modified_files": [
+    "pubspec.yaml",
+    "lib/main.dart",
+    "README_AR_V65.md",
+    "CODE_FIX_REPORT_V65_AR.md",
+    "MOBILE_USER_NEXT_STEPS_AR.md",
+    "STATIC_AUDIT_V65.json",
+    "preview.html"
+  ]
+}
