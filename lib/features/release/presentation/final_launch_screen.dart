@@ -18,7 +18,8 @@ class FinalLaunchScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
               borderRadius: BorderRadius.circular(28),
             ),
             child: const Column(
@@ -28,7 +29,10 @@ class FinalLaunchScreen extends ConsumerWidget {
                 SizedBox(height: 12),
                 Text(
                   'حساباتي v1.0 Final',
-                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -42,7 +46,8 @@ class FinalLaunchScreen extends ConsumerWidget {
           ...items.map((item) {
             return Card(
               child: ListTile(
-                leading: const Icon(Icons.pending_actions_rounded, color: Colors.orange),
+                leading: const Icon(Icons.pending_actions_rounded,
+                    color: Colors.orange),
                 title: Text(item['title'].toString()),
                 subtitle: const Text('ينفذ على جهاز المطور قبل النشر'),
               ),

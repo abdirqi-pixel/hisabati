@@ -27,13 +27,16 @@ class ArchivedProjectsScreen extends ConsumerWidget {
 
               return Card(
                 child: ListTile(
-                  leading: Text((p['icon'] ?? '📁').toString(), style: const TextStyle(fontSize: 32)),
-                  title: Text(p['name'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Text((p['icon'] ?? '📁').toString(),
+                      style: const TextStyle(fontSize: 32)),
+                  title: Text(p['name'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('العملة: ${p['currency_symbol']}'),
                   trailing: TextButton(
                     onPressed: () async {
                       final db = await ref.read(appDatabaseProvider).database;
-                      await db.update('projects', {'is_archived': 0}, where: 'id = ?', whereArgs: [p['id']]);
+                      await db.update('projects', {'is_archived': 0},
+                          where: 'id = ?', whereArgs: [p['id']]);
                       ref.invalidate(projectsProvider);
                       ref.invalidate(archivedProjectsProvider);
                     },

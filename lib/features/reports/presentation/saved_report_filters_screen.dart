@@ -28,8 +28,10 @@ class SavedReportFiltersScreen extends ConsumerWidget {
 
               return Card(
                 child: ListTile(
-                  leading: const CircleAvatar(child: Icon(Icons.filter_alt_rounded)),
-                  title: Text(item['name'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  leading:
+                      const CircleAvatar(child: Icon(Icons.filter_alt_rounded)),
+                  title: Text(item['name'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
                     'مشروع: ${item['project_id'] ?? 'الكل'} • شخص: ${item['person_id'] ?? 'الكل'} • تصنيف: ${item['category_id'] ?? 'الكل'}',
                   ),
@@ -38,7 +40,8 @@ class SavedReportFiltersScreen extends ConsumerWidget {
                       final db = await ref.read(appDatabaseProvider).database;
 
                       if (value == 'apply') {
-                        ref.read(reportFilterProvider.notifier).state = ReportFilter(
+                        ref.read(reportFilterProvider.notifier).state =
+                            ReportFilter(
                           projectId: item['project_id'] as int?,
                           personId: item['person_id'] as int?,
                           categoryId: item['category_id'] as int?,
@@ -51,7 +54,8 @@ class SavedReportFiltersScreen extends ConsumerWidget {
                       }
 
                       if (value == 'delete') {
-                        await db.delete('saved_report_filters', where: 'id = ?', whereArgs: [item['id']]);
+                        await db.delete('saved_report_filters',
+                            where: 'id = ?', whereArgs: [item['id']]);
                         ref.invalidate(savedReportFiltersProvider);
                       }
                     },

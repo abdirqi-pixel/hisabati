@@ -18,7 +18,8 @@ class FieldTestScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
               borderRadius: BorderRadius.circular(28),
             ),
             child: const Column(
@@ -28,7 +29,10 @@ class FieldTestScreen extends ConsumerWidget {
                 SizedBox(height: 12),
                 Text(
                   'اختبار المستخدمين',
-                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -43,7 +47,11 @@ class FieldTestScreen extends ConsumerWidget {
             final high = item['priority'] == 'عالي';
             return Card(
               child: ListTile(
-                leading: Icon(high ? Icons.priority_high_rounded : Icons.checklist_rounded, color: high ? Colors.red : Colors.blue),
+                leading: Icon(
+                    high
+                        ? Icons.priority_high_rounded
+                        : Icons.checklist_rounded,
+                    color: high ? Colors.red : Colors.blue),
                 title: Text(item['title'].toString()),
                 subtitle: Text('الأولوية: ${item['priority']}'),
               ),

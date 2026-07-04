@@ -5,8 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/data/database_providers.dart';
 import '../../../core/services/attachment_service.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:share_plus/share_plus.dart';
 
 class ExpenseDetailsScreen extends ConsumerWidget {
   const ExpenseDetailsScreen({
@@ -68,30 +66,46 @@ class ExpenseDetailsScreen extends ConsumerWidget {
                     const SizedBox(height: 8),
                     Text(
                       '${e['amount']} ${e['currency_symbol']}',
-                      style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      e['description']?.toString().isEmpty ?? true ? 'بدون تفاصيل' : e['description'].toString(),
+                      e['description']?.toString().isEmpty ?? true
+                          ? 'بدون تفاصيل'
+                          : e['description'].toString(),
                       style: const TextStyle(color: Colors.white),
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 18),
-              _InfoTile(title: 'الشخص', value: e['person_name']?.toString() ?? 'بدون شخص'),
-              _InfoTile(title: 'التصنيف', value: e['category_name']?.toString() ?? 'بدون تصنيف'),
+              _InfoTile(
+                  title: 'الشخص',
+                  value: e['person_name']?.toString() ?? 'بدون شخص'),
+              _InfoTile(
+                  title: 'التصنيف',
+                  value: e['category_name']?.toString() ?? 'بدون تصنيف'),
               _InfoTile(title: 'التاريخ', value: e['expense_date'].toString()),
               _InfoTile(title: 'الوقت', value: e['expense_time'].toString()),
-              _InfoTile(title: 'ملاحظات', value: e['notes']?.toString().isEmpty ?? true ? 'لا توجد' : e['notes'].toString()),
+              _InfoTile(
+                  title: 'ملاحظات',
+                  value: e['notes']?.toString().isEmpty ?? true
+                      ? 'لا توجد'
+                      : e['notes'].toString()),
               const SizedBox(height: 18),
               Row(
                 children: [
                   const Expanded(
-                    child: Text('المرفقات', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                    child: Text('المرفقات',
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold)),
                   ),
                   FilledButton.tonalIcon(
-                    onPressed: () => _showAddAttachmentSheet(context, ref, expenseId),
+                    onPressed: () =>
+                        _showAddAttachmentSheet(context, ref, expenseId),
                     icon: const Icon(Icons.add_rounded),
                     label: const Text('إضافة مرفق'),
                   ),
@@ -116,13 +130,17 @@ class ExpenseDetailsScreen extends ConsumerWidget {
 
                       return Card(
                         child: ListTile(
-                          leading: Icon(type == 'image' ? Icons.image_rounded : Icons.picture_as_pdf_rounded),
-                          title: Text(type == 'image' ? 'صورة فاتورة' : 'ملف PDF'),
+                          leading: Icon(type == 'image'
+                              ? Icons.image_rounded
+                              : Icons.picture_as_pdf_rounded),
+                          title:
+                              Text(type == 'image' ? 'صورة فاتورة' : 'ملف PDF'),
                           subtitle: Text(path),
                           trailing: type == 'image' && File(path).existsSync()
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
-                                  child: Image.file(File(path), width: 52, height: 52, fit: BoxFit.cover),
+                                  child: Image.file(File(path),
+                                      width: 52, height: 52, fit: BoxFit.cover),
                                 )
                               : null,
                         ),
@@ -139,6 +157,65 @@ class ExpenseDetailsScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+Future<void> _showAddAttachmentSheet(
+    BuildContext context, WidgetRef ref, int expenseId) async {
+  Future<void> addAttachment(
+      String type, Future<File?> Function() pickFile) async {
+    final file = await pickFile();
+    if (file == null) return;
+
+    final db = await ref.read(appDatabaseProvider).database;
+    await db.insert('expense_attachments', {
+      'expense_id': expenseId,
+      'type': type,
+      'file_path': file.path,
+      'created_at': DateTime.now().toIso8601String(),
+    });
+
+    ref.invalidate(expenseAttachmentsProvider(expenseId));
+    ref.invalidate(expensesProvider);
+    ref.invalidate(filteredExpensesProvider);
+
+    if (context.mounted) {
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تمت إضافة المرفق')),
+      );
+    }
+  }
+
+  await showModalBottomSheet<void>(
+    context: context,
+    builder: (_) {
+      final service = AttachmentService();
+
+      return SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.camera_alt_rounded),
+              title: const Text('تصوير فاتورة'),
+              onTap: () => addAttachment('image', service.captureInvoiceImage),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_rounded),
+              title: const Text('اختيار صورة'),
+              onTap: () =>
+                  addAttachment('image', service.pickInvoiceImageFromGallery),
+            ),
+            ListTile(
+              leading: const Icon(Icons.picture_as_pdf_rounded),
+              title: const Text('إرفاق PDF'),
+              onTap: () => addAttachment('pdf', service.pickPdfFile),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 class _InfoTile extends StatelessWidget {

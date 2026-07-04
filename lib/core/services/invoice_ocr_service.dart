@@ -76,8 +76,11 @@ class InvoiceOcrService {
 
   String? _extractInvoiceNumber(String text) {
     final patterns = [
-      RegExp(r'(invoice|receipt|bill)\s*(no|number|#)?\s*[:\-]?\s*([A-Za-z0-9\-\/]+)', caseSensitive: false),
-      RegExp(r'(رقم\s*الفاتورة|رقم\s*الوصل)\s*[:\-]?\s*([A-Za-z0-9\-\/]+)', caseSensitive: false),
+      RegExp(
+          r'(invoice|receipt|bill)\s*(no|number|#)?\s*[:\-]?\s*([A-Za-z0-9\-\/]+)',
+          caseSensitive: false),
+      RegExp(r'(رقم\s*الفاتورة|رقم\s*الوصل)\s*[:\-]?\s*([A-Za-z0-9\-\/]+)',
+          caseSensitive: false),
       RegExp(r'#\s*([A-Za-z0-9\-\/]{3,})'),
     ];
 
@@ -106,7 +109,8 @@ class InvoiceOcrService {
   }
 
   double? _extractAmount(String text) {
-    final amountLike = RegExp(r'(\d{1,3}(?:[,\s]\d{3})*(?:[.]\d{1,2})?|\d+(?:[.]\d{1,2})?)');
+    final amountLike =
+        RegExp(r'(\d{1,3}(?:[,\s]\d{3})*(?:[.]\d{1,2})?|\d+(?:[.]\d{1,2})?)');
     final lines = text.split('\n');
 
     final priorityWords = [
@@ -124,7 +128,8 @@ class InvoiceOcrService {
 
     for (final line in lines) {
       final lower = line.toLowerCase();
-      final hasPriority = priorityWords.any((w) => lower.contains(w.toLowerCase()));
+      final hasPriority =
+          priorityWords.any((w) => lower.contains(w.toLowerCase()));
       final matches = amountLike.allMatches(line);
 
       for (final match in matches) {
@@ -149,8 +154,12 @@ class InvoiceOcrService {
 
   String? _extractCurrency(String text) {
     final lower = text.toLowerCase();
-    if (lower.contains('د.ع') || lower.contains('iqd') || lower.contains('دينار')) return 'د.ع';
-    if (lower.contains(r'$') || lower.contains('usd') || lower.contains('dollar')) return r'$';
+    if (lower.contains('د.ع') ||
+        lower.contains('iqd') ||
+        lower.contains('دينار')) return 'د.ع';
+    if (lower.contains(r'$') ||
+        lower.contains('usd') ||
+        lower.contains('dollar')) return r'$';
     if (lower.contains('sar') || lower.contains('ر.س')) return 'ر.س';
     if (lower.contains('aed') || lower.contains('د.إ')) return 'د.إ';
     if (lower.contains('kwd') || lower.contains('د.ك')) return 'د.ك';

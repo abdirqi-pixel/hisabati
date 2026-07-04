@@ -48,25 +48,35 @@ class UsersScreen extends ConsumerWidget {
               final isSelected = current?['id'] == u['id'];
               return Card(
                 child: ListTile(
-                  leading: CircleAvatar(child: Text((u['name'] as String).characters.first)),
-                  title: Text(u['name'] as String, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('${roleName(u['role'] as String)}${isSelected ? ' • المستخدم الحالي' : ''}'),
+                  leading: CircleAvatar(
+                      child: Text((u['name'] as String).characters.first)),
+                  title: Text(u['name'] as String,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                      '${roleName(u['role'] as String)}${isSelected ? ' • المستخدم الحالي' : ''}'),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) async {
                       final db = await ref.read(appDatabaseProvider).database;
                       if (value == 'select') {
-                        await db.update('app_settings', {'selected_user_id': u['id']}, where: 'id = ?', whereArgs: [1]);
+                        await db.update(
+                            'app_settings', {'selected_user_id': u['id']},
+                            where: 'id = ?', whereArgs: [1]);
                         ref.invalidate(selectedUserProvider);
                         ref.invalidate(settingsProvider);
                       }
                       if (value == 'delete') {
-                        await db.update('app_users', {'is_active': 0}, where: 'id = ?', whereArgs: [u['id']]);
+                        await db.update('app_users', {'is_active': 0},
+                            where: 'id = ?', whereArgs: [u['id']]);
                         ref.invalidate(appUsersProvider);
                       }
                     },
                     itemBuilder: (_) => [
-                      const PopupMenuItem(value: 'select', child: Text('اجعله المستخدم الحالي')),
-                      if (!isSelected) const PopupMenuItem(value: 'delete', child: Text('تعطيل')),
+                      const PopupMenuItem(
+                          value: 'select',
+                          child: Text('اجعله المستخدم الحالي')),
+                      if (!isSelected)
+                        const PopupMenuItem(
+                            value: 'delete', child: Text('تعطيل')),
                     ],
                   ),
                 ),
@@ -119,11 +129,13 @@ class _UserFormState extends ConsumerState<_UserForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('إضافة مستخدم', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('إضافة مستخدم',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           TextField(
             controller: name,
@@ -131,7 +143,7 @@ class _UserFormState extends ConsumerState<_UserForm> {
           ),
           const SizedBox(height: 12),
           DropdownButtonFormField<String>(
-            value: role,
+            initialValue: role,
             decoration: const InputDecoration(labelText: 'الصلاحية'),
             items: const [
               DropdownMenuItem(value: 'admin', child: Text('مدير')),
@@ -142,7 +154,10 @@ class _UserFormState extends ConsumerState<_UserForm> {
             onChanged: (value) => setState(() => role = value ?? 'employee'),
           ),
           const SizedBox(height: 16),
-          FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+          FilledButton.icon(
+              onPressed: save,
+              icon: const Icon(Icons.save_rounded),
+              label: const Text('حفظ')),
         ],
       ),
     );

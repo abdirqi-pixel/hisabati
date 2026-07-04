@@ -63,17 +63,22 @@ class _InvoiceScannerScreenState extends State<InvoiceScannerScreen> {
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
               borderRadius: BorderRadius.circular(28),
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.document_scanner_rounded, color: Colors.white, size: 48),
+                Icon(Icons.document_scanner_rounded,
+                    color: Colors.white, size: 48),
                 SizedBox(height: 12),
                 Text(
                   'قراءة الفاتورة تلقائيًا',
-                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -148,9 +153,13 @@ class _InvoiceReviewScreenState extends State<InvoiceReviewScreen> {
   void initState() {
     super.initState();
     supplier = TextEditingController(text: widget.result.supplierName ?? '');
-    invoiceNumber = TextEditingController(text: widget.result.invoiceNumber ?? '');
-    date = TextEditingController(text: widget.result.date ?? DateTime.now().toIso8601String().split('T').first);
-    amount = TextEditingController(text: widget.result.amount?.toStringAsFixed(0) ?? '');
+    invoiceNumber =
+        TextEditingController(text: widget.result.invoiceNumber ?? '');
+    date = TextEditingController(
+        text: widget.result.date ??
+            DateTime.now().toIso8601String().split('T').first);
+    amount = TextEditingController(
+        text: widget.result.amount?.toStringAsFixed(0) ?? '');
     currency = TextEditingController(text: widget.result.currency ?? '');
     notes = TextEditingController(text: widget.result.rawText);
   }
@@ -174,8 +183,11 @@ class _InvoiceReviewScreenState extends State<InvoiceReviewScreen> {
         path: '/add-expense',
         queryParameters: {
           if (parsedAmount != null) 'amount': parsedAmount.toString(),
-          if (supplier.text.trim().isNotEmpty) 'description': supplier.text.trim(),
-          if (notes.text.trim().isNotEmpty) 'notes': 'رقم الفاتورة: ${invoiceNumber.text.trim()}\n${notes.text.trim()}',
+          if (supplier.text.trim().isNotEmpty)
+            'description': supplier.text.trim(),
+          if (notes.text.trim().isNotEmpty)
+            'notes':
+                'رقم الفاتورة: ${invoiceNumber.text.trim()}\n${notes.text.trim()}',
           'attachment': widget.imagePath,
         },
       ).toString(),

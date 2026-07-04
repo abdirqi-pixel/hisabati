@@ -18,7 +18,8 @@ class DeveloperHandoffScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
               borderRadius: BorderRadius.circular(28),
             ),
             child: const Column(
@@ -28,7 +29,10 @@ class DeveloperHandoffScreen extends ConsumerWidget {
                 SizedBox(height: 12),
                 Text(
                   'حزمة تسليم المطور',
-                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
                 Text(

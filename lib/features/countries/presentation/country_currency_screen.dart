@@ -23,7 +23,8 @@ class CountryCurrencyScreen extends ConsumerWidget {
               child: ListTile(
                 leading: const Icon(Icons.public_rounded),
                 title: Text(c['name_ar'] as String),
-                subtitle: Text('${c['currency_code']} - ${c['currency_symbol']}'),
+                subtitle:
+                    Text('${c['currency_code']} - ${c['currency_symbol']}'),
                 trailing: const Icon(Icons.arrow_back_ios_new_rounded),
                 onTap: () async {
                   final db = await ref.read(appDatabaseProvider).database;

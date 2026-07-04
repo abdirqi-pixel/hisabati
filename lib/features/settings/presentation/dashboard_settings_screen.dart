@@ -48,8 +48,10 @@ class DashboardSettingsScreen extends ConsumerWidget {
                 key: ValueKey(item['id']),
                 child: SwitchListTile(
                   secondary: const Icon(Icons.drag_handle_rounded),
-                  title: Text(item['title'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(visible ? 'ظاهر في الرئيسية' : 'مخفي من الرئيسية'),
+                  title: Text(item['title'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle:
+                      Text(visible ? 'ظاهر في الرئيسية' : 'مخفي من الرئيسية'),
                   value: visible,
                   onChanged: (value) async {
                     final db = await ref.read(appDatabaseProvider).database;

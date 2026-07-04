@@ -46,7 +46,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       userId = users.first['id'] as int;
       await db.update(
         'app_users',
-        {'name': userName.text.trim().isEmpty ? 'المدير' : userName.text.trim()},
+        {
+          'name': userName.text.trim().isEmpty ? 'المدير' : userName.text.trim()
+        },
         where: 'id = ?',
         whereArgs: [userId],
       );
@@ -68,7 +70,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final projects = await db.query('projects', limit: 1);
     if (projects.isEmpty) {
       await db.insert('projects', {
-        'name': projectName.text.trim().isEmpty ? 'مشروعي الأول' : projectName.text.trim(),
+        'name': projectName.text.trim().isEmpty
+            ? 'مشروعي الأول'
+            : projectName.text.trim(),
         'code': 'MAIN',
         'icon': '📁',
         'color': '#10B981',
@@ -102,7 +106,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               padding: const EdgeInsets.all(22),
               children: [
                 const SizedBox(height: 20),
-                const Icon(Icons.account_balance_wallet_rounded, size: 72, color: Color(0xFF10B981)),
+                const Icon(Icons.account_balance_wallet_rounded,
+                    size: 72, color: Color(0xFF10B981)),
                 const SizedBox(height: 18),
                 const Text(
                   'أهلًا بك في حساباتي',
@@ -124,7 +129,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 ),
                 const SizedBox(height: 14),
                 DropdownButtonFormField<String>(
-                  value: selectedCountryCode,
+                  initialValue: selectedCountryCode,
                   decoration: const InputDecoration(
                     labelText: 'البلد',
                     prefixIcon: Icon(Icons.public_rounded),
@@ -135,7 +140,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       child: Text('${c['name_ar']} - ${c['currency_symbol']}'),
                     );
                   }).toList(),
-                  onChanged: (value) => setState(() => selectedCountryCode = value),
+                  onChanged: (value) =>
+                      setState(() => selectedCountryCode = value),
                 ),
                 const SizedBox(height: 14),
                 TextField(

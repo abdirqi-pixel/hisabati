@@ -42,7 +42,11 @@ class AttachmentsScreen extends ConsumerWidget {
                             ? Icons.picture_as_pdf_rounded
                             : Icons.attach_file_rounded),
                   ),
-                  title: Text(type == 'image' ? 'صورة فاتورة' : type == 'pdf' ? 'ملف PDF' : 'مرفق'),
+                  title: Text(type == 'image'
+                      ? 'صورة فاتورة'
+                      : type == 'pdf'
+                          ? 'ملف PDF'
+                          : 'مرفق'),
                   subtitle: Text(
                     'عملية: ${item['expense_serial'] ?? 'غير معروف'} • ${item['expense_amount'] ?? ''} ${item['currency_symbol'] ?? ''}\n'
                     '${exists ? path : 'الملف غير موجود في الجهاز'}',
@@ -54,20 +58,25 @@ class AttachmentsScreen extends ConsumerWidget {
                         await OpenFilex.open(path);
                       }
                       if (value == 'share' && exists) {
-                        await Share.shareXFiles([XFile(path)], text: 'مرفق من تطبيق حساباتي');
+                        await Share.shareXFiles([XFile(path)],
+                            text: 'مرفق من تطبيق حساباتي');
                       }
                       if (value == 'delete') {
                         final db = await ref.read(appDatabaseProvider).database;
-                        await db.delete('expense_attachments', where: 'id = ?', whereArgs: [item['id']]);
+                        await db.delete('expense_attachments',
+                            where: 'id = ?', whereArgs: [item['id']]);
                         ref.invalidate(allAttachmentsProvider);
-                        ref.invalidate(expenseAttachmentsProvider(item['expense_id'] as int));
+                        ref.invalidate(expenseAttachmentsProvider(
+                            item['expense_id'] as int));
                         ref.invalidate(expensesProvider);
                       }
                     },
                     itemBuilder: (_) => [
                       const PopupMenuItem(value: 'open', child: Text('فتح')),
-                      const PopupMenuItem(value: 'share', child: Text('مشاركة')),
-                      const PopupMenuItem(value: 'delete', child: Text('حذف المرفق')),
+                      const PopupMenuItem(
+                          value: 'share', child: Text('مشاركة')),
+                      const PopupMenuItem(
+                          value: 'delete', child: Text('حذف المرفق')),
                     ],
                   ),
                 ),

@@ -29,7 +29,8 @@ class ExpensesScreen extends ConsumerWidget {
                 prefixIcon: Icon(Icons.search_rounded),
                 hintText: 'ابحث بالاسم، التصنيف، التفاصيل، المبلغ، رقم العملية',
               ),
-              onChanged: (value) => ref.read(searchQueryProvider.notifier).state = value,
+              onChanged: (value) =>
+                  ref.read(searchQueryProvider.notifier).state = value,
             ),
           ),
           Expanded(
@@ -46,18 +47,20 @@ class ExpensesScreen extends ConsumerWidget {
                     final e = items[index];
                     return Card(
                       child: ListTile(
-                        onTap: () => context.go('/expense/${e['id']}'),
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => ExpenseDetailsScreen(expenseId: e['id'] as int),
+                              builder: (_) => ExpenseDetailsScreen(
+                                  expenseId: e['id'] as int),
                             ),
                           );
                         },
-                        leading: const CircleAvatar(child: Icon(Icons.receipt_long_rounded)),
+                        leading: const CircleAvatar(
+                            child: Icon(Icons.receipt_long_rounded)),
                         title: Text(
                           '${e['amount']} ${e['currency_symbol']}',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
                           '${e['serial_number']} • ${e['category_name'] ?? 'بدون تصنيف'} • ${e['person_name'] ?? 'بدون شخص'}\n${e['description'] ?? ''}',

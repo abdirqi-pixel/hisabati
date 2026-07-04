@@ -32,7 +32,8 @@ class AdvancesScreen extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(18),
             children: [
-              const Text('ملخص السلف', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text('ملخص السلف',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               summary.when(
                 data: (items) {
@@ -50,8 +51,11 @@ class AdvancesScreen extends ConsumerWidget {
                       final remaining = (item['remaining'] as num?) ?? 0;
                       return Card(
                         child: ListTile(
-                          leading: const CircleAvatar(child: Icon(Icons.person_rounded)),
-                          title: Text(item['person_name'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: const CircleAvatar(
+                              child: Icon(Icons.person_rounded)),
+                          title: Text(item['person_name'].toString(),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           subtitle: Text(
                             'السلف: ${MoneyFormatter.format((item['total_advances'] as num?) ?? 0, symbol)}\n'
                             'المسدد: ${MoneyFormatter.format((item['total_payments'] as num?) ?? 0, symbol)}',
@@ -73,7 +77,8 @@ class AdvancesScreen extends ConsumerWidget {
                 error: (e, _) => Text('خطأ: $e'),
               ),
               const SizedBox(height: 22),
-              const Text('آخر الحركات', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text('آخر الحركات',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               advances.when(
                 data: (items) {
@@ -92,13 +97,16 @@ class AdvancesScreen extends ConsumerWidget {
                       return Card(
                         child: ListTile(
                           leading: CircleAvatar(
-                            child: Icon(isAdvance ? Icons.arrow_upward_rounded : Icons.arrow_downward_rounded),
+                            child: Icon(isAdvance
+                                ? Icons.arrow_upward_rounded
+                                : Icons.arrow_downward_rounded),
                           ),
                           title: Text(
                             '${a['amount']} ${a['currency_symbol']}',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          subtitle: Text('${isAdvance ? 'سلفة' : 'تسديد'} • ${a['person_name'] ?? 'بدون شخص'}\n${a['note'] ?? ''}'),
+                          subtitle: Text(
+                              '${isAdvance ? 'سلفة' : 'تسديد'} • ${a['person_name'] ?? 'بدون شخص'}\n${a['note'] ?? ''}'),
                           isThreeLine: true,
                           trailing: Text(a['advance_date'].toString()),
                         ),
@@ -167,7 +175,9 @@ class _AdvanceFormState extends ConsumerState<_AdvanceForm> {
       entityType: 'advance',
       entityId: id,
       userId: settings.first['selected_user_id'] as int?,
-      details: type == 'advance' ? 'تمت إضافة سلفة بمبلغ $parsed' : 'تم تسجيل تسديد بمبلغ $parsed',
+      details: type == 'advance'
+          ? 'تمت إضافة سلفة بمبلغ $parsed'
+          : 'تم تسجيل تسديد بمبلغ $parsed',
     );
 
     ref.invalidate(advancesProvider);
@@ -182,16 +192,24 @@ class _AdvanceFormState extends ConsumerState<_AdvanceForm> {
     final persons = ref.watch(personsProvider);
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('حركة سلفة جديدة', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('حركة سلفة جديدة',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           SegmentedButton<String>(
             segments: const [
-              ButtonSegment(value: 'advance', label: Text('سلفة'), icon: Icon(Icons.arrow_upward_rounded)),
-              ButtonSegment(value: 'payment', label: Text('تسديد'), icon: Icon(Icons.arrow_downward_rounded)),
+              ButtonSegment(
+                  value: 'advance',
+                  label: Text('سلفة'),
+                  icon: Icon(Icons.arrow_upward_rounded)),
+              ButtonSegment(
+                  value: 'payment',
+                  label: Text('تسديد'),
+                  icon: Icon(Icons.arrow_downward_rounded)),
             ],
             selected: {type},
             onSelectionChanged: (value) => setState(() => type = value.first),
@@ -199,8 +217,9 @@ class _AdvanceFormState extends ConsumerState<_AdvanceForm> {
           const SizedBox(height: 12),
           persons.when(
             data: (items) => DropdownButtonFormField<int>(
-              value: selectedPersonId,
-              decoration: const InputDecoration(labelText: 'الشخص', prefixIcon: Icon(Icons.person_rounded)),
+              initialValue: selectedPersonId,
+              decoration: const InputDecoration(
+                  labelText: 'الشخص', prefixIcon: Icon(Icons.person_rounded)),
               items: items.map((p) {
                 return DropdownMenuItem<int>(
                   value: p['id'] as int,
@@ -216,15 +235,20 @@ class _AdvanceFormState extends ConsumerState<_AdvanceForm> {
           TextField(
             controller: amount,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'المبلغ', prefixIcon: Icon(Icons.payments_rounded)),
+            decoration: const InputDecoration(
+                labelText: 'المبلغ', prefixIcon: Icon(Icons.payments_rounded)),
           ),
           const SizedBox(height: 12),
           TextField(
             controller: note,
-            decoration: const InputDecoration(labelText: 'ملاحظة', prefixIcon: Icon(Icons.notes_rounded)),
+            decoration: const InputDecoration(
+                labelText: 'ملاحظة', prefixIcon: Icon(Icons.notes_rounded)),
           ),
           const SizedBox(height: 16),
-          FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+          FilledButton.icon(
+              onPressed: save,
+              icon: const Icon(Icons.save_rounded),
+              label: const Text('حفظ')),
         ],
       ),
     );

@@ -9,7 +9,8 @@ final appDatabaseProvider = Provider<AppDatabase>((ref) {
   return AppDatabase.instance;
 });
 
-final countriesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final countriesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = ref.watch(appDatabaseProvider);
   return db.all('countries');
 });
@@ -20,7 +21,8 @@ final settingsProvider = FutureProvider<Map<String, Object?>?>((ref) async {
   return rows.isEmpty ? null : rows.first;
 });
 
-final projectsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final projectsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'projects',
@@ -40,7 +42,8 @@ final personsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
   );
 });
 
-final categoriesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final categoriesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'categories',
@@ -50,7 +53,8 @@ final categoriesProvider = FutureProvider<List<Map<String, Object?>>>((ref) asyn
   );
 });
 
-final expensesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final expensesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
     SELECT 
@@ -67,7 +71,8 @@ final expensesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async 
   ''');
 });
 
-final treasuryTransactionsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final treasuryTransactionsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
     SELECT 
@@ -114,7 +119,8 @@ final dashboardSummaryProvider = FutureProvider<Map<String, num>>((ref) async {
   final withdrawals = (withdrawalsRow.first['total'] as num?) ?? 0;
   final incomes = (incomesRow.first['total'] as num?) ?? 0;
 
-  final currentBalance = openingBalance + deposits + incomes - withdrawals - expensesTotal;
+  final currentBalance =
+      openingBalance + deposits + incomes - withdrawals - expensesTotal;
 
   return {
     'openingBalance': openingBalance,
@@ -127,8 +133,8 @@ final dashboardSummaryProvider = FutureProvider<Map<String, num>>((ref) async {
   };
 });
 
-
-final reportsSummaryProvider = FutureProvider<Map<String, Object?>>((ref) async {
+final reportsSummaryProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   final byCategory = await db.rawQuery('''
@@ -182,7 +188,8 @@ final reportsSummaryProvider = FutureProvider<Map<String, Object?>>((ref) async 
 
 final searchQueryProvider = StateProvider<String>((ref) => '');
 
-final filteredExpensesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final filteredExpensesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final query = ref.watch(searchQueryProvider).trim();
   final db = await ref.watch(appDatabaseProvider).database;
 
@@ -210,11 +217,12 @@ final filteredExpensesProvider = FutureProvider<List<Map<String, Object?>>>((ref
         OR CAST(expenses.amount AS TEXT) LIKE ?
       )
     ORDER BY expenses.id DESC
-  ''', ['%$query%', '%$query%', '%$query%', '%$query%', '%$query%', '%$query%']);
+  ''',
+      ['%$query%', '%$query%', '%$query%', '%$query%', '%$query%', '%$query%']);
 });
 
-
-final appUsersProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final appUsersProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'app_users',
@@ -230,7 +238,8 @@ final selectedUserProvider = FutureProvider<Map<String, Object?>?>((ref) async {
   if (settingsRows.isEmpty) return null;
   final userId = settingsRows.first['selected_user_id'];
   if (userId == null) return null;
-  final users = await db.query('app_users', where: 'id = ?', whereArgs: [userId], limit: 1);
+  final users = await db.query('app_users',
+      where: 'id = ?', whereArgs: [userId], limit: 1);
   return users.isEmpty ? null : users.first;
 });
 
@@ -246,8 +255,9 @@ bool roleCanManageSettings(String role) {
   return role == 'admin';
 }
 
-
-final expenseAttachmentsProvider = FutureProvider.family<List<Map<String, Object?>>, int>((ref, expenseId) async {
+final expenseAttachmentsProvider =
+    FutureProvider.family<List<Map<String, Object?>>, int>(
+        (ref, expenseId) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'expense_attachments',
@@ -257,8 +267,8 @@ final expenseAttachmentsProvider = FutureProvider.family<List<Map<String, Object
   );
 });
 
-
-final archivedProjectsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final archivedProjectsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'projects',
@@ -268,8 +278,8 @@ final archivedProjectsProvider = FutureProvider<List<Map<String, Object?>>>((ref
   );
 });
 
-
-final dashboardInsightsProvider = FutureProvider<Map<String, Object?>>((ref) async {
+final dashboardInsightsProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   final latestExpenses = await db.rawQuery('''
@@ -325,7 +335,8 @@ final dashboardInsightsProvider = FutureProvider<Map<String, Object?>>((ref) asy
 
   final totalBudget = (budgetRows.first['budget'] as num?) ?? 0;
   final totalExpenses = (expenseRows.first['total'] as num?) ?? 0;
-  final budgetPercent = totalBudget <= 0 ? 0 : (totalExpenses / totalBudget).clamp(0, 999);
+  final budgetPercent =
+      totalBudget <= 0 ? 0 : (totalExpenses / totalBudget).clamp(0, 999);
 
   return {
     'latestExpenses': latestExpenses,
@@ -337,8 +348,8 @@ final dashboardInsightsProvider = FutureProvider<Map<String, Object?>>((ref) asy
   };
 });
 
-
-final activityLogProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final activityLogProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
     SELECT 
@@ -351,16 +362,24 @@ final activityLogProvider = FutureProvider<List<Map<String, Object?>>>((ref) asy
   ''');
 });
 
-final trashProvider = FutureProvider<Map<String, List<Map<String, Object?>>>>((ref) async {
+final trashProvider =
+    FutureProvider<Map<String, List<Map<String, Object?>>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
-  final projects = await db.query('projects', where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
-  final persons = await db.query('persons', where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
-  final categories = await db.query('categories', where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
-  final expenses = await db.query('expenses', where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
-  final treasury = await db.query('treasury_transactions', where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
-  final advances = await db.query('advances', where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
-  final incomesTrash = await db.query('incomes', where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
+  final projects = await db.query('projects',
+      where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
+  final persons = await db.query('persons',
+      where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
+  final categories = await db.query('categories',
+      where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
+  final expenses = await db.query('expenses',
+      where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
+  final treasury = await db.query('treasury_transactions',
+      where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
+  final advances = await db.query('advances',
+      where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
+  final incomesTrash = await db.query('incomes',
+      where: 'is_deleted = ?', whereArgs: [1], orderBy: 'id DESC');
 
   return {
     'projects': projects,
@@ -373,8 +392,8 @@ final trashProvider = FutureProvider<Map<String, List<Map<String, Object?>>>>((r
   };
 });
 
-
-final advancesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final advancesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
     SELECT 
@@ -389,7 +408,8 @@ final advancesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async 
   ''');
 });
 
-final advancesSummaryProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final advancesSummaryProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
     SELECT 
@@ -406,7 +426,6 @@ final advancesSummaryProvider = FutureProvider<List<Map<String, Object?>>>((ref)
   ''');
 });
 
-
 final incomesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
@@ -422,15 +441,17 @@ final incomesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
 
 final incomesTotalProvider = FutureProvider<num>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
-  final rows = await db.rawQuery('SELECT COALESCE(SUM(amount), 0) AS total FROM incomes WHERE is_deleted = 0');
+  final rows = await db.rawQuery(
+      'SELECT COALESCE(SUM(amount), 0) AS total FROM incomes WHERE is_deleted = 0');
   return (rows.first['total'] as num?) ?? 0;
 });
 
-
-final projectDetailsProvider = FutureProvider.family<Map<String, Object?>, int>((ref, projectId) async {
+final projectDetailsProvider =
+    FutureProvider.family<Map<String, Object?>, int>((ref, projectId) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
-  final projectRows = await db.query('projects', where: 'id = ?', whereArgs: [projectId], limit: 1);
+  final projectRows = await db.query('projects',
+      where: 'id = ?', whereArgs: [projectId], limit: 1);
   final project = projectRows.isEmpty ? <String, Object?>{} : projectRows.first;
 
   final expensesRow = await db.rawQuery(
@@ -482,9 +503,11 @@ final projectDetailsProvider = FutureProvider.family<Map<String, Object?>, int>(
   final deposits = (treasuryDepositsRow.first['total'] as num?) ?? 0;
   final withdrawals = (treasuryWithdrawalsRow.first['total'] as num?) ?? 0;
   final remainingAdvances = (advancesRow.first['remaining'] as num?) ?? 0;
-  final balance = opening + incomesTotal + deposits - withdrawals - expensesTotal;
+  final balance =
+      opening + incomesTotal + deposits - withdrawals - expensesTotal;
   final budget = (project['budget'] as num?) ?? 0;
-  final budgetPercent = budget <= 0 ? 0 : (expensesTotal / budget).clamp(0, 999);
+  final budgetPercent =
+      budget <= 0 ? 0 : (expensesTotal / budget).clamp(0, 999);
 
   return {
     'project': project,
@@ -501,7 +524,6 @@ final projectDetailsProvider = FutureProvider.family<Map<String, Object?>, int>(
     'latestExpenses': latestExpenses,
   };
 });
-
 
 class ReportFilter {
   const ReportFilter({
@@ -548,9 +570,11 @@ class ReportFilter {
   }
 }
 
-final reportFilterProvider = StateProvider<ReportFilter>((ref) => const ReportFilter());
+final reportFilterProvider =
+    StateProvider<ReportFilter>((ref) => const ReportFilter());
 
-final advancedReportProvider = FutureProvider<Map<String, Object?>>((ref) async {
+final advancedReportProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
   final filter = ref.watch(reportFilterProvider);
   final db = await ref.watch(appDatabaseProvider).database;
 
@@ -660,8 +684,8 @@ final advancedReportProvider = FutureProvider<Map<String, Object?>>((ref) async 
   };
 });
 
-
-final savedReportFiltersProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final savedReportFiltersProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'saved_report_filters',
@@ -669,10 +693,10 @@ final savedReportFiltersProvider = FutureProvider<List<Map<String, Object?>>>((r
   );
 });
 
-
 final globalSearchQueryProvider = StateProvider<String>((ref) => '');
 
-final globalSearchProvider = FutureProvider<Map<String, List<Map<String, Object?>>>>((ref) async {
+final globalSearchProvider =
+    FutureProvider<Map<String, List<Map<String, Object?>>>>((ref) async {
   final query = ref.watch(globalSearchQueryProvider).trim();
   final db = await ref.watch(appDatabaseProvider).database;
 
@@ -782,8 +806,8 @@ final globalSearchProvider = FutureProvider<Map<String, List<Map<String, Object?
   };
 });
 
-
-final allAttachmentsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final allAttachmentsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
     SELECT 
@@ -798,8 +822,8 @@ final allAttachmentsProvider = FutureProvider<List<Map<String, Object?>>>((ref) 
   ''');
 });
 
-
-final dashboardPreferencesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final dashboardPreferencesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'dashboard_preferences',
@@ -815,11 +839,10 @@ final dashboardVisibleKeysProvider = FutureProvider<Set<String>>((ref) async {
       .toSet();
 });
 
-
-final maintenanceStatsProvider = FutureProvider<Map<String, Object?>>((ref) async {
+final maintenanceStatsProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
   return MaintenanceService(ref.watch(appDatabaseProvider)).getDatabaseStats();
 });
-
 
 final budgetsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
@@ -832,7 +855,8 @@ final budgetsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
   ''');
 });
 
-final budgetOverviewProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final budgetOverviewProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   return db.rawQuery('''
@@ -867,11 +891,16 @@ final kpiProvider = FutureProvider<Map<String, Object?>>((ref) async {
     return (rows.first['total'] as num?) ?? 0;
   }
 
-  final totalExpenses = await sum('SELECT COALESCE(SUM(amount), 0) AS total FROM expenses WHERE is_deleted = 0');
-  final totalIncomes = await sum('SELECT COALESCE(SUM(amount), 0) AS total FROM incomes WHERE is_deleted = 0');
-  final totalAdvances = await sum("SELECT COALESCE(SUM(CASE WHEN type = 'advance' THEN amount ELSE -amount END), 0) AS total FROM advances WHERE is_deleted = 0");
-  final totalTreasuryDeposits = await sum("SELECT COALESCE(SUM(amount), 0) AS total FROM treasury_transactions WHERE is_deleted = 0 AND type = 'deposit'");
-  final totalTreasuryWithdrawals = await sum("SELECT COALESCE(SUM(amount), 0) AS total FROM treasury_transactions WHERE is_deleted = 0 AND type = 'withdraw'");
+  final totalExpenses = await sum(
+      'SELECT COALESCE(SUM(amount), 0) AS total FROM expenses WHERE is_deleted = 0');
+  final totalIncomes = await sum(
+      'SELECT COALESCE(SUM(amount), 0) AS total FROM incomes WHERE is_deleted = 0');
+  final totalAdvances = await sum(
+      "SELECT COALESCE(SUM(CASE WHEN type = 'advance' THEN amount ELSE -amount END), 0) AS total FROM advances WHERE is_deleted = 0");
+  final totalTreasuryDeposits = await sum(
+      "SELECT COALESCE(SUM(amount), 0) AS total FROM treasury_transactions WHERE is_deleted = 0 AND type = 'deposit'");
+  final totalTreasuryWithdrawals = await sum(
+      "SELECT COALESCE(SUM(amount), 0) AS total FROM treasury_transactions WHERE is_deleted = 0 AND type = 'withdraw'");
 
   final today = DateTime.now().toIso8601String().split('T').first;
   final todayRows = await db.rawQuery(
@@ -919,12 +948,13 @@ final kpiProvider = FutureProvider<Map<String, Object?>>((ref) async {
     'todayCount': todayRows.first['count'] ?? 0,
     'topPerson': topPerson.isEmpty ? null : topPerson.first,
     'topCategory': topCategory.isEmpty ? null : topCategory.first,
-    'mostActiveProject': mostActiveProject.isEmpty ? null : mostActiveProject.first,
+    'mostActiveProject':
+        mostActiveProject.isEmpty ? null : mostActiveProject.first,
   };
 });
 
-
-final appNotificationsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final appNotificationsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'app_notifications',
@@ -941,12 +971,13 @@ final unreadNotificationsCountProvider = FutureProvider<int>((ref) async {
   return (rows.first['count'] as int?) ?? 0;
 });
 
-
-final cloudSyncSettingsProvider = FutureProvider<Map<String, Object?>?>((ref) async {
+final cloudSyncSettingsProvider =
+    FutureProvider<Map<String, Object?>?>((ref) async {
   return CloudSyncService(ref.watch(appDatabaseProvider)).getSettings();
 });
 
-final cloudBackupHistoryProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final cloudBackupHistoryProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'cloud_backup_history',
@@ -955,12 +986,13 @@ final cloudBackupHistoryProvider = FutureProvider<List<Map<String, Object?>>>((r
   );
 });
 
-final availableCloudBackupsProvider = FutureProvider<List<FileSystemEntity>>((ref) async {
+final availableCloudBackupsProvider =
+    FutureProvider<List<FileSystemEntity>>((ref) async {
   return CloudSyncService(ref.watch(appDatabaseProvider)).listBackups();
 });
 
-
-final securityLogProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final securityLogProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'security_log',
@@ -969,8 +1001,8 @@ final securityLogProvider = FutureProvider<List<Map<String, Object?>>>((ref) asy
   );
 });
 
-
-final recurringTransactionsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final recurringTransactionsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.rawQuery('''
     SELECT
@@ -986,7 +1018,9 @@ final recurringTransactionsProvider = FutureProvider<List<Map<String, Object?>>>
   ''');
 });
 
-final recurringRunsProvider = FutureProvider.family<List<Map<String, Object?>>, int>((ref, recurringId) async {
+final recurringRunsProvider =
+    FutureProvider.family<List<Map<String, Object?>>, int>(
+        (ref, recurringId) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'recurring_runs',
@@ -995,7 +1029,6 @@ final recurringRunsProvider = FutureProvider.family<List<Map<String, Object?>>, 
     orderBy: 'run_date DESC',
   );
 });
-
 
 final analyticsProvider = FutureProvider<Map<String, Object?>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
@@ -1049,7 +1082,8 @@ final analyticsProvider = FutureProvider<Map<String, Object?>>((ref) async {
   ''');
 
   final now = DateTime.now();
-  final monthStart = DateTime(now.year, now.month, 1).toIso8601String().split('T').first;
+  final monthStart =
+      DateTime(now.year, now.month, 1).toIso8601String().split('T').first;
   final today = now.toIso8601String().split('T').first;
   final daysPassed = now.day;
   final totalDaysInMonth = DateTime(now.year, now.month + 1, 0).day;
@@ -1059,13 +1093,16 @@ final analyticsProvider = FutureProvider<Map<String, Object?>>((ref) async {
     [monthStart, today],
   );
 
-  final currentMonthExpense = (currentMonthExpenseRow.first['total'] as num?) ?? 0;
+  final currentMonthExpense =
+      (currentMonthExpenseRow.first['total'] as num?) ?? 0;
   final dailyAverage = daysPassed <= 0 ? 0 : currentMonthExpense / daysPassed;
   final expectedMonthExpense = dailyAverage * totalDaysInMonth;
 
   final previousMonth = DateTime(now.year, now.month - 1, 1);
-  final previousMonthKey = '${previousMonth.year.toString().padLeft(4, '0')}-${previousMonth.month.toString().padLeft(2, '0')}';
-  final currentMonthKey = '${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}';
+  final previousMonthKey =
+      '${previousMonth.year.toString().padLeft(4, '0')}-${previousMonth.month.toString().padLeft(2, '0')}';
+  final currentMonthKey =
+      '${now.year.toString().padLeft(4, '0')}-${now.month.toString().padLeft(2, '0')}';
 
   final currentVsPrevious = await db.rawQuery('''
     SELECT 
@@ -1090,8 +1127,8 @@ final analyticsProvider = FutureProvider<Map<String, Object?>>((ref) async {
   };
 });
 
-
-final professionalReportDataProvider = FutureProvider<Map<String, List<Map<String, Object?>>>>((ref) async {
+final professionalReportDataProvider =
+    FutureProvider<Map<String, List<Map<String, Object?>>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   final expenses = await db.rawQuery('''
@@ -1137,11 +1174,11 @@ final professionalReportDataProvider = FutureProvider<Map<String, List<Map<Strin
   };
 });
 
-
 final pagedExpensesPageProvider = StateProvider<int>((ref) => 0);
 final pagedExpensesPageSizeProvider = StateProvider<int>((ref) => 50);
 
-final pagedExpensesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final pagedExpensesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final page = ref.watch(pagedExpensesPageProvider);
   final size = ref.watch(pagedExpensesPageSizeProvider);
   final db = await ref.watch(appDatabaseProvider).database;
@@ -1161,12 +1198,14 @@ final pagedExpensesProvider = FutureProvider<List<Map<String, Object?>>>((ref) a
   ''', [size, page * size]);
 });
 
-final performanceInfoProvider = FutureProvider<Map<String, Object?>>((ref) async {
-  return PerformanceService(ref.watch(appDatabaseProvider)).getPerformanceInfo();
+final performanceInfoProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
+  return PerformanceService(ref.watch(appDatabaseProvider))
+      .getPerformanceInfo();
 });
 
-
-final executiveDashboardProvider = FutureProvider<Map<String, Object?>>((ref) async {
+final executiveDashboardProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   final totals = await db.rawQuery('''
@@ -1238,8 +1277,8 @@ final executiveDashboardProvider = FutureProvider<Map<String, Object?>>((ref) as
   };
 });
 
-
-final financialGoalsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final financialGoalsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'financial_goals',
@@ -1249,11 +1288,13 @@ final financialGoalsProvider = FutureProvider<List<Map<String, Object?>>>((ref) 
   );
 });
 
-final financialMonitorProvider = FutureProvider<Map<String, Object?>>((ref) async {
+final financialMonitorProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   final now = DateTime.now();
-  final monthStart = DateTime(now.year, now.month, 1).toIso8601String().split('T').first;
+  final monthStart =
+      DateTime(now.year, now.month, 1).toIso8601String().split('T').first;
   final today = now.toIso8601String().split('T').first;
   final daysPassed = now.day;
   final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
@@ -1279,7 +1320,8 @@ final financialMonitorProvider = FutureProvider<Map<String, Object?>>((ref) asyn
   final expectedMonthExpense = monthExpenses + expectedRemainingExpense;
   final currentCashFlow = monthIncomes - monthExpenses;
   final expectedMonthCashFlow = monthIncomes - expectedMonthExpense;
-  final currentBalance = opening + deposits + monthIncomes - withdrawals - monthExpenses;
+  final currentBalance =
+      opening + deposits + monthIncomes - withdrawals - monthExpenses;
 
   final topSpending = await db.rawQuery('''
     SELECT categories.name AS name, COALESCE(SUM(expenses.amount), 0) AS total
@@ -1319,8 +1361,8 @@ final financialMonitorProvider = FutureProvider<Map<String, Object?>>((ref) asyn
   };
 });
 
-
-final releaseReadinessProvider = FutureProvider<Map<String, Object?>>((ref) async {
+final releaseReadinessProvider =
+    FutureProvider<Map<String, Object?>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   Future<int> count(String table) async {
@@ -1357,8 +1399,8 @@ final releaseReadinessProvider = FutureProvider<Map<String, Object?>>((ref) asyn
   };
 });
 
-
-final stabilizationChecklistProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final stabilizationChecklistProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
 
   Future<bool> tableHasRows(String table) async {
@@ -1367,7 +1409,10 @@ final stabilizationChecklistProvider = FutureProvider<List<Map<String, Object?>>
   }
 
   return [
-    {'title': 'إعدادات التطبيق موجودة', 'ok': await tableHasRows('app_settings')},
+    {
+      'title': 'إعدادات التطبيق موجودة',
+      'ok': await tableHasRows('app_settings')
+    },
     {'title': 'مستخدم واحد على الأقل', 'ok': await tableHasRows('app_users')},
     {'title': 'مشروع واحد على الأقل', 'ok': await tableHasRows('projects')},
     {'title': 'تصنيفات أساسية', 'ok': await tableHasRows('categories')},
@@ -1380,21 +1425,40 @@ final stabilizationChecklistProvider = FutureProvider<List<Map<String, Object?>>
   ];
 });
 
-
-final buildReadinessProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final buildReadinessProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   return [
     {'title': 'تشغيل flutter pub get', 'ok': true, 'note': 'نفّذه قبل البناء'},
-    {'title': 'تشغيل flutter analyze', 'ok': true, 'note': 'يفضل عدم وجود أخطاء'},
-    {'title': 'اختبار قاعدة البيانات', 'ok': true, 'note': 'اختبر الإضافة والتعديل والحذف'},
-    {'title': 'اختبار النسخ الاحتياطي', 'ok': true, 'note': 'صدّر واستعد نسخة تجريبية'},
-    {'title': 'اختبار التقارير PDF/Excel', 'ok': true, 'note': 'تحقق من مشاركة الملفات'},
+    {
+      'title': 'تشغيل flutter analyze',
+      'ok': true,
+      'note': 'يفضل عدم وجود أخطاء'
+    },
+    {
+      'title': 'اختبار قاعدة البيانات',
+      'ok': true,
+      'note': 'اختبر الإضافة والتعديل والحذف'
+    },
+    {
+      'title': 'اختبار النسخ الاحتياطي',
+      'ok': true,
+      'note': 'صدّر واستعد نسخة تجريبية'
+    },
+    {
+      'title': 'اختبار التقارير PDF/Excel',
+      'ok': true,
+      'note': 'تحقق من مشاركة الملفات'
+    },
     {'title': 'اختبار OCR والكاميرا', 'ok': true, 'note': 'يحتاج جهاز حقيقي'},
-    {'title': 'تجهيز Keystore Android', 'ok': false, 'note': 'ينشأ محليًا ولا يشارك'},
+    {
+      'title': 'تجهيز Keystore Android',
+      'ok': false,
+      'note': 'ينشأ محليًا ولا يشارك'
+    },
     {'title': 'تحديث أيقونة التطبيق', 'ok': false, 'note': 'قبل النشر الرسمي'},
     {'title': 'سياسة الخصوصية', 'ok': false, 'note': 'مطلوبة للمتاجر'},
   ];
 });
-
 
 final storeReadinessProvider = Provider<List<Map<String, Object?>>>((ref) {
   return [
@@ -1409,19 +1473,19 @@ final storeReadinessProvider = Provider<List<Map<String, Object?>>>((ref) {
   ];
 });
 
-
 final aboutAppProvider = Provider<Map<String, Object?>>((ref) {
   return {
     'name': 'حساباتي',
     'version': '1.0.0-rc',
     'build': '49',
     'stage': 'Release Candidate',
-    'description': 'تطبيق عربي لإدارة المصروفات والإيرادات والمشاريع والتقارير.',
+    'description':
+        'تطبيق عربي لإدارة المصروفات والإيرادات والمشاريع والتقارير.',
   };
 });
 
-
-final finalLaunchChecklistProvider = Provider<List<Map<String, Object?>>>((ref) {
+final finalLaunchChecklistProvider =
+    Provider<List<Map<String, Object?>>>((ref) {
   return [
     {'title': 'تشغيل flutter pub get', 'ok': false},
     {'title': 'تشغيل flutter analyze', 'ok': false},
@@ -1438,7 +1502,6 @@ final finalLaunchChecklistProvider = Provider<List<Map<String, Object?>>>((ref) 
   ];
 });
 
-
 final fieldTestChecklistProvider = Provider<List<Map<String, Object?>>>((ref) {
   return [
     {'title': 'اختبار إنشاء مشروع', 'priority': 'عالي'},
@@ -1454,8 +1517,8 @@ final fieldTestChecklistProvider = Provider<List<Map<String, Object?>>>((ref) {
   ];
 });
 
-
-final testerFeedbackProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final testerFeedbackProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'tester_feedback',
@@ -1463,8 +1526,8 @@ final testerFeedbackProvider = FutureProvider<List<Map<String, Object?>>>((ref) 
   );
 });
 
-
-final developerHandoffChecklistProvider = Provider<List<Map<String, Object?>>>((ref) {
+final developerHandoffChecklistProvider =
+    Provider<List<Map<String, Object?>>>((ref) {
   return [
     {'title': 'فتح المشروع في Android Studio أو VS Code', 'done': false},
     {'title': 'تشغيل flutter pub get', 'done': false},
@@ -1477,15 +1540,14 @@ final developerHandoffChecklistProvider = Provider<List<Map<String, Object?>>>((
   ];
 });
 
-
-final featureRequestsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final featureRequestsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'feature_requests',
     orderBy: 'id DESC',
   );
 });
-
 
 final uxReviewChecklistProvider = Provider<List<Map<String, Object?>>>((ref) {
   return [
@@ -1500,8 +1562,8 @@ final uxReviewChecklistProvider = Provider<List<Map<String, Object?>>>((ref) {
   ];
 });
 
-
-final supportTicketsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final supportTicketsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'support_tickets',
@@ -1509,15 +1571,14 @@ final supportTicketsProvider = FutureProvider<List<Map<String, Object?>>>((ref) 
   );
 });
 
-
-final appReleasesProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final appReleasesProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'app_releases',
     orderBy: 'id DESC',
   );
 });
-
 
 final structuralAuditProvider = Provider<List<Map<String, Object?>>>((ref) {
   return [
@@ -1532,8 +1593,8 @@ final structuralAuditProvider = Provider<List<Map<String, Object?>>>((ref) {
   ];
 });
 
-
-final flutterCommandChecksProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final flutterCommandChecksProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   final existing = await db.query('flutter_command_checks');
   if (existing.isEmpty) {
@@ -1556,12 +1617,12 @@ final flutterCommandChecksProvider = FutureProvider<List<Map<String, Object?>>>(
   return db.query('flutter_command_checks', orderBy: 'id ASC');
 });
 
-
 final featureFreezeProvider = Provider<Map<String, Object?>>((ref) {
   return {
     'status': 'مجمّد',
     'version': 'v1.0',
-    'message': 'تم تجميد إضافة الميزات الجديدة. المرحلة الحالية مخصصة لإصلاح الأخطاء والبناء النهائي.',
+    'message':
+        'تم تجميد إضافة الميزات الجديدة. المرحلة الحالية مخصصة لإصلاح الأخطاء والبناء النهائي.',
     'allowed': [
       'إصلاح أخطاء البناء',
       'إصلاح أخطاء التشغيل',
@@ -1577,8 +1638,8 @@ final featureFreezeProvider = Provider<Map<String, Object?>>((ref) {
   };
 });
 
-
-final buildFixLogsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final buildFixLogsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'build_fix_logs',
@@ -1586,8 +1647,8 @@ final buildFixLogsProvider = FutureProvider<List<Map<String, Object?>>>((ref) as
   );
 });
 
-
-final modifiedFileLogsProvider = FutureProvider<List<Map<String, Object?>>>((ref) async {
+final modifiedFileLogsProvider =
+    FutureProvider<List<Map<String, Object?>>>((ref) async {
   final db = await ref.watch(appDatabaseProvider).database;
   return db.query(
     'modified_file_logs',

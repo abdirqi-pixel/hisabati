@@ -23,22 +23,31 @@ class ReleaseReadinessScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.verified_rounded, color: Colors.white, size: 44),
+                    const Icon(Icons.verified_rounded,
+                        color: Colors.white, size: 44),
                     const SizedBox(height: 12),
                     Text(
                       'حساباتي ${data['version']}',
-                      style: const TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
-                    Text('Build ${data['build']}', style: const TextStyle(color: Colors.white)),
+                    Text('Build ${data['build']}',
+                        style: const TextStyle(color: Colors.white)),
                     const SizedBox(height: 14),
-                    LinearProgressIndicator(value: percent, backgroundColor: Colors.white24, color: Colors.white),
+                    LinearProgressIndicator(
+                        value: percent,
+                        backgroundColor: Colors.white24,
+                        color: Colors.white),
                     const SizedBox(height: 8),
                     Text(
                       'جاهزية: ${(percent * 100).toStringAsFixed(0)}%',
@@ -48,13 +57,16 @@ class ReleaseReadinessScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 18),
-              const Text('فحص الجاهزية', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text('فحص الجاهزية',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               ...checks.map((check) {
                 final ok = check['ok'] == true;
                 return Card(
                   child: ListTile(
-                    leading: Icon(ok ? Icons.check_circle_rounded : Icons.error_rounded, color: ok ? Colors.green : Colors.red),
+                    leading: Icon(
+                        ok ? Icons.check_circle_rounded : Icons.error_rounded,
+                        color: ok ? Colors.green : Colors.red),
                     title: Text(check['title'].toString()),
                     subtitle: Text(ok ? 'جاهز' : 'يحتاج مراجعة'),
                   ),

@@ -60,14 +60,17 @@ class ActivityLogScreen extends ConsumerWidget {
               final log = items[index];
               return Card(
                 child: ListTile(
-                  leading: CircleAvatar(child: Icon(actionIcon(log['action'].toString()))),
+                  leading: CircleAvatar(
+                      child: Icon(actionIcon(log['action'].toString()))),
                   title: Text(
                     '${actionLabel(log['action'].toString())} • ${log['entity_type']}',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  subtitle: Text('${log['details'] ?? ''}\nبواسطة: ${log['user_name'] ?? 'غير معروف'}'),
+                  subtitle: Text(
+                      '${log['details'] ?? ''}\nبواسطة: ${log['user_name'] ?? 'غير معروف'}'),
                   isThreeLine: true,
-                  trailing: Text((log['created_at'] ?? '').toString().split('T').first),
+                  trailing: Text(
+                      (log['created_at'] ?? '').toString().split('T').first),
                 ),
               );
             },

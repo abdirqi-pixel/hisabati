@@ -38,10 +38,13 @@ class BuildFixLogScreen extends ConsumerWidget {
               return Card(
                 child: ListTile(
                   leading: Icon(
-                    fixed ? Icons.check_circle_rounded : Icons.bug_report_rounded,
+                    fixed
+                        ? Icons.check_circle_rounded
+                        : Icons.bug_report_rounded,
                     color: fixed ? Colors.green : Colors.red,
                   ),
-                  title: Text(item['command'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(item['command'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
                     'الحالة: ${item['status']}\n'
                     'الخطأ: ${item['error_text'] ?? ''}\n'
@@ -61,8 +64,10 @@ class BuildFixLogScreen extends ConsumerWidget {
                     },
                     itemBuilder: (_) => const [
                       PopupMenuItem(value: 'مفتوح', child: Text('مفتوح')),
-                      PopupMenuItem(value: 'قيد الإصلاح', child: Text('قيد الإصلاح')),
-                      PopupMenuItem(value: 'تم الإصلاح', child: Text('تم الإصلاح')),
+                      PopupMenuItem(
+                          value: 'قيد الإصلاح', child: Text('قيد الإصلاح')),
+                      PopupMenuItem(
+                          value: 'تم الإصلاح', child: Text('تم الإصلاح')),
                     ],
                   ),
                 ),
@@ -116,20 +121,33 @@ class _BuildFixFormState extends ConsumerState<_BuildFixForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('تسجيل خطأ بناء', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text('تسجيل خطأ بناء',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
-            TextField(controller: command, decoration: const InputDecoration(labelText: 'الأمر')),
+            TextField(
+                controller: command,
+                decoration: const InputDecoration(labelText: 'الأمر')),
             const SizedBox(height: 10),
-            TextField(controller: error, maxLines: 4, decoration: const InputDecoration(labelText: 'نص الخطأ')),
+            TextField(
+                controller: error,
+                maxLines: 4,
+                decoration: const InputDecoration(labelText: 'نص الخطأ')),
             const SizedBox(height: 10),
-            TextField(controller: fix, maxLines: 3, decoration: const InputDecoration(labelText: 'الحل')),
+            TextField(
+                controller: fix,
+                maxLines: 3,
+                decoration: const InputDecoration(labelText: 'الحل')),
             const SizedBox(height: 14),
-            FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+            FilledButton.icon(
+                onPressed: save,
+                icon: const Icon(Icons.save_rounded),
+                label: const Text('حفظ')),
           ],
         ),
       ),

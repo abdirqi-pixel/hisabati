@@ -30,14 +30,18 @@ class CategoriesScreen extends ConsumerWidget {
             final c = items[index];
             return Card(
               child: ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.category_rounded)),
-                title: Text(c['name'] as String, style: const TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(c['is_default'] == 1 ? 'تصنيف افتراضي' : 'تصنيف مخصص'),
+                leading:
+                    const CircleAvatar(child: Icon(Icons.category_rounded)),
+                title: Text(c['name'] as String,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                subtitle:
+                    Text(c['is_default'] == 1 ? 'تصنيف افتراضي' : 'تصنيف مخصص'),
                 trailing: PopupMenuButton<String>(
                   onSelected: (value) async {
                     if (value == 'delete') {
                       final db = await ref.read(appDatabaseProvider).database;
-                      await db.update('categories', {'is_deleted': 1}, where: 'id = ?', whereArgs: [c['id']]);
+                      await db.update('categories', {'is_deleted': 1},
+                          where: 'id = ?', whereArgs: [c['id']]);
                       ref.invalidate(categoriesProvider);
                     }
                   },
@@ -94,15 +98,22 @@ class _CategoryFormState extends ConsumerState<_CategoryForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('إضافة تصنيف', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('إضافة تصنيف',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          TextField(controller: name, decoration: const InputDecoration(labelText: 'اسم التصنيف')),
+          TextField(
+              controller: name,
+              decoration: const InputDecoration(labelText: 'اسم التصنيف')),
           const SizedBox(height: 16),
-          FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+          FilledButton.icon(
+              onPressed: save,
+              icon: const Icon(Icons.save_rounded),
+              label: const Text('حفظ')),
         ],
       ),
     );

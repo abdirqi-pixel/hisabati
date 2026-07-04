@@ -49,7 +49,8 @@ class TesterFeedbackScreen extends ConsumerWidget {
                             ? Colors.orange
                             : Colors.blue,
                   ),
-                  title: Text(item['issue'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(item['issue'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
                     'الشاشة: ${item['screen_name'] ?? 'غير محدد'}\n'
                     'الأولوية: ${item['priority']} • الحالة: ${item['status']}',
@@ -68,8 +69,10 @@ class TesterFeedbackScreen extends ConsumerWidget {
                     },
                     itemBuilder: (_) => const [
                       PopupMenuItem(value: 'جديد', child: Text('جديد')),
-                      PopupMenuItem(value: 'قيد المراجعة', child: Text('قيد المراجعة')),
-                      PopupMenuItem(value: 'تم الإصلاح', child: Text('تم الإصلاح')),
+                      PopupMenuItem(
+                          value: 'قيد المراجعة', child: Text('قيد المراجعة')),
+                      PopupMenuItem(
+                          value: 'تم الإصلاح', child: Text('تم الإصلاح')),
                     ],
                   ),
                 ),
@@ -128,21 +131,30 @@ class _FeedbackFormState extends ConsumerState<_FeedbackForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('إضافة ملاحظة اختبار', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text('إضافة ملاحظة اختبار',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
-            TextField(controller: testerName, decoration: const InputDecoration(labelText: 'اسم المختبر')),
+            TextField(
+                controller: testerName,
+                decoration: const InputDecoration(labelText: 'اسم المختبر')),
             const SizedBox(height: 10),
-            TextField(controller: screenName, decoration: const InputDecoration(labelText: 'اسم الشاشة')),
+            TextField(
+                controller: screenName,
+                decoration: const InputDecoration(labelText: 'اسم الشاشة')),
             const SizedBox(height: 10),
-            TextField(controller: issue, maxLines: 3, decoration: const InputDecoration(labelText: 'وصف المشكلة')),
+            TextField(
+                controller: issue,
+                maxLines: 3,
+                decoration: const InputDecoration(labelText: 'وصف المشكلة')),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              value: priority,
+              initialValue: priority,
               decoration: const InputDecoration(labelText: 'الأولوية'),
               items: const [
                 DropdownMenuItem(value: 'حرجة', child: Text('حرجة')),
@@ -150,12 +162,19 @@ class _FeedbackFormState extends ConsumerState<_FeedbackForm> {
                 DropdownMenuItem(value: 'متوسطة', child: Text('متوسطة')),
                 DropdownMenuItem(value: 'منخفضة', child: Text('منخفضة')),
               ],
-              onChanged: (value) => setState(() => priority = value ?? 'متوسطة'),
+              onChanged: (value) =>
+                  setState(() => priority = value ?? 'متوسطة'),
             ),
             const SizedBox(height: 10),
-            TextField(controller: notes, maxLines: 2, decoration: const InputDecoration(labelText: 'ملاحظات إضافية')),
+            TextField(
+                controller: notes,
+                maxLines: 2,
+                decoration: const InputDecoration(labelText: 'ملاحظات إضافية')),
             const SizedBox(height: 14),
-            FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+            FilledButton.icon(
+                onPressed: save,
+                icon: const Icon(Icons.save_rounded),
+                label: const Text('حفظ')),
           ],
         ),
       ),

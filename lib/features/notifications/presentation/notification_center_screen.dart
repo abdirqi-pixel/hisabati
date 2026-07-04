@@ -86,7 +86,7 @@ class NotificationCenterScreen extends ConsumerWidget {
               return Card(
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: colorForType(type).withOpacity(.15),
+                    backgroundColor: colorForType(type).withValues(alpha: .15),
                     child: Icon(iconForType(type), color: colorForType(type)),
                   ),
                   title: Text(

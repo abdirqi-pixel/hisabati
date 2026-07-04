@@ -24,11 +24,16 @@ class DashboardScreen extends ConsumerWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: 0,
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home_rounded), label: 'الرئيسية'),
-          NavigationDestination(icon: Icon(Icons.folder_rounded), label: 'المشاريع'),
-          NavigationDestination(icon: Icon(Icons.add_circle_rounded), label: 'إضافة'),
-          NavigationDestination(icon: Icon(Icons.bar_chart_rounded), label: 'التقارير'),
-          NavigationDestination(icon: Icon(Icons.settings_rounded), label: 'الإعدادات'),
+          NavigationDestination(
+              icon: Icon(Icons.home_rounded), label: 'الرئيسية'),
+          NavigationDestination(
+              icon: Icon(Icons.folder_rounded), label: 'المشاريع'),
+          NavigationDestination(
+              icon: Icon(Icons.add_circle_rounded), label: 'إضافة'),
+          NavigationDestination(
+              icon: Icon(Icons.bar_chart_rounded), label: 'التقارير'),
+          NavigationDestination(
+              icon: Icon(Icons.settings_rounded), label: 'الإعدادات'),
         ],
         onDestinationSelected: (index) {
           if (index == 1) context.go('/projects');
@@ -41,15 +46,16 @@ class DashboardScreen extends ConsumerWidget {
         child: settingsAsync.when(
           data: (settings) {
             final symbol = (settings?['currency_symbol'] ?? 'د.ع').toString();
-            final visibleKeys = visibleKeysAsync.value ?? {
-              'balance_card',
-              'budget_alert',
-              'quick_actions',
-              'projects',
-              'latest_expenses',
-              'top_categories',
-              'top_persons',
-            };
+            final visibleKeys = visibleKeysAsync.value ??
+                {
+                  'balance_card',
+                  'budget_alert',
+                  'quick_actions',
+                  'projects',
+                  'latest_expenses',
+                  'top_categories',
+                  'top_persons',
+                };
 
             bool show(String key) => visibleKeys.contains(key);
 
@@ -61,7 +67,8 @@ class DashboardScreen extends ConsumerWidget {
                     const Expanded(
                       child: Text(
                         'السلام عليكم 👋\nلوحة حساباتي',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                     ),
                     IconButton.filledTonal(
@@ -84,7 +91,8 @@ class DashboardScreen extends ConsumerWidget {
                               backgroundColor: Colors.red,
                               child: Text(
                                 '${notificationCountAsync.value}',
-                                style: const TextStyle(color: Colors.white, fontSize: 10),
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 10),
                               ),
                             ),
                           ),
@@ -94,191 +102,267 @@ class DashboardScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 18),
                 if (show('balance_card'))
-                summaryAsync.when(
-                  data: (summary) {
-                    final balance = summary['currentBalance'] ?? 0;
-                    final expenses = summary['expensesTotal'] ?? 0;
-                    final deposits = summary['deposits'] ?? 0;
-                    final withdrawals = summary['withdrawals'] ?? 0;
-                    final incomes = summary['incomes'] ?? 0;
+                  summaryAsync.when(
+                    data: (summary) {
+                      final balance = summary['currentBalance'] ?? 0;
+                      final expenses = summary['expensesTotal'] ?? 0;
+                      final deposits = summary['deposits'] ?? 0;
+                      final withdrawals = summary['withdrawals'] ?? 0;
+                      final incomes = summary['incomes'] ?? 0;
 
-                    return Container(
-                      padding: const EdgeInsets.all(22),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(colors: [AppColors.emerald, AppColors.sky]),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('الرصيد الحالي', style: TextStyle(color: Colors.white70)),
-                          const SizedBox(height: 8),
-                          Text(
-                            MoneyFormatter.format(balance, symbol),
-                            style: const TextStyle(color: Colors.white, fontSize: 31, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 18),
-                          Row(
-                            children: [
-                              Expanded(child: _WhiteMetric(title: 'الإيداعات', value: MoneyFormatter.format(deposits, symbol))),
-                              const SizedBox(width: 10),
-                              Expanded(child: _WhiteMetric(title: 'السحوبات', value: MoneyFormatter.format(withdrawals, symbol))),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          _WhiteMetric(title: 'إجمالي الإيرادات', value: MoneyFormatter.format(incomes, symbol)),
-                          const SizedBox(height: 10),
-                          _WhiteMetric(title: 'إجمالي المصروفات', value: MoneyFormatter.format(expenses, symbol)),
-                        ],
-                      ),
-                    );
-                  },
-                  loading: () => const LinearProgressIndicator(),
-                  error: (e, _) => Text('خطأ: $e'),
-                ),
-                const SizedBox(height: 14),
-                if (show('budget_alert'))
-                insightsAsync.when(
-                  data: (insights) {
-                    final percent = (insights['budgetPercent'] as num?) ?? 0;
-                    final totalBudget = (insights['totalBudget'] as num?) ?? 0;
-                    final totalExpenses = (insights['totalExpenses'] as num?) ?? 0;
-                    final percentText = (percent * 100).toStringAsFixed(0);
-
-                    return Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(18),
+                      return Container(
+                        padding: const EdgeInsets.all(22),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                              colors: [AppColors.emerald, AppColors.sky]),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('مؤشر الميزانية', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 10),
-                            LinearProgressIndicator(value: percent > 1 ? 1 : percent.toDouble()),
+                            const Text('الرصيد الحالي',
+                                style: TextStyle(color: Colors.white70)),
                             const SizedBox(height: 8),
-                            Text('تم صرف $percentText% من الميزانية'),
-                            Text('الميزانية: ${MoneyFormatter.format(totalBudget, symbol)}'),
-                            Text('المصروف: ${MoneyFormatter.format(totalExpenses, symbol)}'),
-                            if (percent >= .8 && totalBudget > 0)
-                              const Padding(
-                                padding: EdgeInsets.only(top: 8),
-                                child: Text('تنبيه: المصروفات اقتربت من الميزانية المحددة', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
-                              ),
+                            Text(
+                              MoneyFormatter.format(balance, symbol),
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 31,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 18),
+                            Row(
+                              children: [
+                                Expanded(
+                                    child: _WhiteMetric(
+                                        title: 'الإيداعات',
+                                        value: MoneyFormatter.format(
+                                            deposits, symbol))),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                    child: _WhiteMetric(
+                                        title: 'السحوبات',
+                                        value: MoneyFormatter.format(
+                                            withdrawals, symbol))),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            _WhiteMetric(
+                                title: 'إجمالي الإيرادات',
+                                value: MoneyFormatter.format(incomes, symbol)),
+                            const SizedBox(height: 10),
+                            _WhiteMetric(
+                                title: 'إجمالي المصروفات',
+                                value: MoneyFormatter.format(expenses, symbol)),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                  loading: () => const SizedBox.shrink(),
-                  error: (e, _) => Text('خطأ: $e'),
-                ),
+                      );
+                    },
+                    loading: () => const LinearProgressIndicator(),
+                    error: (e, _) => Text('خطأ: $e'),
+                  ),
+                const SizedBox(height: 14),
+                if (show('budget_alert'))
+                  insightsAsync.when(
+                    data: (insights) {
+                      final percent = (insights['budgetPercent'] as num?) ?? 0;
+                      final totalBudget =
+                          (insights['totalBudget'] as num?) ?? 0;
+                      final totalExpenses =
+                          (insights['totalExpenses'] as num?) ?? 0;
+                      final percentText = (percent * 100).toStringAsFixed(0);
+
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('مؤشر الميزانية',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 10),
+                              LinearProgressIndicator(
+                                  value: percent > 1 ? 1 : percent.toDouble()),
+                              const SizedBox(height: 8),
+                              Text('تم صرف $percentText% من الميزانية'),
+                              Text(
+                                  'الميزانية: ${MoneyFormatter.format(totalBudget, symbol)}'),
+                              Text(
+                                  'المصروف: ${MoneyFormatter.format(totalExpenses, symbol)}'),
+                              if (percent >= .8 && totalBudget > 0)
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 8),
+                                  child: Text(
+                                      'تنبيه: المصروفات اقتربت من الميزانية المحددة',
+                                      style: TextStyle(
+                                          color: Colors.orange,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    loading: () => const SizedBox.shrink(),
+                    error: (e, _) => Text('خطأ: $e'),
+                  ),
                 const SizedBox(height: 14),
                 if (show('quick_actions'))
-                Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () => context.go('/project-form'),
-                        child: const AppStatCard(title: 'مشروع جديد', value: 'إضافة', icon: Icons.create_new_folder_rounded),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => context.go('/project-form'),
+                          child: const AppStatCard(
+                              title: 'مشروع جديد',
+                              value: 'إضافة',
+                              icon: Icons.create_new_folder_rounded),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () => context.go('/quick-add'),
-                        child: const AppStatCard(title: 'إضافة سريعة', value: 'فتح', icon: Icons.add_card_rounded),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => context.go('/quick-add'),
+                          child: const AppStatCard(
+                              title: 'إضافة سريعة',
+                              value: 'فتح',
+                              icon: Icons.add_card_rounded),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 const SizedBox(height: 14),
                 Row(
                   children: [
-                    Expanded(child: _QuickButton(label: 'الأشخاص', icon: Icons.people_rounded, route: '/persons')),
+                    Expanded(
+                        child: _QuickButton(
+                            label: 'الأشخاص',
+                            icon: Icons.people_rounded,
+                            route: '/persons')),
                     const SizedBox(width: 10),
-                    Expanded(child: _QuickButton(label: 'الصندوق', icon: Icons.account_balance_wallet_rounded, route: '/treasury')),
+                    Expanded(
+                        child: _QuickButton(
+                            label: 'الصندوق',
+                            icon: Icons.account_balance_wallet_rounded,
+                            route: '/treasury')),
                     const SizedBox(width: 10),
-                    Expanded(child: _QuickButton(label: 'التقارير', icon: Icons.bar_chart_rounded, route: '/reports')),
+                    Expanded(
+                        child: _QuickButton(
+                            label: 'التقارير',
+                            icon: Icons.bar_chart_rounded,
+                            route: '/reports')),
                     const SizedBox(width: 10),
-                    Expanded(child: _QuickButton(label: 'المؤشرات', icon: Icons.query_stats_rounded, route: '/kpi')),
+                    Expanded(
+                        child: _QuickButton(
+                            label: 'المؤشرات',
+                            icon: Icons.query_stats_rounded,
+                            route: '/kpi')),
                     const SizedBox(width: 10),
-                    Expanded(child: _QuickButton(label: 'التحليلات', icon: Icons.insights_rounded, route: '/analytics')),
+                    Expanded(
+                        child: _QuickButton(
+                            label: 'التحليلات',
+                            icon: Icons.insights_rounded,
+                            route: '/analytics')),
                   ],
                 ),
                 if (show('projects')) ...[
-                const SizedBox(height: 22),
-                const Text('المشاريع النشطة', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 10),
-                projectsAsync.when(
-                  data: (projects) {
-                    if (projects.isEmpty) {
-                      return const Card(child: Padding(padding: EdgeInsets.all(18), child: Text('لا توجد مشاريع بعد')));
-                    }
-                    return Column(
-                      children: projects.take(4).map((p) {
-                        return Card(
-                          child: ListTile(
-                            leading: Text((p['icon'] ?? '📁').toString(), style: const TextStyle(fontSize: 30)),
-                            title: Text(p['name'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                            subtitle: Text('العملة: ${p['currency_symbol']}'),
-                            trailing: const Icon(Icons.arrow_back_ios_new_rounded),
-                            onTap: () => context.go('/projects'),
-                          ),
-                        );
-                      }).toList(),
-                    );
-                  },
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (e, _) => Text('خطأ: $e'),
-                ),
+                  const SizedBox(height: 22),
+                  const Text('المشاريع النشطة',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  projectsAsync.when(
+                    data: (projects) {
+                      if (projects.isEmpty) {
+                        return const Card(
+                            child: Padding(
+                                padding: EdgeInsets.all(18),
+                                child: Text('لا توجد مشاريع بعد')));
+                      }
+                      return Column(
+                        children: projects.take(4).map((p) {
+                          return Card(
+                            child: ListTile(
+                              leading: Text((p['icon'] ?? '📁').toString(),
+                                  style: const TextStyle(fontSize: 30)),
+                              title: Text(p['name'].toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold)),
+                              subtitle: Text('العملة: ${p['currency_symbol']}'),
+                              trailing:
+                                  const Icon(Icons.arrow_back_ios_new_rounded),
+                              onTap: () => context.go('/projects'),
+                            ),
+                          );
+                        }).toList(),
+                      );
+                    },
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
+                    error: (e, _) => Text('خطأ: $e'),
+                  ),
                 ],
                 const SizedBox(height: 22),
                 insightsAsync.when(
                   data: (insights) {
-                    final latest = (insights['latestExpenses'] as List).cast<Map<String, Object?>>();
-                    final topCategories = (insights['topCategories'] as List).cast<Map<String, Object?>>();
-                    final topPersons = (insights['topPersons'] as List).cast<Map<String, Object?>>();
+                    final latest = (insights['latestExpenses'] as List)
+                        .cast<Map<String, Object?>>();
+                    final topCategories = (insights['topCategories'] as List)
+                        .cast<Map<String, Object?>>();
+                    final topPersons = (insights['topPersons'] as List)
+                        .cast<Map<String, Object?>>();
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (show('latest_expenses'))
-                        _MiniList(
-                          title: 'آخر العمليات',
-                          emptyText: 'لا توجد عمليات بعد',
-                          items: latest.map((e) {
-                            return '${e['serial_number']} • ${e['amount']} ${e['currency_symbol']} • ${e['category_name'] ?? 'بدون تصنيف'}';
-                          }).toList(),
-                        ),
+                          _MiniList(
+                            title: 'آخر العمليات',
+                            emptyText: 'لا توجد عمليات بعد',
+                            items: latest.map((e) {
+                              return '${e['serial_number']} • ${e['amount']} ${e['currency_symbol']} • ${e['category_name'] ?? 'بدون تصنيف'}';
+                            }).toList(),
+                          ),
                         const SizedBox(height: 16),
                         if (show('top_categories'))
-                        SimpleBarChart(
-                          title: 'رسم سريع للتصنيفات',
-                          items: topCategories
-                              .map((e) => ChartItem(
-                                    label: e['name'].toString(),
-                                    value: (e['total'] as num?) ?? 0,
-                                  ))
-                              .toList(),
-                          valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
-                        ),
+                          SimpleBarChart(
+                            title: 'رسم سريع للتصنيفات',
+                            items: topCategories
+                                .map((e) => ChartItem(
+                                      label: e['name'].toString(),
+                                      value: (e['total'] as num?) ?? 0,
+                                    ))
+                                .toList(),
+                            valueLabelBuilder: (value) =>
+                                MoneyFormatter.format(value, symbol),
+                          ),
                         const SizedBox(height: 16),
                         if (show('top_categories'))
-                        _MiniList(
-                          title: 'أعلى التصنيفات صرفًا',
-                          emptyText: 'لا توجد بيانات',
-                          items: topCategories.map((e) => '${e['name']} • ${MoneyFormatter.format((e['total'] as num?) ?? 0, symbol)}').toList(),
-                        ),
+                          _MiniList(
+                            title: 'أعلى التصنيفات صرفًا',
+                            emptyText: 'لا توجد بيانات',
+                            items: topCategories
+                                .map((e) =>
+                                    '${e['name']} • ${MoneyFormatter.format((e['total'] as num?) ?? 0, symbol)}')
+                                .toList(),
+                          ),
                         const SizedBox(height: 16),
                         if (show('top_persons'))
-                        _MiniList(
-                          title: 'أعلى الأشخاص صرفًا',
-                          emptyText: 'لا توجد بيانات',
-                          items: topPersons.map((e) => '${e['name']} • ${MoneyFormatter.format((e['total'] as num?) ?? 0, symbol)}').toList(),
-                        ),
+                          _MiniList(
+                            title: 'أعلى الأشخاص صرفًا',
+                            emptyText: 'لا توجد بيانات',
+                            items: topPersons
+                                .map((e) =>
+                                    '${e['name']} • ${MoneyFormatter.format((e['total'] as num?) ?? 0, symbol)}')
+                                .toList(),
+                          ),
                       ],
                     );
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (e, _) => Text('خطأ: $e'),
                 ),
               ],
@@ -303,7 +387,7 @@ class _WhiteMetric extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(.16),
+        color: Colors.white.withValues(alpha: .16),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Column(
@@ -311,7 +395,9 @@ class _WhiteMetric extends StatelessWidget {
         children: [
           Text(title, style: const TextStyle(color: Colors.white70)),
           const SizedBox(height: 4),
-          Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          Text(value,
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -358,7 +444,9 @@ class _MiniList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(title,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             if (items.isEmpty)
               Text(emptyText)

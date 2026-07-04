@@ -49,17 +49,22 @@ class _PerformanceScreenState extends ConsumerState<PerformanceScreen> {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.rocket_launch_rounded, color: Colors.white, size: 44),
+                    Icon(Icons.rocket_launch_rounded,
+                        color: Colors.white, size: 44),
                     SizedBox(height: 12),
                     Text(
                       'تحسين الأداء',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -77,7 +82,9 @@ class _PerformanceScreenState extends ConsumerState<PerformanceScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('معلومات الأداء', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const Text('معلومات الأداء',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         _RowInfo('المصروفات', data['expenses']),
                         _RowInfo('الإيرادات', data['incomes']),
@@ -133,7 +140,8 @@ class _RowInfo extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: Text(label)),
-          Text('${value ?? 0}', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text('${value ?? 0}',
+              style: const TextStyle(fontWeight: FontWeight.bold)),
         ],
       ),
     );

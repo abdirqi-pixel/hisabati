@@ -10,10 +10,12 @@ class ProfessionalReportsScreen extends ConsumerStatefulWidget {
   const ProfessionalReportsScreen({super.key});
 
   @override
-  ConsumerState<ProfessionalReportsScreen> createState() => _ProfessionalReportsScreenState();
+  ConsumerState<ProfessionalReportsScreen> createState() =>
+      _ProfessionalReportsScreenState();
 }
 
-class _ProfessionalReportsScreenState extends ConsumerState<ProfessionalReportsScreen> {
+class _ProfessionalReportsScreenState
+    extends ConsumerState<ProfessionalReportsScreen> {
   bool working = false;
 
   Future<void> exportPdf({
@@ -37,11 +39,13 @@ class _ProfessionalReportsScreenState extends ConsumerState<ProfessionalReportsS
       if (printDirectly) {
         await Printing.layoutPdf(onLayout: (_) => file.readAsBytes());
       } else {
-        await Share.shareXFiles([XFile(file.path)], text: 'كشف حساب من تطبيق حساباتي');
+        await Share.shareXFiles([XFile(file.path)],
+            text: 'كشف حساب من تطبيق حساباتي');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
       }
     } finally {
       if (mounted) setState(() => working = false);
@@ -55,7 +59,8 @@ class _ProfessionalReportsScreenState extends ConsumerState<ProfessionalReportsS
       final data = await ref.read(professionalReportDataProvider.future);
       final symbol = (settings?['currency_symbol'] ?? 'د.ع').toString();
 
-      final file = await ProfessionalReportService().createAccountStatementExcel(
+      final file =
+          await ProfessionalReportService().createAccountStatementExcel(
         currencySymbol: symbol,
         expenses: data['expenses'] ?? [],
         incomes: data['incomes'] ?? [],
@@ -63,10 +68,12 @@ class _ProfessionalReportsScreenState extends ConsumerState<ProfessionalReportsS
         treasury: data['treasury'] ?? [],
       );
 
-      await Share.shareXFiles([XFile(file.path)], text: 'كشف حساب Excel من تطبيق حساباتي');
+      await Share.shareXFiles([XFile(file.path)],
+          text: 'كشف حساب Excel من تطبيق حساباتي');
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
       }
     } finally {
       if (mounted) setState(() => working = false);
@@ -85,17 +92,22 @@ class _ProfessionalReportsScreenState extends ConsumerState<ProfessionalReportsS
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
               borderRadius: BorderRadius.circular(28),
             ),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.picture_as_pdf_rounded, color: Colors.white, size: 44),
+                Icon(Icons.picture_as_pdf_rounded,
+                    color: Colors.white, size: 44),
                 SizedBox(height: 12),
                 Text(
                   'كشف حساب احترافي',
-                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
                 Text(
@@ -114,7 +126,9 @@ class _ProfessionalReportsScreenState extends ConsumerState<ProfessionalReportsS
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('محتوى التقرير', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      const Text('محتوى التقرير',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 10),
                       Text('المصروفات: ${d['expenses']?.length ?? 0}'),
                       Text('الإيرادات: ${d['incomes']?.length ?? 0}'),

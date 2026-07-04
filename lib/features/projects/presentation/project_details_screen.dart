@@ -36,21 +36,28 @@ class ProjectDetailsScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text((project['icon'] ?? '📁').toString(), style: const TextStyle(fontSize: 42)),
+                    Text((project['icon'] ?? '📁').toString(),
+                        style: const TextStyle(fontSize: 42)),
                     const SizedBox(height: 10),
                     Text(
                       project['name'].toString(),
-                      style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
-                    Text('الرصيد: ${MoneyFormatter.format((data['balance'] as num?) ?? 0, symbol)}',
-                        style: const TextStyle(color: Colors.white, fontSize: 18)),
+                    Text(
+                        'الرصيد: ${MoneyFormatter.format((data['balance'] as num?) ?? 0, symbol)}',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18)),
                   ],
                 ),
               ),
@@ -61,13 +68,20 @@ class ProjectDetailsScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('الميزانية', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      const Text('الميزانية',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 10),
-                      LinearProgressIndicator(value: budgetPercent > 1 ? 1 : budgetPercent.toDouble()),
+                      LinearProgressIndicator(
+                          value:
+                              budgetPercent > 1 ? 1 : budgetPercent.toDouble()),
                       const SizedBox(height: 8),
-                      Text('الميزانية: ${MoneyFormatter.format(budget, symbol)}'),
-                      Text('المصروف: ${MoneyFormatter.format((data['expensesTotal'] as num?) ?? 0, symbol)}'),
-                      Text('نسبة الصرف: ${(budgetPercent * 100).toStringAsFixed(0)}%'),
+                      Text(
+                          'الميزانية: ${MoneyFormatter.format(budget, symbol)}'),
+                      Text(
+                          'المصروف: ${MoneyFormatter.format((data['expensesTotal'] as num?) ?? 0, symbol)}'),
+                      Text(
+                          'نسبة الصرف: ${(budgetPercent * 100).toStringAsFixed(0)}%'),
                     ],
                   ),
                 ),
@@ -79,7 +93,9 @@ class ProjectDetailsScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('إضافة للمشروع', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      const Text('إضافة للمشروع',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 10),
                       Row(
                         children: [
@@ -107,10 +123,12 @@ class ProjectDetailsScreen extends ConsumerWidget {
               const SizedBox(height: 14),
               _GridStats(symbol: symbol, data: data),
               const SizedBox(height: 18),
-              const Text('آخر العمليات', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text('آخر العمليات',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               _LatestExpenses(
-                expenses: (data['latestExpenses'] as List).cast<Map<String, Object?>>(),
+                expenses: (data['latestExpenses'] as List)
+                    .cast<Map<String, Object?>>(),
               ),
             ],
           );
@@ -134,11 +152,27 @@ class _GridStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = [
-      ('المصروفات', data['expensesTotal'] as num? ?? 0, Icons.trending_down_rounded),
-      ('الإيرادات', data['incomesTotal'] as num? ?? 0, Icons.trending_up_rounded),
+      (
+        'المصروفات',
+        data['expensesTotal'] as num? ?? 0,
+        Icons.trending_down_rounded
+      ),
+      (
+        'الإيرادات',
+        data['incomesTotal'] as num? ?? 0,
+        Icons.trending_up_rounded
+      ),
       ('الإيداعات', data['deposits'] as num? ?? 0, Icons.add_card_rounded),
-      ('السحوبات', data['withdrawals'] as num? ?? 0, Icons.remove_circle_rounded),
-      ('السلف المتبقية', data['remainingAdvances'] as num? ?? 0, Icons.handshake_rounded),
+      (
+        'السحوبات',
+        data['withdrawals'] as num? ?? 0,
+        Icons.remove_circle_rounded
+      ),
+      (
+        'السلف المتبقية',
+        data['remainingAdvances'] as num? ?? 0,
+        Icons.handshake_rounded
+      ),
       ('الأشخاص', data['personsCount'] as num? ?? 0, Icons.people_rounded),
     ];
 
@@ -166,7 +200,9 @@ class _GridStats extends StatelessWidget {
                 Text(item.$1),
                 const SizedBox(height: 4),
                 Text(
-                  isMoney ? MoneyFormatter.format(item.$2, symbol) : item.$2.toString(),
+                  isMoney
+                      ? MoneyFormatter.format(item.$2, symbol)
+                      : item.$2.toString(),
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
@@ -200,9 +236,12 @@ class _LatestExpenses extends StatelessWidget {
       children: expenses.map((e) {
         return Card(
           child: ListTile(
-            leading: const CircleAvatar(child: Icon(Icons.receipt_long_rounded)),
-            title: Text('${e['amount']} ${e['currency_symbol']}', style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text('${e['serial_number']} • ${e['person_name'] ?? 'بدون شخص'} • ${e['category_name'] ?? 'بدون تصنيف'}'),
+            leading:
+                const CircleAvatar(child: Icon(Icons.receipt_long_rounded)),
+            title: Text('${e['amount']} ${e['currency_symbol']}',
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(
+                '${e['serial_number']} • ${e['person_name'] ?? 'بدون شخص'} • ${e['category_name'] ?? 'بدون تصنيف'}'),
             trailing: Text((e['expense_date'] ?? '').toString()),
           ),
         );

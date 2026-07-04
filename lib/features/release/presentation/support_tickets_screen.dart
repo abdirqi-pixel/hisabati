@@ -35,8 +35,10 @@ class SupportTicketsScreen extends ConsumerWidget {
               final item = items[index];
               return Card(
                 child: ListTile(
-                  leading: const Icon(Icons.support_agent_rounded, color: Colors.blue),
-                  title: Text(item['title'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  leading: const Icon(Icons.support_agent_rounded,
+                      color: Colors.blue),
+                  title: Text(item['title'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
                     '${item['description'] ?? ''}\nالأولوية: ${item['priority']} • الحالة: ${item['status']}',
                   ),
@@ -54,7 +56,8 @@ class SupportTicketsScreen extends ConsumerWidget {
                     },
                     itemBuilder: (_) => const [
                       PopupMenuItem(value: 'مفتوح', child: Text('مفتوح')),
-                      PopupMenuItem(value: 'قيد المعالجة', child: Text('قيد المعالجة')),
+                      PopupMenuItem(
+                          value: 'قيد المعالجة', child: Text('قيد المعالجة')),
                       PopupMenuItem(value: 'تم الحل', child: Text('تم الحل')),
                     ],
                   ),
@@ -111,19 +114,26 @@ class _SupportTicketFormState extends ConsumerState<_SupportTicketForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('بلاغ دعم جديد', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text('بلاغ دعم جديد',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
-            TextField(controller: title, decoration: const InputDecoration(labelText: 'عنوان المشكلة')),
+            TextField(
+                controller: title,
+                decoration: const InputDecoration(labelText: 'عنوان المشكلة')),
             const SizedBox(height: 10),
-            TextField(controller: description, maxLines: 3, decoration: const InputDecoration(labelText: 'وصف المشكلة')),
+            TextField(
+                controller: description,
+                maxLines: 3,
+                decoration: const InputDecoration(labelText: 'وصف المشكلة')),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              value: priority,
+              initialValue: priority,
               decoration: const InputDecoration(labelText: 'الأولوية'),
               items: const [
                 DropdownMenuItem(value: 'حرجة', child: Text('حرجة')),
@@ -131,12 +141,18 @@ class _SupportTicketFormState extends ConsumerState<_SupportTicketForm> {
                 DropdownMenuItem(value: 'متوسطة', child: Text('متوسطة')),
                 DropdownMenuItem(value: 'منخفضة', child: Text('منخفضة')),
               ],
-              onChanged: (value) => setState(() => priority = value ?? 'متوسطة'),
+              onChanged: (value) =>
+                  setState(() => priority = value ?? 'متوسطة'),
             ),
             const SizedBox(height: 10),
-            TextField(controller: deviceInfo, decoration: const InputDecoration(labelText: 'معلومات الجهاز')),
+            TextField(
+                controller: deviceInfo,
+                decoration: const InputDecoration(labelText: 'معلومات الجهاز')),
             const SizedBox(height: 14),
-            FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+            FilledButton.icon(
+                onPressed: save,
+                icon: const Icon(Icons.save_rounded),
+                label: const Text('حفظ')),
           ],
         ),
       ),

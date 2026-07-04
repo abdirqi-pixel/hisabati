@@ -37,13 +37,17 @@ class PersonsScreen extends ConsumerWidget {
                   leading: CircleAvatar(
                     child: Text((p['name'] as String).characters.first),
                   ),
-                  title: Text(p['name'] as String, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text(p['phone']?.toString().isEmpty ?? true ? 'بدون رقم هاتف' : p['phone'].toString()),
+                  title: Text(p['name'] as String,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(p['phone']?.toString().isEmpty ?? true
+                      ? 'بدون رقم هاتف'
+                      : p['phone'].toString()),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) async {
                       if (value == 'delete') {
                         final db = await ref.read(appDatabaseProvider).database;
-                        await db.update('persons', {'is_deleted': 1}, where: 'id = ?', whereArgs: [p['id']]);
+                        await db.update('persons', {'is_deleted': 1},
+                            where: 'id = ?', whereArgs: [p['id']]);
                         ref.invalidate(personsProvider);
                       }
                     },
@@ -106,19 +110,31 @@ class _PersonFormState extends ConsumerState<_PersonForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('إضافة شخص', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('إضافة شخص',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
-          TextField(controller: name, decoration: const InputDecoration(labelText: 'اسم الشخص')),
+          TextField(
+              controller: name,
+              decoration: const InputDecoration(labelText: 'اسم الشخص')),
           const SizedBox(height: 10),
-          TextField(controller: phone, decoration: const InputDecoration(labelText: 'رقم الهاتف اختياري')),
+          TextField(
+              controller: phone,
+              decoration:
+                  const InputDecoration(labelText: 'رقم الهاتف اختياري')),
           const SizedBox(height: 10),
-          TextField(controller: notes, decoration: const InputDecoration(labelText: 'ملاحظات')),
+          TextField(
+              controller: notes,
+              decoration: const InputDecoration(labelText: 'ملاحظات')),
           const SizedBox(height: 16),
-          FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+          FilledButton.icon(
+              onPressed: save,
+              icon: const Icon(Icons.save_rounded),
+              label: const Text('حفظ')),
         ],
       ),
     );

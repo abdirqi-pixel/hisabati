@@ -20,7 +20,8 @@ class NotificationsSettingsScreen extends ConsumerWidget {
           final hour = (s?['daily_reminder_hour'] as int?) ?? 20;
           final minute = (s?['daily_reminder_minute'] as int?) ?? 0;
           final budgetEnabled = s?['budget_alert_enabled'] != 0;
-          final budgetPercent = ((s?['budget_alert_percent'] as num?) ?? .8).toDouble();
+          final budgetPercent =
+              ((s?['budget_alert_percent'] as num?) ?? .8).toDouble();
 
           return ListView(
             padding: const EdgeInsets.all(18),
@@ -29,7 +30,8 @@ class NotificationsSettingsScreen extends ConsumerWidget {
                 child: SwitchListTile(
                   secondary: const Icon(Icons.notifications_active_rounded),
                   title: const Text('تذكير يومي بإدخال المصروفات'),
-                  subtitle: Text('الوقت الحالي: ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}'),
+                  subtitle: Text(
+                      'الوقت الحالي: ${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}'),
                   value: reminderEnabled,
                   onChanged: (value) => actions.updateDailyReminder(
                     enabled: value,
@@ -42,7 +44,8 @@ class NotificationsSettingsScreen extends ConsumerWidget {
                 child: ListTile(
                   leading: const Icon(Icons.schedule_rounded),
                   title: const Text('وقت التذكير اليومي'),
-                  subtitle: Text('${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}'),
+                  subtitle: Text(
+                      '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}'),
                   trailing: const Icon(Icons.arrow_back_ios_new_rounded),
                   onTap: () async {
                     final picked = await showTimePicker(
@@ -65,7 +68,8 @@ class NotificationsSettingsScreen extends ConsumerWidget {
                 child: SwitchListTile(
                   secondary: const Icon(Icons.warning_amber_rounded),
                   title: const Text('تنبيه الميزانية'),
-                  subtitle: Text('تنبيه عند الوصول إلى ${(budgetPercent * 100).toStringAsFixed(0)}% من الميزانية'),
+                  subtitle: Text(
+                      'تنبيه عند الوصول إلى ${(budgetPercent * 100).toStringAsFixed(0)}% من الميزانية'),
                   value: budgetEnabled,
                   onChanged: (value) => actions.updateBudgetAlert(
                     enabled: value,
@@ -79,7 +83,8 @@ class NotificationsSettingsScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('نسبة تنبيه الميزانية', style: TextStyle(fontWeight: FontWeight.bold)),
+                      const Text('نسبة تنبيه الميزانية',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       Slider(
                         value: budgetPercent,
                         min: .5,

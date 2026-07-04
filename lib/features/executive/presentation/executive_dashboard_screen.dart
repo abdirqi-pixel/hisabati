@@ -22,9 +22,12 @@ class ExecutiveDashboardScreen extends ConsumerWidget {
           return dashboard.when(
             data: (data) {
               final totals = data['totals'] as Map<String, Object?>;
-              final projects = (data['projects'] as List).cast<Map<String, Object?>>();
-              final risks = (data['riskBudgets'] as List).cast<Map<String, Object?>>();
-              final trend = (data['monthTrend'] as List).cast<Map<String, Object?>>();
+              final projects =
+                  (data['projects'] as List).cast<Map<String, Object?>>();
+              final risks =
+                  (data['riskBudgets'] as List).cast<Map<String, Object?>>();
+              final trend =
+                  (data['monthTrend'] as List).cast<Map<String, Object?>>();
 
               final incomes = (totals['incomes'] as num?) ?? 0;
               final expenses = (totals['expenses'] as num?) ?? 0;
@@ -38,20 +41,26 @@ class ExecutiveDashboardScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                      gradient: const LinearGradient(
+                          colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                       borderRadius: BorderRadius.circular(28),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('الملخص التنفيذي', style: TextStyle(color: Colors.white70)),
+                        const Text('الملخص التنفيذي',
+                            style: TextStyle(color: Colors.white70)),
                         const SizedBox(height: 8),
                         Text(
                           MoneyFormatter.format(net, symbol),
-                          style: const TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
-                        Text('الصافي العام', style: const TextStyle(color: Colors.white)),
+                        Text('الصافي العام',
+                            style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
@@ -64,21 +73,45 @@ class ExecutiveDashboardScreen extends ConsumerWidget {
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     children: [
-                      _Metric(title: 'الإيرادات', value: MoneyFormatter.format(incomes, symbol), icon: Icons.trending_up_rounded),
-                      _Metric(title: 'المصروفات', value: MoneyFormatter.format(expenses, symbol), icon: Icons.trending_down_rounded),
-                      _Metric(title: 'الصندوق', value: MoneyFormatter.format(deposits - withdrawals, symbol), icon: Icons.account_balance_wallet_rounded),
-                      _Metric(title: 'السلف المتبقية', value: MoneyFormatter.format((totals['advances_remaining'] as num?) ?? 0, symbol), icon: Icons.handshake_rounded),
-                      _Metric(title: 'المشاريع النشطة', value: '${totals['active_projects'] ?? 0}', icon: Icons.folder_rounded),
-                      _Metric(title: 'عدد العمليات', value: '${totals['expense_count'] ?? 0}', icon: Icons.receipt_long_rounded),
+                      _Metric(
+                          title: 'الإيرادات',
+                          value: MoneyFormatter.format(incomes, symbol),
+                          icon: Icons.trending_up_rounded),
+                      _Metric(
+                          title: 'المصروفات',
+                          value: MoneyFormatter.format(expenses, symbol),
+                          icon: Icons.trending_down_rounded),
+                      _Metric(
+                          title: 'الصندوق',
+                          value: MoneyFormatter.format(
+                              deposits - withdrawals, symbol),
+                          icon: Icons.account_balance_wallet_rounded),
+                      _Metric(
+                          title: 'السلف المتبقية',
+                          value: MoneyFormatter.format(
+                              (totals['advances_remaining'] as num?) ?? 0,
+                              symbol),
+                          icon: Icons.handshake_rounded),
+                      _Metric(
+                          title: 'المشاريع النشطة',
+                          value: '${totals['active_projects'] ?? 0}',
+                          icon: Icons.folder_rounded),
+                      _Metric(
+                          title: 'عدد العمليات',
+                          value: '${totals['expense_count'] ?? 0}',
+                          icon: Icons.receipt_long_rounded),
                     ],
                   ),
                   const SizedBox(height: 14),
                   SimpleBarChart(
                     title: 'اتجاه المصروفات آخر 6 أشهر',
                     items: trend.reversed
-                        .map((e) => ChartItem(label: e['month'].toString(), value: (e['total'] as num?) ?? 0))
+                        .map((e) => ChartItem(
+                            label: e['month'].toString(),
+                            value: (e['total'] as num?) ?? 0))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 14),
                   _ProjectComparison(projects: projects, defaultSymbol: symbol),
@@ -126,7 +159,8 @@ class _Metric extends StatelessWidget {
 }
 
 class _ProjectComparison extends StatelessWidget {
-  const _ProjectComparison({required this.projects, required this.defaultSymbol});
+  const _ProjectComparison(
+      {required this.projects, required this.defaultSymbol});
 
   final List<Map<String, Object?>> projects;
   final String defaultSymbol;
@@ -134,7 +168,10 @@ class _ProjectComparison extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (projects.isEmpty) {
-      return const Card(child: Padding(padding: EdgeInsets.all(18), child: Text('لا توجد مشاريع للمقارنة')));
+      return const Card(
+          child: Padding(
+              padding: EdgeInsets.all(18),
+              child: Text('لا توجد مشاريع للمقارنة')));
     }
 
     return Card(
@@ -143,26 +180,34 @@ class _ProjectComparison extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('مقارنة المشاريع', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text('مقارنة المشاريع',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             ...projects.take(8).map((p) {
               final symbol = p['currency_symbol']?.toString() ?? defaultSymbol;
               final expenses = (p['expenses'] as num?) ?? 0;
               final incomes = (p['incomes'] as num?) ?? 0;
-              final balance = ((p['opening_balance'] as num?) ?? 0) + incomes + ((p['deposits'] as num?) ?? 0) - ((p['withdrawals'] as num?) ?? 0) - expenses;
+              final balance = ((p['opening_balance'] as num?) ?? 0) +
+                  incomes +
+                  ((p['deposits'] as num?) ?? 0) -
+                  ((p['withdrawals'] as num?) ?? 0) -
+                  expenses;
               final budget = (p['budget'] as num?) ?? 0;
-              final percent = budget <= 0 ? 0.0 : (expenses / budget).clamp(0.0, 1.0);
+              final percent =
+                  budget <= 0 ? 0.0 : (expenses / budget).clamp(0.0, 1.0);
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(p['name'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(p['name'].toString(),
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 6),
                     LinearProgressIndicator(value: percent),
                     const SizedBox(height: 4),
-                    Text('المصروف: ${MoneyFormatter.format(expenses, symbol)} • الرصيد: ${MoneyFormatter.format(balance, symbol)}'),
+                    Text(
+                        'المصروف: ${MoneyFormatter.format(expenses, symbol)} • الرصيد: ${MoneyFormatter.format(balance, symbol)}'),
                   ],
                 ),
               );
@@ -188,18 +233,25 @@ class _RiskBudgets extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('تنبيهات الميزانية', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text('تنبيهات الميزانية',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             if (risks.isEmpty)
               const Text('لا توجد ميزانيات معرضة للخطر')
             else
               ...risks.map((r) {
-                final symbol = r['currency_symbol']?.toString() ?? defaultSymbol;
+                final symbol =
+                    r['currency_symbol']?.toString() ?? defaultSymbol;
                 final percent = ((r['percent'] as num?) ?? 0) * 100;
                 return ListTile(
-                  leading: Icon(percent >= 100 ? Icons.error_rounded : Icons.warning_amber_rounded, color: percent >= 100 ? Colors.red : Colors.orange),
+                  leading: Icon(
+                      percent >= 100
+                          ? Icons.error_rounded
+                          : Icons.warning_amber_rounded,
+                      color: percent >= 100 ? Colors.red : Colors.orange),
                   title: Text('${r['name']} - ${r['project_name']}'),
-                  subtitle: Text('المصروف: ${MoneyFormatter.format((r['spent'] as num?) ?? 0, symbol)} من ${MoneyFormatter.format((r['amount'] as num?) ?? 0, symbol)}'),
+                  subtitle: Text(
+                      'المصروف: ${MoneyFormatter.format((r['spent'] as num?) ?? 0, symbol)} من ${MoneyFormatter.format((r['amount'] as num?) ?? 0, symbol)}'),
                   trailing: Text('${percent.toStringAsFixed(0)}%'),
                 );
               }),

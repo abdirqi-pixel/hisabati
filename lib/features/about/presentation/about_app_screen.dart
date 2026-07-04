@@ -18,7 +18,8 @@ class AboutAppScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(26),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
               borderRadius: BorderRadius.circular(30),
             ),
             child: Column(
@@ -30,7 +31,10 @@ class AboutAppScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
                 Text(
                   about['name'].toString(),
-                  style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -48,7 +52,8 @@ class AboutAppScreen extends ConsumerWidget {
                 ListTile(
                   leading: const Icon(Icons.verified_rounded),
                   title: const Text('الإصدار'),
-                  subtitle: Text('${about['version']} - Build ${about['build']}'),
+                  subtitle:
+                      Text('${about['version']} - Build ${about['build']}'),
                 ),
                 ListTile(
                   leading: const Icon(Icons.rocket_launch_rounded),
@@ -63,7 +68,8 @@ class AboutAppScreen extends ConsumerWidget {
                 const ListTile(
                   leading: Icon(Icons.lock_rounded),
                   title: Text('الخصوصية'),
-                  subtitle: Text('البيانات تُحفظ محليًا داخل جهاز المستخدم افتراضيًا'),
+                  subtitle: Text(
+                      'البيانات تُحفظ محليًا داخل جهاز المستخدم افتراضيًا'),
                 ),
               ],
             ),

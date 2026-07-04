@@ -58,7 +58,8 @@ class SettingsActions {
     );
 
     if (enabled) {
-      await NotificationService.instance.scheduleDailyExpenseReminder(hour: hour, minute: minute);
+      await NotificationService.instance
+          .scheduleDailyExpenseReminder(hour: hour, minute: minute);
     } else {
       await NotificationService.instance.cancelDailyExpenseReminder();
     }

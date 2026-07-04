@@ -19,7 +19,8 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
     try {
       final message = await action();
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message)));
       }
       ref.invalidate(maintenanceStatsProvider);
       ref.invalidate(activityLogProvider);
@@ -27,7 +28,8 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
       ref.invalidate(dashboardSummaryProvider);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('حدث خطأ: $e')));
       }
     } finally {
       if (mounted) setState(() => working = false);
@@ -54,7 +56,8 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Column(
@@ -64,7 +67,10 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
                     SizedBox(height: 12),
                     Text(
                       'تحسين الأداء',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -82,10 +88,13 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('إحصائيات قاعدة البيانات', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const Text('إحصائيات قاعدة البيانات',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         _StatLine('المشاريع النشطة', data['projects']),
-                        _StatLine('المشاريع المؤرشفة', data['archivedProjects']),
+                        _StatLine(
+                            'المشاريع المؤرشفة', data['archivedProjects']),
                         _StatLine('الأشخاص', data['persons']),
                         _StatLine('المصروفات', data['expenses']),
                         _StatLine('الإيرادات', data['incomes']),
@@ -93,7 +102,11 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
                         _StatLine('حركات الصندوق', data['treasury']),
                         _StatLine('المرفقات', data['attachments']),
                         _StatLine('سجل النشاط', data['activityLog']),
-                        _StatLine('عناصر محذوفة', ((data['deletedProjects'] as int? ?? 0) + (data['deletedPersons'] as int? ?? 0) + (data['deletedExpenses'] as int? ?? 0))),
+                        _StatLine(
+                            'عناصر محذوفة',
+                            ((data['deletedProjects'] as int? ?? 0) +
+                                (data['deletedPersons'] as int? ?? 0) +
+                                (data['deletedExpenses'] as int? ?? 0))),
                       ],
                     ),
                   ),
@@ -111,7 +124,9 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
                   onTap: working
                       ? null
                       : () => runAction(() async {
-                            await MaintenanceService(ref.read(appDatabaseProvider)).vacuumDatabase();
+                            await MaintenanceService(
+                                    ref.read(appDatabaseProvider))
+                                .vacuumDatabase();
                             return 'تم ضغط قاعدة البيانات';
                           }),
                 ),
@@ -125,7 +140,9 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
                   onTap: working
                       ? null
                       : () => runAction(() async {
-                            final count = await MaintenanceService(ref.read(appDatabaseProvider)).cleanOldActivityLogs();
+                            final count = await MaintenanceService(
+                                    ref.read(appDatabaseProvider))
+                                .cleanOldActivityLogs();
                             return 'تم حذف $count سجل قديم';
                           }),
                 ),
@@ -139,7 +156,9 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
                   onTap: working
                       ? null
                       : () => runAction(() async {
-                            final count = await MaintenanceService(ref.read(appDatabaseProvider)).emptyTrash();
+                            final count = await MaintenanceService(
+                                    ref.read(appDatabaseProvider))
+                                .emptyTrash();
                             return 'تم حذف $count عنصر نهائيًا';
                           }),
                 ),
@@ -152,7 +171,8 @@ class _MaintenanceScreenState extends ConsumerState<MaintenanceScreen> {
               const SizedBox(height: 14),
               const Text(
                 'مهم: يفضل إنشاء نسخة احتياطية قبل تفريغ سلة المحذوفات.',
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
               ),
             ],
           );

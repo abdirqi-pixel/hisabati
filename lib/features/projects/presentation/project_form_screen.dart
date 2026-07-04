@@ -42,7 +42,8 @@ class _ProjectFormScreenState extends ConsumerState<ProjectFormScreen> {
     loaded = true;
 
     final db = await ref.read(appDatabaseProvider).database;
-    final rows = await db.query('projects', where: 'id = ?', whereArgs: [widget.projectId], limit: 1);
+    final rows = await db.query('projects',
+        where: 'id = ?', whereArgs: [widget.projectId], limit: 1);
     if (rows.isEmpty) return;
 
     final p = rows.first;
@@ -66,7 +67,8 @@ class _ProjectFormScreenState extends ConsumerState<ProjectFormScreen> {
 
     final db = await ref.read(appDatabaseProvider).database;
     final settingsRows = await db.query('app_settings', limit: 1);
-    final userId = settingsRows.isEmpty ? null : settingsRows.first['selected_user_id'];
+    final userId =
+        settingsRows.isEmpty ? null : settingsRows.first['selected_user_id'];
     final now = DateTime.now().toIso8601String();
 
     final values = {
@@ -97,7 +99,8 @@ class _ProjectFormScreenState extends ConsumerState<ProjectFormScreen> {
         details: 'تم إنشاء مشروع ${name.text.trim()}',
       );
     } else {
-      await db.update('projects', values, where: 'id = ?', whereArgs: [widget.projectId]);
+      await db.update('projects', values,
+          where: 'id = ?', whereArgs: [widget.projectId]);
       await ActivityLogService(ref.read(appDatabaseProvider)).log(
         action: 'update',
         entityType: 'project',
@@ -121,7 +124,8 @@ class _ProjectFormScreenState extends ConsumerState<ProjectFormScreen> {
     loadProject();
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.projectId == null ? 'مشروع جديد' : 'تعديل مشروع')),
+      appBar: AppBar(
+          title: Text(widget.projectId == null ? 'مشروع جديد' : 'تعديل مشروع')),
       body: countries.when(
         data: (items) {
           selectedCountryCode ??= 'IQ';
@@ -154,7 +158,7 @@ class _ProjectFormScreenState extends ConsumerState<ProjectFormScreen> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: selectedCountryCode,
+                initialValue: selectedCountryCode,
                 decoration: const InputDecoration(
                   labelText: 'بلد المشروع والعملة',
                   prefixIcon: Icon(Icons.public_rounded),
@@ -165,7 +169,8 @@ class _ProjectFormScreenState extends ConsumerState<ProjectFormScreen> {
                     child: Text('${c['name_ar']} - ${c['currency_symbol']}'),
                   );
                 }).toList(),
-                onChanged: (value) => setState(() => selectedCountryCode = value),
+                onChanged: (value) =>
+                    setState(() => selectedCountryCode = value),
               ),
               const SizedBox(height: 12),
               TextField(
@@ -186,12 +191,24 @@ class _ProjectFormScreenState extends ConsumerState<ProjectFormScreen> {
                 ),
               ),
               const SizedBox(height: 18),
-              const Text('اختر أيقونة المشروع', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text('اختر أيقونة المشروع',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
-                children: ['📁', '🏗️', '🏠', '🚗', '🏢', '🛒', '💼', '🧾', '⚙️', '🌾'].map((value) {
+                children: [
+                  '📁',
+                  '🏗️',
+                  '🏠',
+                  '🚗',
+                  '🏢',
+                  '🛒',
+                  '💼',
+                  '🧾',
+                  '⚙️',
+                  '🌾'
+                ].map((value) {
                   return ChoiceChip(
                     label: Text(value, style: const TextStyle(fontSize: 22)),
                     selected: icon == value,

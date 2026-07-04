@@ -118,7 +118,10 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                     SizedBox(height: 12),
                     Text(
                       'احمِ بياناتك',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -142,7 +145,8 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                 child: ListTile(
                   leading: const Icon(Icons.restore_rounded),
                   title: const Text('استعادة نسخة احتياطية'),
-                  subtitle: const Text('اختيار ملف JSON سابق واستعادة البيانات'),
+                  subtitle:
+                      const Text('اختيار ملف JSON سابق واستعادة البيانات'),
                   trailing: const Icon(Icons.arrow_back_ios_new_rounded),
                   onTap: isWorking ? null : restoreBackup,
                 ),

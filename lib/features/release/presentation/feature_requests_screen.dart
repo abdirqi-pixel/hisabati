@@ -36,8 +36,10 @@ class FeatureRequestsScreen extends ConsumerWidget {
 
               return Card(
                 child: ListTile(
-                  leading: const Icon(Icons.lightbulb_rounded, color: Colors.amber),
-                  title: Text(item['title'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  leading:
+                      const Icon(Icons.lightbulb_rounded, color: Colors.amber),
+                  title: Text(item['title'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
                     '${item['description'] ?? ''}\nالأولوية: ${item['priority']} • الحالة: ${item['status']}',
                   ),
@@ -55,7 +57,8 @@ class FeatureRequestsScreen extends ConsumerWidget {
                     },
                     itemBuilder: (_) => const [
                       PopupMenuItem(value: 'مقترحة', child: Text('مقترحة')),
-                      PopupMenuItem(value: 'قيد الدراسة', child: Text('قيد الدراسة')),
+                      PopupMenuItem(
+                          value: 'قيد الدراسة', child: Text('قيد الدراسة')),
                       PopupMenuItem(value: 'مخطط لها', child: Text('مخطط لها')),
                       PopupMenuItem(value: 'منفذة', child: Text('منفذة')),
                     ],
@@ -76,7 +79,8 @@ class _FeatureRequestForm extends ConsumerStatefulWidget {
   const _FeatureRequestForm();
 
   @override
-  ConsumerState<_FeatureRequestForm> createState() => _FeatureRequestFormState();
+  ConsumerState<_FeatureRequestForm> createState() =>
+      _FeatureRequestFormState();
 }
 
 class _FeatureRequestFormState extends ConsumerState<_FeatureRequestForm> {
@@ -110,29 +114,40 @@ class _FeatureRequestFormState extends ConsumerState<_FeatureRequestForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('طلب ميزة جديدة', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text('طلب ميزة جديدة',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
-            TextField(controller: title, decoration: const InputDecoration(labelText: 'عنوان الميزة')),
+            TextField(
+                controller: title,
+                decoration: const InputDecoration(labelText: 'عنوان الميزة')),
             const SizedBox(height: 10),
-            TextField(controller: description, maxLines: 3, decoration: const InputDecoration(labelText: 'وصف الميزة')),
+            TextField(
+                controller: description,
+                maxLines: 3,
+                decoration: const InputDecoration(labelText: 'وصف الميزة')),
             const SizedBox(height: 10),
             DropdownButtonFormField<String>(
-              value: priority,
+              initialValue: priority,
               decoration: const InputDecoration(labelText: 'الأولوية'),
               items: const [
                 DropdownMenuItem(value: 'عالية', child: Text('عالية')),
                 DropdownMenuItem(value: 'متوسطة', child: Text('متوسطة')),
                 DropdownMenuItem(value: 'منخفضة', child: Text('منخفضة')),
               ],
-              onChanged: (value) => setState(() => priority = value ?? 'متوسطة'),
+              onChanged: (value) =>
+                  setState(() => priority = value ?? 'متوسطة'),
             ),
             const SizedBox(height: 14),
-            FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+            FilledButton.icon(
+                onPressed: save,
+                icon: const Icon(Icons.save_rounded),
+                label: const Text('حفظ')),
           ],
         ),
       ),

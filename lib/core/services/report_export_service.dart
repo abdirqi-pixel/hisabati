@@ -22,9 +22,12 @@ class ReportExportService {
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.start,
               children: [
-                pw.Text('تقرير حساباتي', style: pw.TextStyle(fontSize: 26, fontWeight: pw.FontWeight.bold)),
+                pw.Text('تقرير حساباتي',
+                    style: pw.TextStyle(
+                        fontSize: 26, fontWeight: pw.FontWeight.bold)),
                 pw.SizedBox(height: 10),
-                pw.Text('إجمالي المصروفات: ${total.toStringAsFixed(0)} $currencySymbol'),
+                pw.Text(
+                    'إجمالي المصروفات: ${total.toStringAsFixed(0)} $currencySymbol'),
                 pw.SizedBox(height: 18),
                 _table('حسب التصنيف', byCategory, currencySymbol),
                 pw.SizedBox(height: 18),
@@ -39,16 +42,19 @@ class ReportExportService {
     );
 
     final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/hisabati_report_${DateTime.now().millisecondsSinceEpoch}.pdf');
+    final file = File(
+        '${dir.path}/hisabati_report_${DateTime.now().millisecondsSinceEpoch}.pdf');
     await file.writeAsBytes(await pdf.save());
     return file;
   }
 
-  pw.Widget _table(String title, List<Map<String, Object?>> rows, String symbol) {
+  pw.Widget _table(
+      String title, List<Map<String, Object?>> rows, String symbol) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text(title, style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+        pw.Text(title,
+            style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
         pw.SizedBox(height: 8),
         pw.TableHelper.fromTextArray(
           headers: ['الاسم', 'عدد العمليات', 'الإجمالي'],
@@ -65,11 +71,13 @@ class ReportExportService {
     );
   }
 
-  pw.Widget _dayTable(String title, List<Map<String, Object?>> rows, String symbol) {
+  pw.Widget _dayTable(
+      String title, List<Map<String, Object?>> rows, String symbol) {
     return pw.Column(
       crossAxisAlignment: pw.CrossAxisAlignment.start,
       children: [
-        pw.Text(title, style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
+        pw.Text(title,
+            style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
         pw.SizedBox(height: 8),
         pw.TableHelper.fromTextArray(
           headers: ['اليوم', 'عدد العمليات', 'الإجمالي'],
@@ -110,12 +118,14 @@ class ReportExportService {
     if (bytes == null) throw Exception('تعذر إنشاء ملف Excel');
 
     final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/hisabati_report_${DateTime.now().millisecondsSinceEpoch}.xlsx');
+    final file = File(
+        '${dir.path}/hisabati_report_${DateTime.now().millisecondsSinceEpoch}.xlsx');
     await file.writeAsBytes(bytes);
     return file;
   }
 
-  void _writeSheet(Excel excel, String sheetName, List<Map<String, Object?>> rows, String symbol) {
+  void _writeSheet(Excel excel, String sheetName,
+      List<Map<String, Object?>> rows, String symbol) {
     final sheet = excel[sheetName];
     sheet.appendRow([
       TextCellValue('الاسم'),
@@ -133,7 +143,8 @@ class ReportExportService {
     }
   }
 
-  void _writeDaySheet(Excel excel, String sheetName, List<Map<String, Object?>> rows, String symbol) {
+  void _writeDaySheet(Excel excel, String sheetName,
+      List<Map<String, Object?>> rows, String symbol) {
     final sheet = excel[sheetName];
     sheet.appendRow([
       TextCellValue('اليوم'),

@@ -24,9 +24,12 @@ class ReportsScreen extends ConsumerWidget {
 
           return reports.when(
             data: (data) {
-              final byCategory = (data['byCategory'] as List).cast<Map<String, Object?>>();
-              final byPerson = (data['byPerson'] as List).cast<Map<String, Object?>>();
-              final byDay = (data['byDay'] as List).cast<Map<String, Object?>>();
+              final byCategory =
+                  (data['byCategory'] as List).cast<Map<String, Object?>>();
+              final byPerson =
+                  (data['byPerson'] as List).cast<Map<String, Object?>>();
+              final byDay =
+                  (data['byDay'] as List).cast<Map<String, Object?>>();
               final total = (data['total'] as num?) ?? 0;
               final count = (data['count'] as num?) ?? 0;
 
@@ -36,20 +39,26 @@ class ReportsScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                      gradient: const LinearGradient(
+                          colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                       borderRadius: BorderRadius.circular(28),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('إجمالي المصروفات', style: TextStyle(color: Colors.white70)),
+                        const Text('إجمالي المصروفات',
+                            style: TextStyle(color: Colors.white70)),
                         const SizedBox(height: 8),
                         Text(
                           MoneyFormatter.format(total, symbol),
-                          style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
-                        Text('عدد العمليات: $count', style: const TextStyle(color: Colors.white)),
+                        Text('عدد العمليات: $count',
+                            style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
@@ -66,14 +75,16 @@ class ReportsScreen extends ConsumerWidget {
                       Expanded(
                         child: FilledButton.icon(
                           onPressed: () async {
-                            final file = await ReportExportService().exportExpensesPdf(
+                            final file =
+                                await ReportExportService().exportExpensesPdf(
                               currencySymbol: symbol,
                               total: total,
                               byCategory: byCategory,
                               byPerson: byPerson,
                               byDay: byDay,
                             );
-                            await Share.shareXFiles([XFile(file.path)], text: 'تقرير حساباتي PDF');
+                            await Share.shareXFiles([XFile(file.path)],
+                                text: 'تقرير حساباتي PDF');
                           },
                           icon: const Icon(Icons.picture_as_pdf_rounded),
                           label: const Text('تصدير PDF'),
@@ -83,14 +94,16 @@ class ReportsScreen extends ConsumerWidget {
                       Expanded(
                         child: FilledButton.tonalIcon(
                           onPressed: () async {
-                            final file = await ReportExportService().exportExpensesExcel(
+                            final file =
+                                await ReportExportService().exportExpensesExcel(
                               currencySymbol: symbol,
                               total: total,
                               byCategory: byCategory,
                               byPerson: byPerson,
                               byDay: byDay,
                             );
-                            await Share.shareXFiles([XFile(file.path)], text: 'تقرير حساباتي Excel');
+                            await Share.shareXFiles([XFile(file.path)],
+                                text: 'تقرير حساباتي Excel');
                           },
                           icon: const Icon(Icons.table_chart_rounded),
                           label: const Text('Excel'),
@@ -107,7 +120,8 @@ class ReportsScreen extends ConsumerWidget {
                               value: (e['total'] as num?) ?? 0,
                             ))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 14),
                   SimpleBarChart(
@@ -118,7 +132,8 @@ class ReportsScreen extends ConsumerWidget {
                               value: (e['total'] as num?) ?? 0,
                             ))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 14),
                   SimpleBarChart(
@@ -129,10 +144,12 @@ class ReportsScreen extends ConsumerWidget {
                               value: (e['total'] as num?) ?? 0,
                             ))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 18),
-                  _Section(title: 'حسب التصنيف', items: byCategory, symbol: symbol),
+                  _Section(
+                      title: 'حسب التصنيف', items: byCategory, symbol: symbol),
                   const SizedBox(height: 18),
                   _Section(title: 'حسب الشخص', items: byPerson, symbol: symbol),
                   const SizedBox(height: 18),
@@ -167,18 +184,23 @@ class _Section extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
+        Text(title,
+            style: const TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         if (items.isEmpty)
-          const Card(child: Padding(padding: EdgeInsets.all(18), child: Text('لا توجد بيانات')))
+          const Card(
+              child: Padding(
+                  padding: EdgeInsets.all(18), child: Text('لا توجد بيانات')))
         else
           ...items.map((item) {
             final total = (item['total'] as num?) ?? 0;
             final count = item['count'] ?? 0;
             return Card(
               child: ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.pie_chart_rounded)),
-                title: Text(item['name'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                leading:
+                    const CircleAvatar(child: Icon(Icons.pie_chart_rounded)),
+                title: Text(item['name'].toString(),
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text('عدد العمليات: $count'),
                 trailing: Text(
                   MoneyFormatter.format(total, symbol),
@@ -206,19 +228,25 @@ class _DaySection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('حسب اليوم', style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
+        const Text('حسب اليوم',
+            style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold)),
         const SizedBox(height: 10),
         if (items.isEmpty)
-          const Card(child: Padding(padding: EdgeInsets.all(18), child: Text('لا توجد بيانات')))
+          const Card(
+              child: Padding(
+                  padding: EdgeInsets.all(18), child: Text('لا توجد بيانات')))
         else
           ...items.map((item) {
             final total = (item['total'] as num?) ?? 0;
             return Card(
               child: ListTile(
-                leading: const CircleAvatar(child: Icon(Icons.calendar_today_rounded)),
-                title: Text(item['date'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                leading: const CircleAvatar(
+                    child: Icon(Icons.calendar_today_rounded)),
+                title: Text(item['date'].toString(),
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text('عدد العمليات: ${item['count']}'),
-                trailing: Text(MoneyFormatter.format(total, symbol), style: const TextStyle(fontWeight: FontWeight.bold)),
+                trailing: Text(MoneyFormatter.format(total, symbol),
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
               ),
             );
           }),

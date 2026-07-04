@@ -34,7 +34,8 @@ class FinancialMonitorScreen extends ConsumerWidget {
           IconButton(
             onPressed: () async {
               final s = await ref.read(settingsProvider.future);
-              await shareSummary(ref, (s?['currency_symbol'] ?? 'د.ع').toString());
+              await shareSummary(
+                  ref, (s?['currency_symbol'] ?? 'د.ع').toString());
             },
             icon: const Icon(Icons.share_rounded),
           ),
@@ -46,8 +47,10 @@ class FinancialMonitorScreen extends ConsumerWidget {
 
           return monitor.when(
             data: (data) {
-              final topSpending = (data['topSpending'] as List).cast<Map<String, Object?>>();
-              final ranking = (data['projectRanking'] as List).cast<Map<String, Object?>>();
+              final topSpending =
+                  (data['topSpending'] as List).cast<Map<String, Object?>>();
+              final ranking =
+                  (data['projectRanking'] as List).cast<Map<String, Object?>>();
 
               return ListView(
                 padding: const EdgeInsets.all(18),
@@ -55,20 +58,28 @@ class FinancialMonitorScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                      gradient: const LinearGradient(
+                          colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                       borderRadius: BorderRadius.circular(28),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('توقع التدفق النقدي', style: TextStyle(color: Colors.white70)),
+                        const Text('توقع التدفق النقدي',
+                            style: TextStyle(color: Colors.white70)),
                         const SizedBox(height: 8),
                         Text(
-                          MoneyFormatter.format((data['expectedMonthCashFlow'] as num?) ?? 0, symbol),
-                          style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                          MoneyFormatter.format(
+                              (data['expectedMonthCashFlow'] as num?) ?? 0,
+                              symbol),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 8),
-                        const Text('التدفق المتوقع نهاية الشهر', style: TextStyle(color: Colors.white)),
+                        const Text('التدفق المتوقع نهاية الشهر',
+                            style: TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
@@ -81,19 +92,40 @@ class FinancialMonitorScreen extends ConsumerWidget {
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     children: [
-                      _Metric('الرصيد الحالي', MoneyFormatter.format((data['currentBalance'] as num?) ?? 0, symbol), Icons.account_balance_wallet_rounded),
-                      _Metric('تدفق الشهر', MoneyFormatter.format((data['currentCashFlow'] as num?) ?? 0, symbol), Icons.compare_arrows_rounded),
-                      _Metric('مصروف متوقع', MoneyFormatter.format((data['expectedMonthExpense'] as num?) ?? 0, symbol), Icons.trending_down_rounded),
-                      _Metric('المعدل اليومي', MoneyFormatter.format((data['dailyExpenseAverage'] as num?) ?? 0, symbol), Icons.today_rounded),
+                      _Metric(
+                          'الرصيد الحالي',
+                          MoneyFormatter.format(
+                              (data['currentBalance'] as num?) ?? 0, symbol),
+                          Icons.account_balance_wallet_rounded),
+                      _Metric(
+                          'تدفق الشهر',
+                          MoneyFormatter.format(
+                              (data['currentCashFlow'] as num?) ?? 0, symbol),
+                          Icons.compare_arrows_rounded),
+                      _Metric(
+                          'مصروف متوقع',
+                          MoneyFormatter.format(
+                              (data['expectedMonthExpense'] as num?) ?? 0,
+                              symbol),
+                          Icons.trending_down_rounded),
+                      _Metric(
+                          'المعدل اليومي',
+                          MoneyFormatter.format(
+                              (data['dailyExpenseAverage'] as num?) ?? 0,
+                              symbol),
+                          Icons.today_rounded),
                     ],
                   ),
                   const SizedBox(height: 14),
                   SimpleBarChart(
                     title: 'أكبر بنود الصرف',
                     items: topSpending
-                        .map((e) => ChartItem(label: (e['name'] ?? 'بدون تصنيف').toString(), value: (e['total'] as num?) ?? 0))
+                        .map((e) => ChartItem(
+                            label: (e['name'] ?? 'بدون تصنيف').toString(),
+                            value: (e['total'] as num?) ?? 0))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 14),
                   _ProjectRanking(items: ranking, symbol: symbol),
@@ -163,7 +195,8 @@ class _ProjectRanking extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('ترتيب المشاريع حسب الصافي', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text('ترتيب المشاريع حسب الصافي',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             if (items.isEmpty)
               const Text('لا توجد بيانات')
@@ -174,7 +207,8 @@ class _ProjectRanking extends StatelessWidget {
                 return ListTile(
                   leading: CircleAvatar(child: Text('${items.indexOf(p) + 1}')),
                   title: Text(p['name'].toString()),
-                  subtitle: Text('إيرادات: ${MoneyFormatter.format((p['incomes'] as num?) ?? 0, s)} • مصروفات: ${MoneyFormatter.format((p['expenses'] as num?) ?? 0, s)}'),
+                  subtitle: Text(
+                      'إيرادات: ${MoneyFormatter.format((p['incomes'] as num?) ?? 0, s)} • مصروفات: ${MoneyFormatter.format((p['expenses'] as num?) ?? 0, s)}'),
                   trailing: Text(
                     MoneyFormatter.format(net, s),
                     style: TextStyle(
@@ -206,7 +240,9 @@ class FinancialGoalsPanel extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('الأهداف المالية', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Text('الأهداف المالية',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
                 if (items.isEmpty)
                   const Text('لا توجد أهداف مالية بعد')
@@ -214,7 +250,8 @@ class FinancialGoalsPanel extends ConsumerWidget {
                   ...items.map((g) {
                     final target = (g['target_amount'] as num?) ?? 0;
                     final current = (g['current_amount'] as num?) ?? 0;
-                    final percent = target <= 0 ? 0.0 : (current / target).clamp(0.0, 1.0);
+                    final percent =
+                        target <= 0 ? 0.0 : (current / target).clamp(0.0, 1.0);
                     final symbol = g['currency_symbol'].toString();
 
                     return Padding(
@@ -222,11 +259,14 @@ class FinancialGoalsPanel extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(g['title'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(g['title'].toString(),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           const SizedBox(height: 6),
                           LinearProgressIndicator(value: percent),
                           const SizedBox(height: 4),
-                          Text('${MoneyFormatter.format(current, symbol)} من ${MoneyFormatter.format(target, symbol)}'),
+                          Text(
+                              '${MoneyFormatter.format(current, symbol)} من ${MoneyFormatter.format(target, symbol)}'),
                         ],
                       ),
                     );
@@ -265,7 +305,8 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   Future<void> save() async {
     final targetAmount = double.tryParse(target.text.trim());
     final currentAmount = double.tryParse(current.text.trim()) ?? 0;
-    if (targetAmount == null || targetAmount <= 0 || title.text.trim().isEmpty) return;
+    if (targetAmount == null || targetAmount <= 0 || title.text.trim().isEmpty)
+      return;
 
     final db = await ref.read(appDatabaseProvider).database;
     final settings = await db.query('app_settings', limit: 1);
@@ -290,19 +331,32 @@ class _GoalFormState extends ConsumerState<_GoalForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('هدف مالي جديد', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('هدف مالي جديد',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 14),
-          TextField(controller: title, decoration: const InputDecoration(labelText: 'اسم الهدف')),
+          TextField(
+              controller: title,
+              decoration: const InputDecoration(labelText: 'اسم الهدف')),
           const SizedBox(height: 10),
-          TextField(controller: target, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'المبلغ المطلوب')),
+          TextField(
+              controller: target,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'المبلغ المطلوب')),
           const SizedBox(height: 10),
-          TextField(controller: current, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'المبلغ الحالي')),
+          TextField(
+              controller: current,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'المبلغ الحالي')),
           const SizedBox(height: 14),
-          FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+          FilledButton.icon(
+              onPressed: save,
+              icon: const Icon(Icons.save_rounded),
+              label: const Text('حفظ')),
         ],
       ),
     );

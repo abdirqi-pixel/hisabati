@@ -54,59 +54,70 @@ class ProjectsScreen extends ConsumerWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => ProjectDetailsScreen(projectId: p['id'] as int),
+                        builder: (_) =>
+                            ProjectDetailsScreen(projectId: p['id'] as int),
                       ),
                     );
                   },
                   child: Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: Row(
-                    children: [
-                      Text((p['icon'] ?? '📁').toString(), style: const TextStyle(fontSize: 38)),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(p['name'].toString(), style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 8),
-                            Text('الرمز: ${p['code'] ?? 'بدون رمز'}'),
-                            const SizedBox(height: 6),
-                            Text('الميزانية: ${MoneyFormatter.format(budget, symbol)}'),
-                            Text('الرصيد الافتتاحي: ${MoneyFormatter.format(opening, symbol)}'),
+                    padding: const EdgeInsets.all(18),
+                    child: Row(
+                      children: [
+                        Text((p['icon'] ?? '📁').toString(),
+                            style: const TextStyle(fontSize: 38)),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(p['name'].toString(),
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 8),
+                              Text('الرمز: ${p['code'] ?? 'بدون رمز'}'),
+                              const SizedBox(height: 6),
+                              Text(
+                                  'الميزانية: ${MoneyFormatter.format(budget, symbol)}'),
+                              Text(
+                                  'الرصيد الافتتاحي: ${MoneyFormatter.format(opening, symbol)}'),
+                            ],
+                          ),
+                        ),
+                        PopupMenuButton<String>(
+                          onSelected: (value) async {
+                            final db =
+                                await ref.read(appDatabaseProvider).database;
+
+                            if (value == 'edit') {
+                              context.go('/project-form?id=${p['id']}');
+                            }
+
+                            if (value == 'archive') {
+                              await db.update('projects', {'is_archived': 1},
+                                  where: 'id = ?', whereArgs: [p['id']]);
+                              ref.invalidate(projectsProvider);
+                              ref.invalidate(archivedProjectsProvider);
+                              ref.invalidate(dashboardSummaryProvider);
+                            }
+
+                            if (value == 'delete') {
+                              await db.update('projects', {'is_deleted': 1},
+                                  where: 'id = ?', whereArgs: [p['id']]);
+                              ref.invalidate(projectsProvider);
+                              ref.invalidate(dashboardSummaryProvider);
+                            }
+                          },
+                          itemBuilder: (_) => const [
+                            PopupMenuItem(value: 'edit', child: Text('تعديل')),
+                            PopupMenuItem(
+                                value: 'archive', child: Text('أرشفة')),
+                            PopupMenuItem(value: 'delete', child: Text('حذف')),
                           ],
                         ),
-                      ),
-                      PopupMenuButton<String>(
-                        onSelected: (value) async {
-                          final db = await ref.read(appDatabaseProvider).database;
-
-                          if (value == 'edit') {
-                            context.go('/project-form?id=${p['id']}');
-                          }
-
-                          if (value == 'archive') {
-                            await db.update('projects', {'is_archived': 1}, where: 'id = ?', whereArgs: [p['id']]);
-                            ref.invalidate(projectsProvider);
-                            ref.invalidate(archivedProjectsProvider);
-                            ref.invalidate(dashboardSummaryProvider);
-                          }
-
-                          if (value == 'delete') {
-                            await db.update('projects', {'is_deleted': 1}, where: 'id = ?', whereArgs: [p['id']]);
-                            ref.invalidate(projectsProvider);
-                            ref.invalidate(dashboardSummaryProvider);
-                          }
-                        },
-                        itemBuilder: (_) => const [
-                          PopupMenuItem(value: 'edit', child: Text('تعديل')),
-                          PopupMenuItem(value: 'archive', child: Text('أرشفة')),
-                          PopupMenuItem(value: 'delete', child: Text('حذف')),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
                 ),
               );
             },

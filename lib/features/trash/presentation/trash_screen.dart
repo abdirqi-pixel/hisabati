@@ -41,7 +41,8 @@ class TrashScreen extends ConsumerWidget {
             _SectionData('الأشخاص', 'persons', data['persons'] ?? []),
             _SectionData('التصنيفات', 'categories', data['categories'] ?? []),
             _SectionData('العمليات', 'expenses', data['expenses'] ?? []),
-            _SectionData('الصندوق', 'treasury_transactions', data['treasury_transactions'] ?? []),
+            _SectionData('الصندوق', 'treasury_transactions',
+                data['treasury_transactions'] ?? []),
             _SectionData('الديون والسلف', 'advances', data['advances'] ?? []),
             _SectionData('الإيرادات', 'incomes', data['incomes'] ?? []),
           ];
@@ -57,10 +58,15 @@ class TrashScreen extends ConsumerWidget {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(section.title, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                  Text(section.title,
+                      style: const TextStyle(
+                          fontSize: 22, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   ...section.items.map((item) {
-                    final title = item['name'] ?? item['serial_number'] ?? item['note'] ?? 'عنصر محذوف';
+                    final title = item['name'] ??
+                        item['serial_number'] ??
+                        item['note'] ??
+                        'عنصر محذوف';
                     return Card(
                       child: ListTile(
                         leading: const Icon(Icons.delete_rounded),

@@ -29,17 +29,22 @@ class CodeFixOnlyScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.construction_rounded, color: Colors.white, size: 44),
+                    Icon(Icons.construction_rounded,
+                        color: Colors.white, size: 44),
                     SizedBox(height: 12),
                     Text(
                       'مرحلة إصلاح الكود فقط',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -61,13 +66,17 @@ class CodeFixOnlyScreen extends ConsumerWidget {
                 ...items.map((item) {
                   return Card(
                     child: ListTile(
-                      leading: const Icon(Icons.description_rounded, color: Colors.blue),
-                      title: Text(item['file_path'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      subtitle: Text('السبب: ${item['reason'] ?? ''}\nالحالة: ${item['status']}'),
+                      leading: const Icon(Icons.description_rounded,
+                          color: Colors.blue),
+                      title: Text(item['file_path'].toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(
+                          'السبب: ${item['reason'] ?? ''}\nالحالة: ${item['status']}'),
                       isThreeLine: true,
                       trailing: PopupMenuButton<String>(
                         onSelected: (value) async {
-                          final db = await ref.read(appDatabaseProvider).database;
+                          final db =
+                              await ref.read(appDatabaseProvider).database;
                           await db.update(
                             'modified_file_logs',
                             {'status': value},
@@ -79,7 +88,9 @@ class CodeFixOnlyScreen extends ConsumerWidget {
                         itemBuilder: (_) => const [
                           PopupMenuItem(value: 'مفتوح', child: Text('مفتوح')),
                           PopupMenuItem(value: 'تم', child: Text('تم')),
-                          PopupMenuItem(value: 'يحتاج مراجعة', child: Text('يحتاج مراجعة')),
+                          PopupMenuItem(
+                              value: 'يحتاج مراجعة',
+                              child: Text('يحتاج مراجعة')),
                         ],
                       ),
                     ),
@@ -140,17 +151,27 @@ class _ModifiedFileFormState extends ConsumerState<_ModifiedFileForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('تسجيل ملف معدل', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('تسجيل ملف معدل',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
-          TextField(controller: filePath, decoration: const InputDecoration(labelText: 'مسار الملف')),
+          TextField(
+              controller: filePath,
+              decoration: const InputDecoration(labelText: 'مسار الملف')),
           const SizedBox(height: 10),
-          TextField(controller: reason, maxLines: 3, decoration: const InputDecoration(labelText: 'سبب التعديل')),
+          TextField(
+              controller: reason,
+              maxLines: 3,
+              decoration: const InputDecoration(labelText: 'سبب التعديل')),
           const SizedBox(height: 14),
-          FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+          FilledButton.icon(
+              onPressed: save,
+              icon: const Icon(Icons.save_rounded),
+              label: const Text('حفظ')),
         ],
       ),
     );

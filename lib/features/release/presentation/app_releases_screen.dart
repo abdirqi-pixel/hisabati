@@ -32,8 +32,10 @@ class AppReleasesScreen extends ConsumerWidget {
                     current ? Icons.verified_rounded : Icons.history_rounded,
                     color: current ? Colors.green : Colors.blue,
                   ),
-                  title: Text('${item['title']} - v${item['version']}', style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('${item['notes'] ?? ''}\nتاريخ الإصدار: ${item['release_date']}'),
+                  title: Text('${item['title']} - v${item['version']}',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                      '${item['notes'] ?? ''}\nتاريخ الإصدار: ${item['release_date']}'),
                   isThreeLine: true,
                   trailing: current ? const Text('الحالي') : null,
                 ),

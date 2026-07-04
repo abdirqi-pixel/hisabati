@@ -24,13 +24,17 @@ class SimpleBarChart extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text(title,
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 14),
             if (items.isEmpty)
               const Text('لا توجد بيانات')
             else
               ...items.map((item) {
-                final percent = maxValue == 0 ? 0.0 : (item.value / maxValue).clamp(0.0, 1.0);
+                final percent = maxValue == 0
+                    ? 0.0
+                    : (item.value / maxValue).clamp(0.0, 1.0);
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
@@ -39,7 +43,9 @@ class SimpleBarChart extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Expanded(child: Text(item.label, overflow: TextOverflow.ellipsis)),
+                          Expanded(
+                              child: Text(item.label,
+                                  overflow: TextOverflow.ellipsis)),
                           const SizedBox(width: 8),
                           Text(
                             valueLabelBuilder(item.value),

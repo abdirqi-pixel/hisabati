@@ -46,8 +46,10 @@ class _SecureBackupScreenState extends ConsumerState<SecureBackupScreen> {
     setState(() => working = true);
 
     try {
-      final file = await SecureBackupService(ref.read(appDatabaseProvider)).exportEncryptedBackup(password.text);
-      await Share.shareXFiles([XFile(file.path)], text: 'نسخة احتياطية مشفرة من حساباتي');
+      final file = await SecureBackupService(ref.read(appDatabaseProvider))
+          .exportEncryptedBackup(password.text);
+      await Share.shareXFiles([XFile(file.path)],
+          text: 'نسخة احتياطية مشفرة من حساباتي');
       message('تم إنشاء النسخة المشفرة');
     } catch (e) {
       message('حدث خطأ: $e');
@@ -75,7 +77,8 @@ class _SecureBackupScreenState extends ConsumerState<SecureBackupScreen> {
         return;
       }
 
-      await SecureBackupService(ref.read(appDatabaseProvider)).restoreEncryptedBackup(
+      await SecureBackupService(ref.read(appDatabaseProvider))
+          .restoreEncryptedBackup(
         encryptedFile: File(result.files.single.path!),
         password: password.text,
       );
@@ -120,17 +123,22 @@ class _SecureBackupScreenState extends ConsumerState<SecureBackupScreen> {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.enhanced_encryption_rounded, color: Colors.white, size: 44),
+                    Icon(Icons.enhanced_encryption_rounded,
+                        color: Colors.white, size: 44),
                     SizedBox(height: 12),
                     Text(
                       'حماية النسخة الاحتياطية',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Text(

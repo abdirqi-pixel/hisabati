@@ -52,7 +52,8 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
 
     setState(() => working = true);
     try {
-      final file = await CloudSyncService(ref.read(appDatabaseProvider)).uploadBackupToSyncFolder(
+      final file = await CloudSyncService(ref.read(appDatabaseProvider))
+          .uploadBackupToSyncFolder(
         password: password.text,
       );
 
@@ -116,17 +117,22 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.cloud_sync_rounded, color: Colors.white, size: 44),
+                    Icon(Icons.cloud_sync_rounded,
+                        color: Colors.white, size: 44),
                     SizedBox(height: 12),
                     Text(
                       'مزامنة اختيارية',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -147,20 +153,26 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
                       children: [
                         SwitchListTile(
                           title: const Text('تفعيل المزامنة'),
-                          subtitle: Text(s?['folder_path']?.toString() ?? 'لم يتم اختيار مجلد'),
+                          subtitle: Text(s?['folder_path']?.toString() ??
+                              'لم يتم اختيار مجلد'),
                           value: enabled,
                           onChanged: (value) async {
-                            await CloudSyncService(ref.read(appDatabaseProvider)).updateSettings(isEnabled: value);
+                            await CloudSyncService(
+                                    ref.read(appDatabaseProvider))
+                                .updateSettings(isEnabled: value);
                             ref.invalidate(cloudSyncSettingsProvider);
                           },
                         ),
                         SwitchListTile(
                           title: const Text('مزامنة تلقائية'),
-                          subtitle: const Text('سيتم استخدامها لاحقًا عند إغلاق التطبيق أو يوميًا'),
+                          subtitle: const Text(
+                              'سيتم استخدامها لاحقًا عند إغلاق التطبيق أو يوميًا'),
                           value: auto,
                           onChanged: enabled
                               ? (value) async {
-                                  await CloudSyncService(ref.read(appDatabaseProvider)).updateSettings(autoSyncEnabled: value);
+                                  await CloudSyncService(
+                                          ref.read(appDatabaseProvider))
+                                      .updateSettings(autoSyncEnabled: value);
                                   ref.invalidate(cloudSyncSettingsProvider);
                                 }
                               : null,
@@ -171,7 +183,8 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
                           subtitle: Text(s?['last_sync_at'] == null
                               ? 'لا توجد مزامنة سابقة'
                               : 'آخر مزامنة: ${s?['last_sync_at']}'),
-                          trailing: const Icon(Icons.arrow_back_ios_new_rounded),
+                          trailing:
+                              const Icon(Icons.arrow_back_ios_new_rounded),
                           onTap: chooseFolder,
                         ),
                       ],
@@ -197,7 +210,8 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
                 label: const Text('رفع نسخة مشفرة الآن'),
               ),
               const SizedBox(height: 18),
-              const Text('النسخ المتوفرة في مجلد المزامنة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text('النسخ المتوفرة في مجلد المزامنة',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               backups.when(
                 data: (items) {
@@ -218,11 +232,14 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
                       return Card(
                         child: ListTile(
                           leading: const Icon(Icons.backup_rounded),
-                          title: Text(entity.path.split(Platform.pathSeparator).last),
-                          subtitle: Text('الحجم: ${stat.size} بايت\\nآخر تعديل: ${stat.modified}'),
+                          title: Text(
+                              entity.path.split(Platform.pathSeparator).last),
+                          subtitle: Text(
+                              'الحجم: ${stat.size} بايت\\nآخر تعديل: ${stat.modified}'),
                           isThreeLine: true,
                           trailing: TextButton(
-                            onPressed: working ? null : () => restoreBackup(file),
+                            onPressed:
+                                working ? null : () => restoreBackup(file),
                             child: const Text('استعادة'),
                           ),
                         ),
@@ -234,7 +251,8 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
                 error: (e, _) => Text('خطأ: $e'),
               ),
               const SizedBox(height: 18),
-              const Text('سجل المزامنة', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text('سجل المزامنة',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               history.when(
                 data: (items) {
                   if (items.isEmpty) {
@@ -252,7 +270,8 @@ class _CloudSyncScreenState extends ConsumerState<CloudSyncScreen> {
                         child: ListTile(
                           leading: const Icon(Icons.history_rounded),
                           title: Text(h['status'].toString()),
-                          subtitle: Text('${h['message'] ?? ''}\\n${h['created_at']}'),
+                          subtitle: Text(
+                              '${h['message'] ?? ''}\\n${h['created_at']}'),
                           isThreeLine: true,
                         ),
                       );

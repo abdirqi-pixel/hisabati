@@ -9,10 +9,12 @@ class SecuritySettingsScreen extends ConsumerStatefulWidget {
   const SecuritySettingsScreen({super.key});
 
   @override
-  ConsumerState<SecuritySettingsScreen> createState() => _SecuritySettingsScreenState();
+  ConsumerState<SecuritySettingsScreen> createState() =>
+      _SecuritySettingsScreenState();
 }
 
-class _SecuritySettingsScreenState extends ConsumerState<SecuritySettingsScreen> {
+class _SecuritySettingsScreenState
+    extends ConsumerState<SecuritySettingsScreen> {
   final pin = TextEditingController();
   final confirmPin = TextEditingController();
 
@@ -45,7 +47,8 @@ class _SecuritySettingsScreenState extends ConsumerState<SecuritySettingsScreen>
 
   void showMessage(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -67,17 +70,22 @@ class _SecuritySettingsScreenState extends ConsumerState<SecuritySettingsScreen>
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.security_rounded, color: Colors.white, size: 42),
+                    const Icon(Icons.security_rounded,
+                        color: Colors.white, size: 42),
                     const SizedBox(height: 12),
                     const Text(
                       'حماية التطبيق',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -130,18 +138,26 @@ class _SecuritySettingsScreenState extends ConsumerState<SecuritySettingsScreen>
                 child: SwitchListTile(
                   secondary: const Icon(Icons.fingerprint_rounded),
                   title: const Text('فتح بالبصمة أو Face ID'),
-                  subtitle: const Text('يتطلب أن يكون الجهاز يدعم المصادقة الحيوية'),
+                  subtitle:
+                      const Text('يتطلب أن يكون الجهاز يدعم المصادقة الحيوية'),
                   value: biometricEnabled,
                   onChanged: pinEnabled
                       ? (value) async {
-                          final canUse = await ref.read(securityActionsProvider).canUseBiometrics();
+                          final canUse = await ref
+                              .read(securityActionsProvider)
+                              .canUseBiometrics();
                           if (!canUse && mounted) {
-                            showMessage('الجهاز لا يدعم البصمة أو Face ID أو لم يتم تفعيلها');
+                            showMessage(
+                                'الجهاز لا يدعم البصمة أو Face ID أو لم يتم تفعيلها');
                             return;
                           }
 
-                          await ref.read(securityActionsProvider).setBiometricEnabled(value);
-                          showMessage(value ? 'تم تفعيل المصادقة الحيوية' : 'تم إيقاف المصادقة الحيوية');
+                          await ref
+                              .read(securityActionsProvider)
+                              .setBiometricEnabled(value);
+                          showMessage(value
+                              ? 'تم تفعيل المصادقة الحيوية'
+                              : 'تم إيقاف المصادقة الحيوية');
                         }
                       : null,
                 ),
@@ -154,10 +170,11 @@ class _SecuritySettingsScreenState extends ConsumerState<SecuritySettingsScreen>
                   subtitle: Text('بعد $autoLockMinutes دقيقة من الخمول'),
                   value: autoLockEnabled,
                   onChanged: pinEnabled
-                      ? (value) => ref.read(securityActionsProvider).updateAutoLock(
-                            enabled: value,
-                            minutes: autoLockMinutes,
-                          )
+                      ? (value) =>
+                          ref.read(securityActionsProvider).updateAutoLock(
+                                enabled: value,
+                                minutes: autoLockMinutes,
+                              )
                       : null,
                 ),
               ),
@@ -185,7 +202,9 @@ class _SecuritySettingsScreenState extends ConsumerState<SecuritySettingsScreen>
                           );
 
                           if (selected != null) {
-                            await ref.read(securityActionsProvider).updateAutoLock(
+                            await ref
+                                .read(securityActionsProvider)
+                                .updateAutoLock(
                                   enabled: autoLockEnabled,
                                   minutes: selected,
                                 );

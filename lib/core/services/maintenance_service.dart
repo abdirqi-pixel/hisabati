@@ -17,7 +17,8 @@ class MaintenanceService {
 
     return {
       'projects': await count('projects', where: 'is_deleted = 0'),
-      'archivedProjects': await count('projects', where: 'is_archived = 1 AND is_deleted = 0'),
+      'archivedProjects':
+          await count('projects', where: 'is_archived = 1 AND is_deleted = 0'),
       'persons': await count('persons', where: 'is_deleted = 0'),
       'expenses': await count('expenses', where: 'is_deleted = 0'),
       'incomes': await count('incomes', where: 'is_deleted = 0'),
@@ -62,7 +63,8 @@ class MaintenanceService {
       deleted += await txn.delete('expenses', where: 'is_deleted = 1');
       deleted += await txn.delete('incomes', where: 'is_deleted = 1');
       deleted += await txn.delete('advances', where: 'is_deleted = 1');
-      deleted += await txn.delete('treasury_transactions', where: 'is_deleted = 1');
+      deleted +=
+          await txn.delete('treasury_transactions', where: 'is_deleted = 1');
       deleted += await txn.delete('categories', where: 'is_deleted = 1');
       deleted += await txn.delete('persons', where: 'is_deleted = 1');
       deleted += await txn.delete('projects', where: 'is_deleted = 1');

@@ -57,9 +57,11 @@ class BackupService {
     data['tables'] = tablesData;
 
     final dir = await getApplicationDocumentsDirectory();
-    final fileName = 'hisabati_backup_${DateTime.now().millisecondsSinceEpoch}.json';
+    final fileName =
+        'hisabati_backup_${DateTime.now().millisecondsSinceEpoch}.json';
     final file = File('${dir.path}/$fileName');
-    await file.writeAsString(const JsonEncoder.withIndent('  ').convert(data), encoding: utf8);
+    await file.writeAsString(const JsonEncoder.withIndent('  ').convert(data),
+        encoding: utf8);
     return file;
   }
 

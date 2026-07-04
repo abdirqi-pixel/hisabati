@@ -13,7 +13,8 @@ class RecurringService {
 
     final due = await db.query(
       'recurring_transactions',
-      where: 'is_active = 1 AND next_run_date <= ? AND (end_date IS NULL OR end_date = "" OR end_date >= ?)',
+      where:
+          'is_active = 1 AND next_run_date <= ? AND (end_date IS NULL OR end_date = "" OR end_date >= ?)',
       whereArgs: [today, today],
       orderBy: 'next_run_date ASC',
     );
@@ -93,7 +94,8 @@ class RecurringService {
       await AppNotificationService(database).create(
         type: 'recurring_created',
         title: 'تم إنشاء عملية دورية',
-        message: 'تم إنشاء ${item['type'] == 'expense' ? 'مصروف' : 'إيراد'}: ${item['title']}',
+        message:
+            'تم إنشاء ${item['type'] == 'expense' ? 'مصروف' : 'إيراد'}: ${item['title']}',
         entityType: 'recurring',
         entityId: recurringId,
       );
@@ -114,7 +116,8 @@ class RecurringService {
 
   Future<void> _advanceNextRun(Map<String, Object?> item) async {
     final db = await database.database;
-    final current = DateTime.tryParse(item['next_run_date'].toString()) ?? DateTime.now();
+    final current =
+        DateTime.tryParse(item['next_run_date'].toString()) ?? DateTime.now();
     final interval = (item['interval_value'] as int?) ?? 1;
     final frequency = item['frequency'].toString();
 

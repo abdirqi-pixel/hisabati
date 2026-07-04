@@ -37,8 +37,11 @@ class SecureBackupService {
     };
 
     final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/hisabati_secure_backup_${DateTime.now().millisecondsSinceEpoch}.hbak');
-    await file.writeAsString(const JsonEncoder.withIndent('  ').convert(payload), encoding: utf8);
+    final file = File(
+        '${dir.path}/hisabati_secure_backup_${DateTime.now().millisecondsSinceEpoch}.hbak');
+    await file.writeAsString(
+        const JsonEncoder.withIndent('  ').convert(payload),
+        encoding: utf8);
 
     try {
       await plainFile.delete();
@@ -78,7 +81,8 @@ class SecureBackupService {
     }
 
     final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/hisabati_decrypted_${DateTime.now().millisecondsSinceEpoch}.json');
+    final file = File(
+        '${dir.path}/hisabati_decrypted_${DateTime.now().millisecondsSinceEpoch}.json');
     await file.writeAsString(plainText, encoding: utf8);
     return file;
   }

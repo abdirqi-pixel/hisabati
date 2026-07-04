@@ -34,22 +34,34 @@ class TreasuryScreen extends ConsumerWidget {
                 data: (sum) => Container(
                   padding: const EdgeInsets.all(22),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                    gradient: const LinearGradient(
+                        colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                     borderRadius: BorderRadius.circular(28),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('الرصيد الحالي', style: TextStyle(color: Colors.white70)),
+                      const Text('الرصيد الحالي',
+                          style: TextStyle(color: Colors.white70)),
                       const SizedBox(height: 8),
                       Text(
-                        MoneyFormatter.format(sum['currentBalance'] ?? 0, symbol),
-                        style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                        MoneyFormatter.format(
+                            sum['currentBalance'] ?? 0, symbol),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 14),
-                      Text('الإيداعات: ${MoneyFormatter.format(sum['deposits'] ?? 0, symbol)}', style: const TextStyle(color: Colors.white)),
-                      Text('السحوبات: ${MoneyFormatter.format(sum['withdrawals'] ?? 0, symbol)}', style: const TextStyle(color: Colors.white)),
-                      Text('المصروفات: ${MoneyFormatter.format(sum['expensesTotal'] ?? 0, symbol)}', style: const TextStyle(color: Colors.white)),
+                      Text(
+                          'الإيداعات: ${MoneyFormatter.format(sum['deposits'] ?? 0, symbol)}',
+                          style: const TextStyle(color: Colors.white)),
+                      Text(
+                          'السحوبات: ${MoneyFormatter.format(sum['withdrawals'] ?? 0, symbol)}',
+                          style: const TextStyle(color: Colors.white)),
+                      Text(
+                          'المصروفات: ${MoneyFormatter.format(sum['expensesTotal'] ?? 0, symbol)}',
+                          style: const TextStyle(color: Colors.white)),
                     ],
                   ),
                 ),
@@ -61,7 +73,8 @@ class TreasuryScreen extends ConsumerWidget {
             error: (e, _) => Text('خطأ: $e'),
           ),
           const SizedBox(height: 18),
-          const Text('آخر حركات الصندوق', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('آخر حركات الصندوق',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 12),
           transactions.when(
             data: (items) {
@@ -79,13 +92,16 @@ class TreasuryScreen extends ConsumerWidget {
                   return Card(
                     child: ListTile(
                       leading: CircleAvatar(
-                        child: Icon(isDeposit ? Icons.add_rounded : Icons.remove_rounded),
+                        child: Icon(isDeposit
+                            ? Icons.add_rounded
+                            : Icons.remove_rounded),
                       ),
                       title: Text(
                         '${t['amount']} ${t['currency_symbol']}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text('${isDeposit ? 'إيداع' : 'سحب'} • ${t['note'] ?? ''}'),
+                      subtitle: Text(
+                          '${isDeposit ? 'إيداع' : 'سحب'} • ${t['note'] ?? ''}'),
                       trailing: Text((t['transaction_date'] ?? '').toString()),
                     ),
                   );
@@ -151,16 +167,24 @@ class _TreasuryFormState extends ConsumerState<_TreasuryForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('حركة صندوق جديدة', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+          const Text('حركة صندوق جديدة',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 16),
           SegmentedButton<String>(
             segments: const [
-              ButtonSegment(value: 'deposit', label: Text('إيداع'), icon: Icon(Icons.add_rounded)),
-              ButtonSegment(value: 'withdraw', label: Text('سحب'), icon: Icon(Icons.remove_rounded)),
+              ButtonSegment(
+                  value: 'deposit',
+                  label: Text('إيداع'),
+                  icon: Icon(Icons.add_rounded)),
+              ButtonSegment(
+                  value: 'withdraw',
+                  label: Text('سحب'),
+                  icon: Icon(Icons.remove_rounded)),
             ],
             selected: {type},
             onSelectionChanged: (value) => setState(() => type = value.first),
@@ -169,15 +193,20 @@ class _TreasuryFormState extends ConsumerState<_TreasuryForm> {
           TextField(
             controller: amount,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'المبلغ', prefixIcon: Icon(Icons.payments_rounded)),
+            decoration: const InputDecoration(
+                labelText: 'المبلغ', prefixIcon: Icon(Icons.payments_rounded)),
           ),
           const SizedBox(height: 10),
           TextField(
             controller: note,
-            decoration: const InputDecoration(labelText: 'ملاحظة', prefixIcon: Icon(Icons.notes_rounded)),
+            decoration: const InputDecoration(
+                labelText: 'ملاحظة', prefixIcon: Icon(Icons.notes_rounded)),
           ),
           const SizedBox(height: 16),
-          FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+          FilledButton.icon(
+              onPressed: save,
+              icon: const Icon(Icons.save_rounded),
+              label: const Text('حفظ')),
         ],
       ),
     );

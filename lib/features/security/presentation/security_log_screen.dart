@@ -42,10 +42,13 @@ class SecurityLogScreen extends ConsumerWidget {
 
               return Card(
                 child: ListTile(
-                  leading: CircleAvatar(child: Icon(iconFor(item['event_type'].toString()))),
-                  title: Text(item['message'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  leading: CircleAvatar(
+                      child: Icon(iconFor(item['event_type'].toString()))),
+                  title: Text(item['message'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(item['event_type'].toString()),
-                  trailing: Text(item['created_at'].toString().split('T').first),
+                  trailing:
+                      Text(item['created_at'].toString().split('T').first),
                 ),
               );
             },

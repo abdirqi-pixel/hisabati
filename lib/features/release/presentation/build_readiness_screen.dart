@@ -23,33 +23,46 @@ class BuildReadinessScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.android_rounded, color: Colors.white, size: 44),
+                    const Icon(Icons.android_rounded,
+                        color: Colors.white, size: 44),
                     const SizedBox(height: 12),
                     const Text(
                       'تجهيز APK و AAB',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
-                    Text('جاهزية البناء: ${(percent * 100).toStringAsFixed(0)}%', style: const TextStyle(color: Colors.white)),
+                    Text(
+                        'جاهزية البناء: ${(percent * 100).toStringAsFixed(0)}%',
+                        style: const TextStyle(color: Colors.white)),
                     const SizedBox(height: 12),
-                    LinearProgressIndicator(value: percent, color: Colors.white, backgroundColor: Colors.white24),
+                    LinearProgressIndicator(
+                        value: percent,
+                        color: Colors.white,
+                        backgroundColor: Colors.white24),
                   ],
                 ),
               ),
               const SizedBox(height: 18),
-              const Text('قائمة البناء', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+              const Text('قائمة البناء',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               ...items.map((item) {
                 final ok = item['ok'] == true;
                 return Card(
                   child: ListTile(
-                    leading: Icon(ok ? Icons.check_circle_rounded : Icons.pending_rounded, color: ok ? Colors.green : Colors.orange),
+                    leading: Icon(
+                        ok ? Icons.check_circle_rounded : Icons.pending_rounded,
+                        color: ok ? Colors.green : Colors.orange),
                     title: Text(item['title'].toString()),
                     subtitle: Text(item['note'].toString()),
                   ),

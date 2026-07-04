@@ -69,7 +69,8 @@ class QuickAddScreen extends StatelessWidget {
           return Card(
             child: ListTile(
               leading: CircleAvatar(child: Icon(action.icon)),
-              title: Text(action.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              title: Text(action.title,
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
               subtitle: Text(action.subtitle),
               trailing: const Icon(Icons.arrow_back_ios_new_rounded),
               onTap: () => context.go(action.route),

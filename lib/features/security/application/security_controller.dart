@@ -96,7 +96,8 @@ class SecurityActions {
 
     await SecurityLogService(ref.read(appDatabaseProvider)).log(
       eventType: enabled ? 'biometric_enabled' : 'biometric_disabled',
-      message: enabled ? 'تم تفعيل المصادقة الحيوية' : 'تم إيقاف المصادقة الحيوية',
+      message:
+          enabled ? 'تم تفعيل المصادقة الحيوية' : 'تم إيقاف المصادقة الحيوية',
     );
 
     ref.invalidate(settingsProvider);
@@ -120,7 +121,9 @@ class SecurityActions {
 
     await SecurityLogService(ref.read(appDatabaseProvider)).log(
       eventType: 'auto_lock_updated',
-      message: enabled ? 'تم تفعيل القفل التلقائي بعد $minutes دقيقة' : 'تم إيقاف القفل التلقائي',
+      message: enabled
+          ? 'تم تفعيل القفل التلقائي بعد $minutes دقيقة'
+          : 'تم إيقاف القفل التلقائي',
     );
 
     ref.invalidate(settingsProvider);

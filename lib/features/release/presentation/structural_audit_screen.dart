@@ -20,22 +20,31 @@ class StructuralAuditScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(22),
             decoration: BoxDecoration(
-              gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+              gradient: const LinearGradient(
+                  colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
               borderRadius: BorderRadius.circular(28),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.manage_search_rounded, color: Colors.white, size: 44),
+                const Icon(Icons.manage_search_rounded,
+                    color: Colors.white, size: 44),
                 const SizedBox(height: 12),
                 const Text(
                   'فحص هيكل المشروع',
-                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
-                Text('النتيجة: ${(percent * 100).toStringAsFixed(0)}%', style: const TextStyle(color: Colors.white)),
+                Text('النتيجة: ${(percent * 100).toStringAsFixed(0)}%',
+                    style: const TextStyle(color: Colors.white)),
                 const SizedBox(height: 12),
-                LinearProgressIndicator(value: percent, color: Colors.white, backgroundColor: Colors.white24),
+                LinearProgressIndicator(
+                    value: percent,
+                    color: Colors.white,
+                    backgroundColor: Colors.white24),
               ],
             ),
           ),
@@ -44,7 +53,9 @@ class StructuralAuditScreen extends ConsumerWidget {
             final ok = item['ok'] == true;
             return Card(
               child: ListTile(
-                leading: Icon(ok ? Icons.check_circle_rounded : Icons.error_rounded, color: ok ? Colors.green : Colors.red),
+                leading: Icon(
+                    ok ? Icons.check_circle_rounded : Icons.error_rounded,
+                    color: ok ? Colors.green : Colors.red),
                 title: Text(item['title'].toString()),
                 subtitle: Text(ok ? 'موجود' : 'مفقود'),
               ),

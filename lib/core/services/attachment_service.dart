@@ -9,13 +9,15 @@ class AttachmentService {
   final ImagePicker _picker = ImagePicker();
 
   Future<File?> pickInvoiceImageFromGallery() async {
-    final image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+    final image =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
     if (image == null) return null;
     return _copyToAppFolder(File(image.path), 'images');
   }
 
   Future<File?> captureInvoiceImage() async {
-    final image = await _picker.pickImage(source: ImageSource.camera, imageQuality: 85);
+    final image =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 85);
     if (image == null) return null;
     return _copyToAppFolder(File(image.path), 'images');
   }

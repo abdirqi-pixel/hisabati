@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../../core/data/database_providers.dart';
 import '../../../core/services/activity_log_service.dart';
+import '../../../core/services/smart_alerts_service.dart';
 
 class AddExpenseScreen extends ConsumerStatefulWidget {
   const AddExpenseScreen({
@@ -49,8 +48,10 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     if (widget.initialNotes != null) {
       notesController.text = widget.initialNotes!;
     }
-    if (widget.initialAttachmentPath != null && widget.initialAttachmentPath!.isNotEmpty) {
-      pendingAttachments.add({'type': 'image', 'path': widget.initialAttachmentPath!});
+    if (widget.initialAttachmentPath != null &&
+        widget.initialAttachmentPath!.isNotEmpty) {
+      pendingAttachments
+          .add({'type': 'image', 'path': widget.initialAttachmentPath!});
     }
   }
 
@@ -64,16 +65,20 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
 
   Future<void> pickImageFromCamera() async {
     final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.camera, imageQuality: 85);
+    final image =
+        await picker.pickImage(source: ImageSource.camera, imageQuality: 85);
     if (image == null) return;
-    setState(() => pendingAttachments.add(_PendingAttachment(type: 'image', path: image.path)));
+    setState(() => pendingAttachments
+        .add(_PendingAttachment(type: 'image', path: image.path)));
   }
 
   Future<void> pickImageFromGallery() async {
     final picker = ImagePicker();
-    final image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+    final image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
     if (image == null) return;
-    setState(() => pendingAttachments.add(_PendingAttachment(type: 'image', path: image.path)));
+    setState(() => pendingAttachments
+        .add(_PendingAttachment(type: 'image', path: image.path)));
   }
 
   Future<void> pickPdf() async {
@@ -82,7 +87,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       allowedExtensions: ['pdf'],
     );
     if (result == null || result.files.single.path == null) return;
-    setState(() => pendingAttachments.add(_PendingAttachment(type: 'pdf', path: result.files.single.path!)));
+    setState(() => pendingAttachments
+        .add(_PendingAttachment(type: 'pdf', path: result.files.single.path!)));
   }
 
   Future<void> _save() async {
@@ -100,7 +106,9 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
     if (projects.isEmpty || settings.isEmpty) return;
 
     final now = DateTime.now();
-    final count = Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM expenses')) ?? 0;
+    final count = Sqflite.firstIntValue(
+            await db.rawQuery('SELECT COUNT(*) FROM expenses')) ??
+        0;
     final serial = '#${(count + 1).toString().padLeft(6, '0')}';
 
     final expenseId = await db.insert('expenses', {
@@ -113,7 +121,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
       'currency_symbol': settings.first['currency_symbol'],
       'description': descriptionController.text.trim(),
       'expense_date': now.toIso8601String().split('T').first,
-      'expense_time': '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}',
+      'expense_time':
+          '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}',
       'notes': notesController.text.trim(),
       'created_by': settings.first['selected_user_id'],
       'created_at': now.toIso8601String(),
@@ -184,7 +193,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               TextField(
                 controller: amountController,
                 keyboardType: TextInputType.number,
-                style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 decoration: const InputDecoration(
                   labelText: 'المبلغ',
                   prefixIcon: Icon(Icons.payments_rounded),
@@ -193,7 +203,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               const SizedBox(height: 14),
               persons.when(
                 data: (items) => DropdownButtonFormField<int>(
-                  value: selectedPersonId,
+                  initialValue: selectedPersonId,
                   decoration: const InputDecoration(
                     labelText: 'الشخص',
                     prefixIcon: Icon(Icons.person_rounded),
@@ -204,7 +214,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                       child: Text(p['name'] as String),
                     );
                   }).toList(),
-                  onChanged: (value) => setState(() => selectedPersonId = value),
+                  onChanged: (value) =>
+                      setState(() => selectedPersonId = value),
                 ),
                 loading: () => const LinearProgressIndicator(),
                 error: (e, _) => Text('$e'),
@@ -212,7 +223,7 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
               const SizedBox(height: 14),
               categories.when(
                 data: (items) => DropdownButtonFormField<int>(
-                  value: selectedCategoryId,
+                  initialValue: selectedCategoryId,
                   decoration: const InputDecoration(
                     labelText: 'التصنيف',
                     prefixIcon: Icon(Icons.category_rounded),
@@ -223,7 +234,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                       child: Text(c['name'] as String),
                     );
                   }).toList(),
-                  onChanged: (value) => setState(() => selectedCategoryId = value),
+                  onChanged: (value) =>
+                      setState(() => selectedCategoryId = value),
                 ),
                 loading: () => const LinearProgressIndicator(),
                 error: (e, _) => Text('$e'),
@@ -246,7 +258,8 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                 ),
               ),
               const SizedBox(height: 18),
-              const Text('المرفقات', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text('المرفقات',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
               Card(
                 child: Column(
@@ -276,12 +289,15 @@ class _AddExpenseScreenState extends ConsumerState<AddExpenseScreen> {
                   final item = entry.value;
                   return Card(
                     child: ListTile(
-                      leading: Icon(item.type == 'image' ? Icons.image_rounded : Icons.picture_as_pdf_rounded),
+                      leading: Icon(item.type == 'image'
+                          ? Icons.image_rounded
+                          : Icons.picture_as_pdf_rounded),
                       title: Text(item.type == 'image' ? 'صورة' : 'PDF'),
                       subtitle: Text(item.path),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete_rounded),
-                        onPressed: () => setState(() => pendingAttachments.removeAt(index)),
+                        onPressed: () =>
+                            setState(() => pendingAttachments.removeAt(index)),
                       ),
                     ),
                   );

@@ -21,7 +21,7 @@ class AppStatCard extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.emerald.withOpacity(.12),
+              backgroundColor: AppColors.emerald.withValues(alpha: .12),
               child: Icon(icon, color: AppColors.emerald),
             ),
             const SizedBox(width: 12),
@@ -29,7 +29,8 @@ class AppStatCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(color: AppColors.textMuted)),
+                  Text(title,
+                      style: const TextStyle(color: AppColors.textMuted)),
                   const SizedBox(height: 6),
                   Text(
                     value,

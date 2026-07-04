@@ -565,7 +565,6 @@ class AppDatabase {
       });
     }
 
-
     await db.insert('cloud_sync_settings', {
       'is_enabled': 0,
       'auto_sync_enabled': 0,
@@ -578,11 +577,11 @@ class AppDatabase {
     await db.insert('app_releases', {
       'version': '1.0.0',
       'title': 'الإصدار الأول',
-      'notes': 'الإصدار الأول من تطبيق حساباتي مع إدارة مالية وتقارير ونسخ احتياطي وأمان.',
+      'notes':
+          'الإصدار الأول من تطبيق حساباتي مع إدارة مالية وتقارير ونسخ احتياطي وأمان.',
       'release_date': DateTime.now().toIso8601String().split('T').first,
       'is_current': 1,
     });
-
   }
 
   Future<List<Map<String, Object?>>> all(String table) async {

@@ -21,14 +21,19 @@ class AnalyticsScreen extends ConsumerWidget {
 
           return analytics.when(
             data: (data) {
-              final monthlyExpenses = (data['monthlyExpenses'] as List).cast<Map<String, Object?>>();
-              final monthlyIncomes = (data['monthlyIncomes'] as List).cast<Map<String, Object?>>();
-              final yearlyExpenses = (data['yearlyExpenses'] as List).cast<Map<String, Object?>>();
-              final yearlyIncomes = (data['yearlyIncomes'] as List).cast<Map<String, Object?>>();
+              final monthlyExpenses = (data['monthlyExpenses'] as List)
+                  .cast<Map<String, Object?>>();
+              final monthlyIncomes =
+                  (data['monthlyIncomes'] as List).cast<Map<String, Object?>>();
+              final yearlyExpenses =
+                  (data['yearlyExpenses'] as List).cast<Map<String, Object?>>();
+              final yearlyIncomes =
+                  (data['yearlyIncomes'] as List).cast<Map<String, Object?>>();
               final expected = (data['expectedMonthExpense'] as num?) ?? 0;
               final current = (data['currentMonthExpense'] as num?) ?? 0;
               final average = (data['dailyAverage'] as num?) ?? 0;
-              final currentVsPrevious = (data['currentVsPrevious'] as List).cast<Map<String, Object?>>();
+              final currentVsPrevious = (data['currentVsPrevious'] as List)
+                  .cast<Map<String, Object?>>();
 
               return ListView(
                 padding: const EdgeInsets.all(18),
@@ -36,21 +41,30 @@ class AnalyticsScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(22),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                      gradient: const LinearGradient(
+                          colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                       borderRadius: BorderRadius.circular(28),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('توقع نهاية الشهر', style: TextStyle(color: Colors.white70)),
+                        const Text('توقع نهاية الشهر',
+                            style: TextStyle(color: Colors.white70)),
                         const SizedBox(height: 8),
                         Text(
                           MoneyFormatter.format(expected, symbol),
-                          style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 10),
-                        Text('مصروف هذا الشهر: ${MoneyFormatter.format(current, symbol)}', style: const TextStyle(color: Colors.white)),
-                        Text('المعدل اليومي: ${MoneyFormatter.format(average, symbol)}', style: const TextStyle(color: Colors.white)),
+                        Text(
+                            'مصروف هذا الشهر: ${MoneyFormatter.format(current, symbol)}',
+                            style: const TextStyle(color: Colors.white)),
+                        Text(
+                            'المعدل اليومي: ${MoneyFormatter.format(average, symbol)}',
+                            style: const TextStyle(color: Colors.white)),
                       ],
                     ),
                   ),
@@ -65,33 +79,45 @@ class AnalyticsScreen extends ConsumerWidget {
                   SimpleBarChart(
                     title: 'المصروفات الشهرية',
                     items: monthlyExpenses.reversed
-                        .map((e) => ChartItem(label: e['month'].toString(), value: (e['total'] as num?) ?? 0))
+                        .map((e) => ChartItem(
+                            label: e['month'].toString(),
+                            value: (e['total'] as num?) ?? 0))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 14),
                   SimpleBarChart(
                     title: 'الإيرادات الشهرية',
                     items: monthlyIncomes.reversed
-                        .map((e) => ChartItem(label: e['month'].toString(), value: (e['total'] as num?) ?? 0))
+                        .map((e) => ChartItem(
+                            label: e['month'].toString(),
+                            value: (e['total'] as num?) ?? 0))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 14),
                   SimpleBarChart(
                     title: 'المصروفات السنوية',
                     items: yearlyExpenses.reversed
-                        .map((e) => ChartItem(label: e['year'].toString(), value: (e['total'] as num?) ?? 0))
+                        .map((e) => ChartItem(
+                            label: e['year'].toString(),
+                            value: (e['total'] as num?) ?? 0))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                   const SizedBox(height: 14),
                   SimpleBarChart(
                     title: 'الإيرادات السنوية',
                     items: yearlyIncomes.reversed
-                        .map((e) => ChartItem(label: e['year'].toString(), value: (e['total'] as num?) ?? 0))
+                        .map((e) => ChartItem(
+                            label: e['year'].toString(),
+                            value: (e['total'] as num?) ?? 0))
                         .toList(),
-                    valueLabelBuilder: (value) => MoneyFormatter.format(value, symbol),
+                    valueLabelBuilder: (value) =>
+                        MoneyFormatter.format(value, symbol),
                   ),
                 ],
               );
@@ -140,7 +166,8 @@ class _ComparisonCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('مقارنة هذا الشهر بالشهر السابق', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text('مقارنة هذا الشهر بالشهر السابق',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Text('$currentMonth: ${MoneyFormatter.format(current, symbol)}'),
             Text('$previousMonth: ${MoneyFormatter.format(previous, symbol)}'),

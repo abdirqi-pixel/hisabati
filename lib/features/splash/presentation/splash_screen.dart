@@ -23,7 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
     final db = await AppDatabase.instance.database;
     await RecurringService(AppDatabase.instance).processDueTransactions();
     final rows = await db.query('app_settings', limit: 1);
-    final completed = rows.isNotEmpty && rows.first['is_onboarding_completed'] == 1;
+    final completed =
+        rows.isNotEmpty && rows.first['is_onboarding_completed'] == 1;
     final lockEnabled = rows.isNotEmpty &&
         rows.first['is_pin_enabled'] == 1 &&
         rows.first['lock_on_start'] == 1;
@@ -48,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               padding: const EdgeInsets.all(26),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(.18),
+                color: Colors.white.withValues(alpha: .18),
                 shape: BoxShape.circle,
               ),
               child: const Icon(

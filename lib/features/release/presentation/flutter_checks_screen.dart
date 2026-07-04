@@ -20,7 +20,8 @@ class FlutterChecksScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF10B981), Color(0xFF3B82F6)]),
                   borderRadius: BorderRadius.circular(28),
                 ),
                 child: const Column(
@@ -30,7 +31,10 @@ class FlutterChecksScreen extends ConsumerWidget {
                     SizedBox(height: 12),
                     Text(
                       'فحص البناء والتشغيل',
-                      style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -46,8 +50,13 @@ class FlutterChecksScreen extends ConsumerWidget {
                 final ok = status == 'نجح';
                 return Card(
                   child: ListTile(
-                    leading: Icon(ok ? Icons.check_circle_rounded : Icons.terminal_rounded, color: ok ? Colors.green : Colors.blue),
-                    title: Text(item['command'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                    leading: Icon(
+                        ok
+                            ? Icons.check_circle_rounded
+                            : Icons.terminal_rounded,
+                        color: ok ? Colors.green : Colors.blue),
+                    title: Text(item['command'].toString(),
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text('الحالة: $status\n${item['notes'] ?? ''}'),
                     isThreeLine: true,
                     trailing: PopupMenuButton<String>(
@@ -68,7 +77,8 @@ class FlutterChecksScreen extends ConsumerWidget {
                         PopupMenuItem(value: 'لم يتم', child: Text('لم يتم')),
                         PopupMenuItem(value: 'نجح', child: Text('نجح')),
                         PopupMenuItem(value: 'فشل', child: Text('فشل')),
-                        PopupMenuItem(value: 'يحتاج إصلاح', child: Text('يحتاج إصلاح')),
+                        PopupMenuItem(
+                            value: 'يحتاج إصلاح', child: Text('يحتاج إصلاح')),
                       ],
                     ),
                   ),

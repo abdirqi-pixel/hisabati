@@ -17,7 +17,9 @@ class RecurringScreen extends ConsumerWidget {
       _ => value,
     };
 
-    return interval <= 1 ? base : 'كل $interval ${value == 'monthly' ? 'أشهر' : value == 'weekly' ? 'أسابيع' : value == 'yearly' ? 'سنوات' : 'أيام'}';
+    return interval <= 1
+        ? base
+        : 'كل $interval ${value == 'monthly' ? 'أشهر' : value == 'weekly' ? 'أسابيع' : value == 'yearly' ? 'سنوات' : 'أيام'}';
   }
 
   @override
@@ -31,7 +33,9 @@ class RecurringScreen extends ConsumerWidget {
           IconButton(
             tooltip: 'تشغيل المستحق الآن',
             onPressed: () async {
-              final count = await RecurringService(ref.read(appDatabaseProvider)).processDueTransactions();
+              final count =
+                  await RecurringService(ref.read(appDatabaseProvider))
+                      .processDueTransactions();
               ref.invalidate(recurringTransactionsProvider);
               ref.invalidate(expensesProvider);
               ref.invalidate(incomesProvider);
@@ -75,9 +79,12 @@ class RecurringScreen extends ConsumerWidget {
               return Card(
                 child: ListTile(
                   leading: CircleAvatar(
-                    child: Icon(item['type'] == 'expense' ? Icons.trending_down_rounded : Icons.trending_up_rounded),
+                    child: Icon(item['type'] == 'expense'
+                        ? Icons.trending_down_rounded
+                        : Icons.trending_up_rounded),
                   ),
-                  title: Text(item['title'].toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(item['title'].toString(),
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
                     '$type • ${MoneyFormatter.format((item['amount'] as num?) ?? 0, symbol)} • ${item['project_name'] ?? ''}\n'
                     '${freqLabel(item['frequency'].toString(), (item['interval_value'] as int?) ?? 1)} • القادم: ${item['next_run_date']}',
@@ -158,11 +165,15 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
 
   Future<void> save() async {
     final parsed = double.tryParse(amount.text.trim());
-    if (parsed == null || parsed <= 0 || projectId == null || title.text.trim().isEmpty) return;
+    if (parsed == null ||
+        parsed <= 0 ||
+        projectId == null ||
+        title.text.trim().isEmpty) return;
 
     final db = await ref.read(appDatabaseProvider).database;
     final settings = await db.query('app_settings', limit: 1);
-    final projects = await db.query('projects', where: 'id = ?', whereArgs: [projectId], limit: 1);
+    final projects = await db.query('projects',
+        where: 'id = ?', whereArgs: [projectId], limit: 1);
     if (settings.isEmpty || projects.isEmpty) return;
 
     final project = projects.first;
@@ -197,31 +208,48 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
     final categories = ref.watch(categoriesProvider);
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('عملية دورية جديدة', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text('عملية دورية جديدة',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             SegmentedButton<String>(
               segments: const [
-                ButtonSegment(value: 'expense', label: Text('مصروف'), icon: Icon(Icons.trending_down_rounded)),
-                ButtonSegment(value: 'income', label: Text('إيراد'), icon: Icon(Icons.trending_up_rounded)),
+                ButtonSegment(
+                    value: 'expense',
+                    label: Text('مصروف'),
+                    icon: Icon(Icons.trending_down_rounded)),
+                ButtonSegment(
+                    value: 'income',
+                    label: Text('إيراد'),
+                    icon: Icon(Icons.trending_up_rounded)),
               ],
               selected: {type},
               onSelectionChanged: (value) => setState(() => type = value.first),
             ),
             const SizedBox(height: 12),
-            TextField(controller: title, decoration: const InputDecoration(labelText: 'العنوان')),
+            TextField(
+                controller: title,
+                decoration: const InputDecoration(labelText: 'العنوان')),
             const SizedBox(height: 12),
-            TextField(controller: amount, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'المبلغ')),
+            TextField(
+                controller: amount,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'المبلغ')),
             const SizedBox(height: 12),
             projects.when(
               data: (items) => DropdownButtonFormField<int>(
-                value: projectId,
+                initialValue: projectId,
                 decoration: const InputDecoration(labelText: 'المشروع'),
-                items: items.map((p) => DropdownMenuItem<int>(value: p['id'] as int, child: Text(p['name'].toString()))).toList(),
+                items: items
+                    .map((p) => DropdownMenuItem<int>(
+                        value: p['id'] as int,
+                        child: Text(p['name'].toString())))
+                    .toList(),
                 onChanged: (value) => setState(() => projectId = value),
               ),
               loading: () => const LinearProgressIndicator(),
@@ -231,9 +259,13 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
             if (type == 'expense') ...[
               persons.when(
                 data: (items) => DropdownButtonFormField<int>(
-                  value: personId,
+                  initialValue: personId,
                   decoration: const InputDecoration(labelText: 'الشخص اختياري'),
-                  items: items.map((p) => DropdownMenuItem<int>(value: p['id'] as int, child: Text(p['name'].toString()))).toList(),
+                  items: items
+                      .map((p) => DropdownMenuItem<int>(
+                          value: p['id'] as int,
+                          child: Text(p['name'].toString())))
+                      .toList(),
                   onChanged: (value) => setState(() => personId = value),
                 ),
                 loading: () => const LinearProgressIndicator(),
@@ -242,9 +274,14 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
               const SizedBox(height: 12),
               categories.when(
                 data: (items) => DropdownButtonFormField<int>(
-                  value: categoryId,
-                  decoration: const InputDecoration(labelText: 'التصنيف اختياري'),
-                  items: items.map((c) => DropdownMenuItem<int>(value: c['id'] as int, child: Text(c['name'].toString()))).toList(),
+                  initialValue: categoryId,
+                  decoration:
+                      const InputDecoration(labelText: 'التصنيف اختياري'),
+                  items: items
+                      .map((c) => DropdownMenuItem<int>(
+                          value: c['id'] as int,
+                          child: Text(c['name'].toString())))
+                      .toList(),
                   onChanged: (value) => setState(() => categoryId = value),
                 ),
                 loading: () => const LinearProgressIndicator(),
@@ -253,7 +290,7 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
               const SizedBox(height: 12),
             ],
             DropdownButtonFormField<String>(
-              value: frequency,
+              initialValue: frequency,
               decoration: const InputDecoration(labelText: 'التكرار'),
               items: const [
                 DropdownMenuItem(value: 'daily', child: Text('يومي')),
@@ -261,13 +298,17 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
                 DropdownMenuItem(value: 'monthly', child: Text('شهري')),
                 DropdownMenuItem(value: 'yearly', child: Text('سنوي')),
               ],
-              onChanged: (value) => setState(() => frequency = value ?? 'monthly'),
+              onChanged: (value) =>
+                  setState(() => frequency = value ?? 'monthly'),
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<int>(
-              value: interval,
+              initialValue: interval,
               decoration: const InputDecoration(labelText: 'كل كم فترة؟'),
-              items: List.generate(12, (i) => DropdownMenuItem(value: i + 1, child: Text('${i + 1}'))),
+              items: List.generate(
+                  12,
+                  (i) =>
+                      DropdownMenuItem(value: i + 1, child: Text('${i + 1}'))),
               onChanged: (value) => setState(() => interval = value ?? 1),
             ),
             const SizedBox(height: 12),
@@ -277,7 +318,8 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
                   child: OutlinedButton.icon(
                     onPressed: () => pickDate(isStart: true),
                     icon: const Icon(Icons.date_range_rounded),
-                    label: Text('البداية: ${startDate.toIso8601String().split('T').first}'),
+                    label: Text(
+                        'البداية: ${startDate.toIso8601String().split('T').first}'),
                   ),
                 ),
               ],
@@ -289,15 +331,22 @@ class _RecurringFormState extends ConsumerState<_RecurringForm> {
                   child: OutlinedButton.icon(
                     onPressed: () => pickDate(isStart: false),
                     icon: const Icon(Icons.event_busy_rounded),
-                    label: Text(endDate == null ? 'نهاية اختيارية' : 'النهاية: ${endDate!.toIso8601String().split('T').first}'),
+                    label: Text(endDate == null
+                        ? 'نهاية اختيارية'
+                        : 'النهاية: ${endDate!.toIso8601String().split('T').first}'),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            TextField(controller: description, decoration: const InputDecoration(labelText: 'تفاصيل')),
+            TextField(
+                controller: description,
+                decoration: const InputDecoration(labelText: 'تفاصيل')),
             const SizedBox(height: 16),
-            FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+            FilledButton.icon(
+                onPressed: save,
+                icon: const Icon(Icons.save_rounded),
+                label: const Text('حفظ')),
           ],
         ),
       ),

@@ -22,7 +22,8 @@ class _LockScreenState extends ConsumerState<LockScreen> {
   }
 
   Future<void> tryBiometric() async {
-    final ok = await ref.read(securityActionsProvider).authenticateWithBiometrics();
+    final ok =
+        await ref.read(securityActionsProvider).authenticateWithBiometrics();
     if (ok && mounted) {
       context.go('/dashboard');
     }
@@ -68,9 +69,11 @@ class _LockScreenState extends ConsumerState<LockScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.lock_rounded, size: 72, color: Color(0xFF10B981)),
+              const Icon(Icons.lock_rounded,
+                  size: 72, color: Color(0xFF10B981)),
               const SizedBox(height: 20),
-              const Text('أدخل رمز الحماية', style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+              const Text('أدخل رمز الحماية',
+                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
               const Text('لحماية بيانات حساباتي'),
               const SizedBox(height: 24),
@@ -84,7 +87,9 @@ class _LockScreenState extends ConsumerState<LockScreen> {
                     margin: const EdgeInsets.symmetric(horizontal: 6),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: filled ? const Color(0xFF10B981) : Colors.grey.shade300,
+                      color: filled
+                          ? const Color(0xFF10B981)
+                          : Colors.grey.shade300,
                     ),
                   );
                 }),
@@ -123,7 +128,7 @@ class _Keypad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final keys = ['1','2','3','4','5','6','7','8','9','', '0', 'back'];
+    final keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'back'];
 
     return GridView.builder(
       shrinkWrap: true,
@@ -142,7 +147,9 @@ class _Keypad extends StatelessWidget {
           onPressed: key == 'back' ? onBackspace : () => onDigit(key),
           child: key == 'back'
               ? const Icon(Icons.backspace_rounded)
-              : Text(key, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              : Text(key,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold)),
         );
       },
     );

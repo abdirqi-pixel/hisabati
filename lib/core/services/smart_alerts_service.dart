@@ -46,7 +46,8 @@ class SmartAlertsService {
         await _createUniqueToday(
           type: 'budget_exceeded',
           title: 'تم تجاوز الميزانية',
-          message: 'ميزانية $budgetName في $projectName تجاوزت الحد. المصروف: ${spent.toStringAsFixed(0)} $symbol',
+          message:
+              'ميزانية $budgetName في $projectName تجاوزت الحد. المصروف: ${spent.toStringAsFixed(0)} $symbol',
           entityType: 'budget',
           entityId: row['id'] as int?,
         );
@@ -54,7 +55,8 @@ class SmartAlertsService {
         await _createUniqueToday(
           type: 'budget_warning',
           title: 'اقتراب من حد الميزانية',
-          message: 'ميزانية $budgetName وصلت إلى ${(percent * 100).toStringAsFixed(0)}%',
+          message:
+              'ميزانية $budgetName وصلت إلى ${(percent * 100).toStringAsFixed(0)}%',
           entityType: 'budget',
           entityId: row['id'] as int?,
         );
@@ -107,7 +109,8 @@ class SmartAlertsService {
       await _createUniqueToday(
         type: 'advance_due',
         title: 'سلفة غير مسددة',
-        message: '${row['person_name'] ?? 'شخص'} لديه متبقي ${row['remaining']}',
+        message:
+            '${row['person_name'] ?? 'شخص'} لديه متبقي ${row['remaining']}',
         entityType: 'advance',
         entityId: row['person_id'] as int?,
       );
@@ -132,7 +135,8 @@ class SmartAlertsService {
 
     final existing = await db.query(
       'app_notifications',
-      where: 'type = ? AND entity_type IS ? AND entity_id IS ? AND created_at LIKE ?',
+      where:
+          'type = ? AND entity_type IS ? AND entity_id IS ? AND created_at LIKE ?',
       whereArgs: [type, entityType, entityId, '$today%'],
       limit: 1,
     );

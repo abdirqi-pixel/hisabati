@@ -31,7 +31,8 @@ class CloudSyncService {
       if (autoSyncEnabled != null) 'auto_sync_enabled': autoSyncEnabled ? 1 : 0,
       if (provider != null) 'provider': provider,
       if (folderPath != null) 'folder_path': folderPath,
-      if (includeAttachments != null) 'include_attachments': includeAttachments ? 1 : 0,
+      if (includeAttachments != null)
+        'include_attachments': includeAttachments ? 1 : 0,
     };
 
     if (rows.isEmpty) {
@@ -71,7 +72,8 @@ class CloudSyncService {
       await folder.create(recursive: true);
     }
 
-    final backupFile = await SecureBackupService(database).exportEncryptedBackup(password);
+    final backupFile =
+        await SecureBackupService(database).exportEncryptedBackup(password);
     final target = File(p.join(folder.path, p.basename(backupFile.path)));
     final copied = await backupFile.copy(target.path);
     final size = await copied.length();
@@ -102,7 +104,8 @@ class CloudSyncService {
 
     final files = dir
         .listSync()
-        .where((e) => e is File && (e.path.endsWith('.hbak') || e.path.endsWith('.json')))
+        .where((e) =>
+            e is File && (e.path.endsWith('.hbak') || e.path.endsWith('.json')))
         .toList();
 
     files.sort((a, b) {

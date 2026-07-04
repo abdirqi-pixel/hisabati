@@ -54,41 +54,55 @@ class BudgetsScreen extends ConsumerWidget {
                           Expanded(
                             child: Text(
                               b['name'].toString(),
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ),
                           PopupMenuButton<String>(
                             onSelected: (value) async {
                               if (value == 'disable') {
-                                final db = await ref.read(appDatabaseProvider).database;
-                                await db.update('budgets', {'is_active': 0}, where: 'id = ?', whereArgs: [b['id']]);
+                                final db = await ref
+                                    .read(appDatabaseProvider)
+                                    .database;
+                                await db.update('budgets', {'is_active': 0},
+                                    where: 'id = ?', whereArgs: [b['id']]);
                                 ref.invalidate(budgetsProvider);
                                 ref.invalidate(budgetOverviewProvider);
                               }
                             },
                             itemBuilder: (_) => const [
-                              PopupMenuItem(value: 'disable', child: Text('إيقاف')),
+                              PopupMenuItem(
+                                  value: 'disable', child: Text('إيقاف')),
                             ],
                           ),
                         ],
                       ),
                       const SizedBox(height: 6),
-                      Text('${b['project_name']} • ${b['type'] == 'monthly' ? 'شهرية' : 'سنوية'} • ${b['period_year']}${b['period_month'] == null ? '' : '/${b['period_month']}'}'),
+                      Text(
+                          '${b['project_name']} • ${b['type'] == 'monthly' ? 'شهرية' : 'سنوية'} • ${b['period_year']}${b['period_month'] == null ? '' : '/${b['period_month']}'}'),
                       const SizedBox(height: 12),
-                      LinearProgressIndicator(value: percent > 1 ? 1 : percent.toDouble()),
+                      LinearProgressIndicator(
+                          value: percent > 1 ? 1 : percent.toDouble()),
                       const SizedBox(height: 8),
                       Text('المصروف: ${MoneyFormatter.format(spent, symbol)}'),
-                      Text('الميزانية: ${MoneyFormatter.format(amount, symbol)}'),
+                      Text(
+                          'الميزانية: ${MoneyFormatter.format(amount, symbol)}'),
                       Text('النسبة: ${(percent * 100).toStringAsFixed(0)}%'),
                       if (isOverBudget)
                         const Padding(
                           padding: EdgeInsets.only(top: 8),
-                          child: Text('تم تجاوز الميزانية', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                          child: Text('تم تجاوز الميزانية',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold)),
                         )
                       else if (isOverAlert)
                         const Padding(
                           padding: EdgeInsets.only(top: 8),
-                          child: Text('اقتربت من حد التنبيه', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+                          child: Text('اقتربت من حد التنبيه',
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold)),
                         ),
                     ],
                   ),
@@ -133,13 +147,16 @@ class _BudgetFormState extends ConsumerState<_BudgetForm> {
 
     final db = await ref.read(appDatabaseProvider).database;
     final settings = await db.query('app_settings', limit: 1);
-    final projects = await db.query('projects', where: 'id = ?', whereArgs: [projectId], limit: 1);
+    final projects = await db.query('projects',
+        where: 'id = ?', whereArgs: [projectId], limit: 1);
     if (projects.isEmpty || settings.isEmpty) return;
 
     final project = projects.first;
     final id = await db.insert('budgets', {
       'project_id': projectId,
-      'name': name.text.trim().isEmpty ? 'ميزانية ${type == 'monthly' ? 'شهرية' : 'سنوية'}' : name.text.trim(),
+      'name': name.text.trim().isEmpty
+          ? 'ميزانية ${type == 'monthly' ? 'شهرية' : 'سنوية'}'
+          : name.text.trim(),
       'type': type,
       'amount': parsed,
       'currency_code': project['currency_code'],
@@ -172,27 +189,38 @@ class _BudgetFormState extends ConsumerState<_BudgetForm> {
     final projects = ref.watch(projectsProvider);
 
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
+      padding: EdgeInsets.fromLTRB(
+          18, 18, 18, MediaQuery.of(context).viewInsets.bottom + 18),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('ميزانية جديدة', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const Text('ميزانية جديدة',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             projects.when(
               data: (items) => DropdownButtonFormField<int>(
-                value: projectId,
+                initialValue: projectId,
                 decoration: const InputDecoration(labelText: 'المشروع'),
-                items: items.map((p) => DropdownMenuItem<int>(value: p['id'] as int, child: Text(p['name'].toString()))).toList(),
+                items: items
+                    .map((p) => DropdownMenuItem<int>(
+                        value: p['id'] as int,
+                        child: Text(p['name'].toString())))
+                    .toList(),
                 onChanged: (value) => setState(() => projectId = value),
               ),
               loading: () => const LinearProgressIndicator(),
               error: (e, _) => Text('$e'),
             ),
             const SizedBox(height: 12),
-            TextField(controller: name, decoration: const InputDecoration(labelText: 'اسم الميزانية')),
+            TextField(
+                controller: name,
+                decoration: const InputDecoration(labelText: 'اسم الميزانية')),
             const SizedBox(height: 12),
-            TextField(controller: amount, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: 'المبلغ')),
+            TextField(
+                controller: amount,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'المبلغ')),
             const SizedBox(height: 12),
             SegmentedButton<String>(
               segments: const [
@@ -207,23 +235,28 @@ class _BudgetFormState extends ConsumerState<_BudgetForm> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<int>(
-                    value: year,
+                    initialValue: year,
                     decoration: const InputDecoration(labelText: 'السنة'),
                     items: List.generate(6, (i) {
                       final y = DateTime.now().year - 2 + i;
                       return DropdownMenuItem(value: y, child: Text('$y'));
                     }),
-                    onChanged: (value) => setState(() => year = value ?? DateTime.now().year),
+                    onChanged: (value) =>
+                        setState(() => year = value ?? DateTime.now().year),
                   ),
                 ),
                 if (type == 'monthly') ...[
                   const SizedBox(width: 10),
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: month,
+                      initialValue: month,
                       decoration: const InputDecoration(labelText: 'الشهر'),
-                      items: List.generate(12, (i) => DropdownMenuItem(value: i + 1, child: Text('${i + 1}'))),
-                      onChanged: (value) => setState(() => month = value ?? DateTime.now().month),
+                      items: List.generate(
+                          12,
+                          (i) => DropdownMenuItem(
+                              value: i + 1, child: Text('${i + 1}'))),
+                      onChanged: (value) =>
+                          setState(() => month = value ?? DateTime.now().month),
                     ),
                   ),
                 ],
@@ -240,7 +273,10 @@ class _BudgetFormState extends ConsumerState<_BudgetForm> {
               onChanged: (value) => setState(() => alertPercent = value),
             ),
             const SizedBox(height: 16),
-            FilledButton.icon(onPressed: save, icon: const Icon(Icons.save_rounded), label: const Text('حفظ')),
+            FilledButton.icon(
+                onPressed: save,
+                icon: const Icon(Icons.save_rounded),
+                label: const Text('حفظ')),
           ],
         ),
       ),
