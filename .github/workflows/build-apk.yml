@@ -29,6 +29,9 @@ jobs:
         run: flutter pub get
 
       - name: Build debug APK
+        env:
+          GRADLE_OPTS: "-Xmx4096m -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=1"
+          JAVA_TOOL_OPTIONS: "-Xmx4096m"
         run: flutter build apk --debug
 
       - name: Upload APK
